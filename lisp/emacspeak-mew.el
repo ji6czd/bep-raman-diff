@@ -1,6 +1,6 @@
 ;;; emacspeak-mew.el --- Speech enable Mew -- Fluent spoken access to internet message
-;;; $Id: emacspeak-mew.el,v 1.3 2001/06/09 17:27:49 inoue Exp $
-;;; $Author: inoue $ 
+;;; $Id: emacspeak-mew.el,v 1.4 2001/06/21 08:23:29 mitsugu Exp $
+;;; $Author: mitsugu $ 
 ;;; Description:  Emacspeak extension to speech enable mew
 ;;; Keywords: Emacspeak, Mew, IM, mail, Advice, Spoken Output
 ;;{{{  LCD Archive entry: 
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2001/06/09 17:27:49 $ |
-;;;  $Revision: 1.3 $ | 
+;;; $Date: 2001/06/21 08:23:29 $ |
+;;;  $Revision: 1.4 $ | 
 ;;; Location undetermined
 ;;;
 
@@ -76,7 +76,7 @@
 (setq mew-message-voice-lock-keywords
       (append mew-message-voice-lock-keywords
               '(
-                ("^\\(\\([ \t]*\\w*[A-Za-z0-9'-]*[>|}]+\\)+\\).*" 0 emacspeak-mew-cite-voice )
+                ("^\\(\\([ \t]*\\w*[A-Za-z0-9'-]*[>|]+\\)+\\).*" 0 emacspeak-mew-cite-voice )
 )))
 
 (defvar mew-virtual-voice-lock-keywords nil
