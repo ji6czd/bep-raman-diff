@@ -73,12 +73,9 @@ The default is dtk-exp.")
                     tts-voice-reset-code
 		    dtk-speaker-process-coding-system
 		    ))
-  (unless tts-name
-    (setq tts-name dtk-program))
+  (unless tts-name (setq tts-name dtk-program))
   (cond
-   ((string-match "outloud" tts-name)
-    (outloud-configure-tts))
-   ((string= tts-name "bep-ss")
+   ((string-match "bep-ss" tts-name)
     (setq dtk-speaker-process-coding-system '(shift_jis-unix shift_jis-unix))
     (apply 'set-process-coding-system dtk-speaker-process dtk-speaker-process-coding-system)
     (let ((ja-dir
@@ -89,7 +86,7 @@ The default is dtk-exp.")
       ))
    ((string-match "outloud" tts-name)
     (outloud-configure-tts))
-   (t (dtk-configure-tts)))
+   (t (dectalk-configure-tts)))
   (load-library "voice-setup")
   (setq tts-voice-reset-code (tts-get-voice-command tts-default-voice)))
 ;;}}
@@ -114,11 +111,6 @@ The default is dtk-exp.")
   (let ((lang (emacspeak-m17n-get-language-property (point-min)))
 	fix-characters-func)
   (goto-char (point-min))
-      ;;; First cleanup  repeated patterns:
-  (mapc
-   (function (lambda (str)
-               (dtk-replace-duplicates str mode )))
-   dtk-cleanup-patterns )
   (cond
    ((and (and lang (not (eq lang 'en)))
 	 (setq fix-characters-func
@@ -220,6 +212,8 @@ only speak upto the first ctrl-m."
  							  'emacspeak-language
 							  text lmax)))
     (let ((subtext (substring text lstart lend))
+	  (inhibit-point-motion-hooks t)
+          (invisibility-spec buffer-invisibility-spec)
 	  (syntax-table (syntax-table ))
           (inherit-speaker-process dtk-speaker-process)
           (pronunciation-table emacspeak-pronounce-pronunciation-table)
@@ -252,6 +246,7 @@ only speak upto the first ctrl-m."
           (delete-invisible-text)
           (when pronunciation-table
             (emacspeak-pronounce-apply-pronunciations pronunciation-table))
+          (dtk-handle-repeating-patterns mode)
           (dtk-quote mode))
         (goto-char (point-min))
         (skip-syntax-forward inherit-chunk-separator-syntax)
