@@ -1,5 +1,5 @@
 ;;; emacspeak-mew.el --- Speech enable Mew -- Fluent spoken access to internet message
-;;; $Id: emacspeak-mew.el,v 1.28 2002/02/16 01:03:43 seiken Exp $
+;;; $Id: emacspeak-mew.el,v 1.29 2002/02/16 02:04:36 seiken Exp $
 ;;; $Author: seiken $ 
 ;;; Description:  Emacspeak extension to speech enable Mew
 ;;; Keywords: Emacspeak, Mew, mail, Advice, Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/02/16 01:03:43 $ |
-;;;  $Revision: 1.28 $ | 
+;;; $Date: 2002/02/16 02:04:36 $ |
+;;;  $Revision: 1.29 $ | 
 ;;; Location undetermined
 ;;;
 
@@ -403,17 +403,11 @@
 
 
 (defadvice mew-message-next-msg (after emacspeak pre act )
-  "speaks the summary line or message number"
+  "speaks the message header infomation."
   (save-excursion
-    (let ((sum (mew-current-get-fld (mew-frame-id)))
-	  (num (mew-current-get-msg (mew-frame-id))))
-      (if (not (get-buffer sum))
-	  (dtk-speak (format "%s of %s" num sum))
-	(progn
-;	  (set-buffer sum)
-;	  (emacspeak-speak-line)
-	  (dtk-speak (format "%s of %s" num sum))
-	  ))
+    (let ((speak-header
+	   (concat "From:" (mew-header-get-value "From:") "Subject:" (mew-header-get-value "Subject:"))))
+      (dtk-speak speak-header)
 )))
 
 (defadvice mew-summary-analyze-again (after emacspeak pre act)
@@ -636,7 +630,7 @@
 
 (defun emacspeak-mew-speak-newsgroups ()
   (interactive)
-  (emacspeak-mew-speak-header "Newsgroups"))
+  (emacspeak-mew-speak-header "Newsgroups:"))
 
 ;;}}}
 (provide 'emacspeak-mew)
