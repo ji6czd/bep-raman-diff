@@ -1,6 +1,6 @@
 ;;; emacspeak-mew.el --- Speech enable Mew -- Fluent spoken access to internet message
-;;; $Id: emacspeak-mew.el,v 1.14 2001/09/25 13:49:22 seiken Exp $
-;;; $Author: seiken $ 
+;;; $Id: emacspeak-mew.el,v 1.15 2001/09/27 00:30:01 mitsugu Exp $
+;;; $Author: mitsugu $ 
 ;;; Description:  Emacspeak extension to speech enable Mew
 ;;; Keywords: Emacspeak, Mew, mail, Advice, Spoken Output
 ;;{{{  LCD Archive entry: 
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2001/09/25 13:49:22 $ |
-;;;  $Revision: 1.14 $ | 
+;;; $Date: 2001/09/27 00:30:01 $ |
+;;;  $Revision: 1.15 $ | 
 ;;; Location undetermined
 ;;;
 
@@ -159,6 +159,10 @@
   "announce kill draft buffer "
   (emacspeak-auditory-icon 'close-object)
   (emacspeak-speak-mode-line))
+(defadvice mew-draft-cite (after emacspeak pre act)
+  "provide auditory feedback"
+  (when (interactive-p)
+    (emacspeak-auditory-icon 'yank-object)))
 
 (defadvice mew-draft-circular-comp (around emacspeak pre act)
   "Say what you completed."
