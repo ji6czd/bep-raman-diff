@@ -1,6 +1,6 @@
 ;;; bep-setup.el --- ption: Setup of the BEP for convention
 
-;;; $Id: bep-setup.el,v 1.1 2002/02/02 16:26:46 inoue Exp $
+;;; $Id: bep-setup.el,v 1.2 2002/02/05 17:31:39 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Module to set up dtk voices and personalities
 ;;; Keywords: Voice, Personality, BEP
@@ -9,8 +9,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/02/02 16:26:46 $ |
-;;;  $Revision: 1.1 $ |
+;;; $Date: 2002/02/05 17:31:39 $ |
+;;;  $Revision: 1.2 $ |
 ;;; Location undetermined
 ;;;
 
@@ -57,7 +57,18 @@
 			   (file-name-directory load-file-name))))
 
 ;;; Load Multilingual extension.
+(setq emacspeak-m17n-auto-put-language-mode t)
 (require 'emacspeak-m17n-setup)
+
+;;; Japanese specific settings
+(require 'emacspeak-m17n-ja)
+(if (not emacspeak-m17n-put-language-strategy)
+    (setq emacspeak-m17n-put-language-strategy
+	  'emacspeak-m17n-put-language-ja-ke-1))
+
+(if (not emacspeak-m17n-put-language-internal-strategy)
+    (setq emacspeak-m17n-put-language-internal-strategy
+	  'emacspeak-m17n-put-language-ja-ne))
 
 ;;; Do additional package setup.
 (emacspeak-do-package-setup "egg" 'emacspeak-egg)

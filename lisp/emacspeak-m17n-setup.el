@@ -27,26 +27,25 @@
 ;;; Code:
 
 ;;{{ Require
+(eval-when-compile
+  (require 'cl)
+  (require 'dtk-speak))
 ;;}}
 ;;}}
 
 ;;{{ Variables
-(defvar emacspeak-m17n-auto-put-language-mode 'en
+(defvar emacspeak-m17n-auto-put-language-mode nil
   "If t, guess language of characters automatically.")
 
-(defvar emacspeak-m17n-put-language-strategy
-  'emacspeak-m17n-put-language-ja-ke-1
+(defvar emacspeak-m17n-put-language-strategy nil
   "How to determine language automatically.")
 
-(defvar emacspeak-m17n-put-language-internal-strategy
-  'emacspeak-m17n-put-language-ja-ne
+(defvar emacspeak-m17n-put-language-internal-strategy nil
   "Put-Language strategy used for string without language property.")
 
 (defvar emacspeak-m17n-rate-offset-alist 
   '((en 0) (ja 0))
   "alist of language and rate offset.")
-
-(put 'auditory-display-table 'char-table-extra-slots 6)
 
 (defvar emacspeak-display-table-alist nil
   "Map from language to auditory-display-table.\n
@@ -61,7 +60,7 @@ even if it is a non-ascii character."
 
 ;;}}
 ;;{{ Generic m17n support functions
-(defsubst emacspeak-m17n-register-display-table (lang table)
+(defun emacspeak-m17n-register-display-table (lang table)
   "Register the association of language and auditory-display-table name."
   (setq emacspeak-display-table-alist
 	(append (cons (cons lang table) nil)
@@ -100,7 +99,8 @@ even if it is a non-ascii character."
     (unwind-protect
 	(save-match-data
 	  (save-excursion
-	    (funcall emacspeak-m17n-put-language-strategy beg end)))
+	    (and emacspeak-m17n-put-language-strategy
+		 (funcall emacspeak-m17n-put-language-strategy beg end))))
       ;;; Clean up
       (and (not modified) (buffer-modified-p) (set-buffer-modified-p nil)))))
 
@@ -118,7 +118,8 @@ even if it is a non-ascii character."
     (unwind-protect
 	(save-match-data
 	  (save-excursion
-	    (funcall emacspeak-m17n-put-language-strategy begm endm len)))
+	    (and emacspeak-m17n-put-language-strategy
+		 (funcall emacspeak-m17n-put-language-strategy begm endm len))))
       ;;; Clean up
       (and (not modified) (buffer-modified-p) (set-buffer-modified-p nil))))))
 
@@ -128,8 +129,9 @@ emacspeak-m17n-put-language-internal-strategy"
   (with-temp-buffer
     (insert str)
     (let ((emacspeak-m17n-auto-put-language-mode t))
-    (funcall emacspeak-m17n-put-language-internal-strategy
-	     (point-min) (point-max)))
+      (and emacspeak-m17n-put-language-internal-strategy
+	   (funcall emacspeak-m17n-put-language-internal-strategy
+		    (point-min) (point-max))))
     (buffer-string)))
 
 ;;}}
@@ -149,16 +151,16 @@ if negative."
    (t
     (emacspeak-m17n-put-language-uninstall)))
   (when (interactive-p)
-    (dtk-speak (concat "Turned " (if emacspeak-m17n-auto-put-language-mode "on" "off")
-	       "auto language assignment"))))
+    (message (concat "Turned " (if emacspeak-m17n-auto-put-language-mode "on" "off")
+	       " auto language assignment"))))
 
 ;; provide language property automatically.
 ;; Idea is the same as lazy-voice-lock-mode uses.
 (defun emacspeak-m17n-put-language-install ()
-  (add-hook 'after-change-functions 'emacspeak-m17n-put-language-internal nil t)
-  (add-hook 'window-scroll-functions 'emacspeak-m17n-put-language-after-scroll nil t)
+  (add-hook 'after-change-functions 'emacspeak-m17n-put-language-internal)
+  (add-hook 'window-scroll-functions 'emacspeak-m17n-put-language-after-scroll)
   (add-hook 'window-size-change-functions 'emacspeak-m17n-put-language-after-resize)
-  (add-hook 'before-change-functions 'emacspeak-m17n-put-language-arrange-before-change nil t))
+  (add-hook 'before-change-functions 'emacspeak-m17n-put-language-arrange-before-change))
 
 (defun emacspeak-m17n-put-language-uninstall ()
   (remove-hook 'after-change-functions 'emacspeak-m17n-put-language-internal)
@@ -280,14 +282,13 @@ If BUFFER is not specified, see if currentbuffer is visible."
 
 ;;}}
 ;;{{ Global Initialization
-(require 'emacspeak-m17n-ja)
-(require 'emacspeak-ja-tbl)
 
-(add-hook 'after-change-functions 'emacspeak-m17n-put-language-internal)
-(add-hook 'window-scroll-functions 'emacspeak-m17n-put-language-after-scroll)
-(add-hook 'window-size-change-functions 'emacspeak-m17n-put-language-after-resize)
-(add-hook 'before-change-functions 'emacspeak-m17n-put-language-arrange-before-change)
-(setq emacspeak-m17n-auto-put-language-mode t)
+(when emacspeak-m17n-auto-put-language-mode
+  (add-hook 'after-change-functions 'emacspeak-m17n-put-language-internal)
+  (add-hook 'window-scroll-functions 'emacspeak-m17n-put-language-after-scroll)
+  (add-hook 'window-size-change-functions 'emacspeak-m17n-put-language-after-resize)
+  (add-hook 'before-change-functions 'emacspeak-m17n-put-language-arrange-before-change)
+)
 ;;}}
 ;;{{ Final setup
 ;;}}

@@ -1,5 +1,6 @@
+;;; -*- coding: iso-2022-7bit-unix -*-
 ;;; emacspeak-m17n-ja.el --- Bilingual extension to emacspeak
-;;; $Id: emacspeak-m17n-ja.el,v 1.4 2002/02/03 01:15:42 inoue Exp $
+;;; $Id: emacspeak-m17n-ja.el,v 1.5 2002/02/05 17:31:40 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description: Contains functions that handle Japanese characters
 ;;; Keywords: Emacspeak, Japanese, multilingualization
@@ -40,35 +41,24 @@
 
 ;;}}}
 ;;{{
-(eval-when (compile)
+(eval-when-compile
   (require 'cl)
-  (require 'emacspeak-ja-tbl))
+  (require 'emacspeak-m17n-setup))
+(require 'emacspeak-ja-tbl)
 ;;}}
-;;{{{
-;; Auditory-disp-table-ja and its access functions
-;; This table has 5 fields:
-;; 1) Key: Kanji or other 2-byte Japanese char "亜"
-;; 2) Value 1: read one char according to a cursor movement "あ"
-;; 3) Value 2: explain Kanji to identify it while Kana-Kanji translation "あじあ"
-;; 4) Value 3: almost same as 3) but explain Kanji in detail.
-;; 5) Symbol represents type of the character.
-;; The table provided with this package is based on GrassRoots,
-;; a Japanese screen reader for DOS
-;; developed by Jun Ishikawa <ishikawa@u-shizuoka-ken.ac.jp>
-
+;;{{{ Variables
 (defvar emacspeak-m17n-ja-strategy-list
   '(emacspeak-m17n-put-language-ja-ne
     emacspeak-m17n-put-language-ja-ke-1
     emacspeak-m17n-put-language-ja-ke-all)
 "List of available put-language-strategy.")
-
-(defvar auditory-display-table-ja
-  (make-char-table 'auditory-display-table)
-  "char-table from a Japanese character and corresponding explanatory readings")
+;;}}}
+;;{{{ Access functions for auditory-display-table-ja
 
 (defun bep-get-phonetic-string (char &optional field)
   "Return the phonetic string, the 2nd field of dic, for this CHAR."
   (interactive "sChar:\nnField:")
+  (declare (special auditory-display-table-ja))
   (let ((char (or (and (integerp char) char)
 		  (string-to-char char)))
 	(dummy-array ["dummy" "dummy" "dummy"]))
@@ -81,6 +71,7 @@
 
 (defun bep-get-char-type (char)
   "Return the symbol of char-type for this CHAR."
+  (declare (special auditory-display-table-ja))
   (let ((char (or (and (integerp char) char)
 		  (string-to-char char))))
   (aref
@@ -128,6 +119,10 @@
 ;;{{{ Other Japanese specific functions
 
 (defun emacspeak-ja-convert-string-to-phonetic (str)
+  "Convert string with Japanese characters to its explanatory readings."
+  (declare (special emacspeak-ja-type-prefix-table
+		    emacspeak-ja-subtype-prefix-table
+		    emacspeak-ja-small-char-list))
   (let ((cur 0)
 	(cidx 0)
 	(siz (length str))
@@ -172,6 +167,9 @@
 
 (defun emacspeak-ja-convert-char-to-phonetic (cstr)
   "convert first character of string to explanatory string with prefix indicating character subtype."
+  (declare (special emacspeak-ja-type-prefix-table
+		    emacspeak-ja-subtype-prefix-table
+		    emacspeak-ja-small-char-list))
   (let* ((cptr (or (and (integerp cstr) cstr)
 		   (string-to-char cstr)))
 	 (phon (bep-get-explanatory-string cptr))
@@ -189,20 +187,21 @@
 )
 
 (defun emacspeak-ja-convert-string-to-cursor (str)
-  "convert string to concatenated string of cursor-string"
+  "convert string to concatenated string of cursor-string."
   (let ((siz (length str))
 	     (output "")
-	     (ptr 0))
+	     (ptr 0)
+	     cstr)
     (while (< ptr siz)
       (setq cstr (substring str ptr (1+ ptr)))
       (setq output (concat output (bep-get-cursor-string cstr)))
       (setq ptr (1+ ptr))
       )
-  output
-))
+  output))
 
 (defun emacspeak-ja-get-char-type (c)
   "returns Japanese character type"
+  (declare (special auditory-disp-table-ja))
   (let ((ct (bep-get-char-type c))
 	(cstr (char-to-string c)))
   (cond
@@ -215,6 +214,7 @@
 
 (defun emacspeak-ja-get-char-subtype (c)
   "returns subtype of c"
+  (declare (special emacspeak-ja-small-char-list))
   (cond
    ((or
      (and (>= c ?A) (<= c ?Z))
@@ -341,9 +341,11 @@ and `en' property to others."
 (defun emacspeak-m17n-ja-toggle-strategy ()
   "Toggle around put-language-strategy"
   (interactive)
+  (declare (special emacspeak-m17n-put-language-strategy
+		    emacspeak-m17n-ja-strategy-list))
   (let ((strategy (car emacspeak-m17n-ja-strategy-list))
 	(strategy-cdr (cdr emacspeak-m17n-ja-strategy-list)))
-    (setq dtk-tcl strategy)
+    (setq emacspeak-m17n-put-language-strategy strategy)
     (setq emacspeak-m17n-ja-strategy-list (nconc strategy-cdr (cons strategy nil)))
     (recenter)
     (message (format "%s" strategy))))

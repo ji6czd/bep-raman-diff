@@ -1,5 +1,5 @@
-# $Id: Makefile,v 1.2 2002/02/03 15:26:46 seiken Exp $
-# $Author: seiken $ 
+# $Id: Makefile,v 1.3 2002/02/05 17:31:39 inoue Exp $
+# $Author: inoue $ 
 # Description:  Makefile for Emacspeak 
 # Keywords: Emacspeak, Dectalk, Makefile 
 # {{{ LCD Entry: 
@@ -7,8 +7,8 @@
 # LCD Archive Entry:
 # emacspeak| T. V. Raman |raman@cs.cornell.edu 
 # A speech interface to Emacs |
-# $Date: 2002/02/03 15:26:46 $ |
-#  $Revision: 1.2 $ | 
+# $Date: 2002/02/05 17:31:39 $ |
+#  $Revision: 1.3 $ | 
 # Location undetermined
 #
 
@@ -57,7 +57,7 @@ DTK_OBJECTS = dtk-css-speech.elc	dtk-speak.elc		dtk-voices.elc\
 outloud-voices.elc outloud-css-speech.elc \
 dtk-interp.elc		dtk-tcl.elc
 
-BEP_OBJECTS = bep-voice.elc bep-setup.elc emacspeak-ja-tbl.elc
+BEP_OBJECTS = bep-voices.elc bep-setup.elc emacspeak-ja-tbl.elc
 
 M17N_OBJECTS = emacspeak-m17n-ja.elc emacspeak-m17n-setup.elc
 

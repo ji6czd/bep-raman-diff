@@ -3,8 +3,13 @@
 ;;;     This module defines an explanatory-reading dictionary of 2-byte
 ;;;     Japanese characters and provides some functions to access it.
 ;;;
-;;; $Id: emacspeak-ja-tbl.el,v 1.1 2002/01/20 18:57:43 inoue Exp $
+;;; $Id: emacspeak-ja-tbl.el,v 1.2 2002/02/05 17:31:40 inoue Exp $
 
+;;{{{ Require
+(eval-when-compile
+  (require 'cl)
+  (require 'emacspeak-m17n-setup))
+;;}}}
 ;;{{{ Character Replacing for Japanese string.
 (defconst dtk-fix-characters-regexp-ja
   "[][{}<>\\|`#()｛｝「」（）]"
@@ -33,7 +38,25 @@ All characters `dtk-bracket-regexp-ja' matches should be included.")
 	("」" . "カギトジ")))
 ;;}}}
 
-;;{{{ fill auditory-display-table-ja
+;;{{{
+;; Auditory-disp-table-ja and its access functions
+;; This table has 5 fields:
+;; 1) Key: Kanji or other 2-byte Japanese char "亜"
+;; 2) Value 1: read one char according to a cursor movement "あ"
+;; 3) Value 2: explain Kanji to identify it while Kana-Kanji translation "あじあ"
+;; 4) Value 3: almost same as 3) but explain Kanji in detail.
+;; 5) Symbol represents type of the character.
+;; The table provided with this package is based on GrassRoots,
+;; a Japanese screen reader for DOS
+;; developed by Jun Ishikawa <ishikawa@u-shizuoka-ken.ac.jp>
+(defvar auditory-display-table-ja nil
+  "char-table from a Japanese character and corresponding explanatory readings")
+
+(defun emacspeak-ja-setup-auditory-display-table ()
+  "Setup auditory-display-table for Japanese."
+  (put 'auditory-display-table 'char-table-extra-slots 6)
+  (setq auditory-display-table-ja
+	(make-char-table 'auditory-display-table))
 (mapcar
  (function
   (lambda (dictionary)
@@ -7052,8 +7075,10 @@ All characters `dtk-bracket-regexp-ja' matches should be included.")
 ("瑤" "ヨウ" "ウツクシイ タマノ ヨウ" "ウツクシイ タマノ ヨウ" ja-kanji)
 ("凜" "リン" "ヒキシマルノ リン" "ヒキシマルノ リン" ja-kanji)
 ("熙" "キ" "アキラカノ キ" "アキラカノ キ" ja-kanji)
-))
+)))
 ;;}}}
 
+(emacspeak-ja-setup-auditory-display-table)
 (emacspeak-m17n-register-display-table 'ja 'auditory-disp-table-ja)
+
 (provide 'emacspeak-ja-tbl)

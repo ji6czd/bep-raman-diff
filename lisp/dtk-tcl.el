@@ -1,5 +1,5 @@
 ;;; dtk-tcl.el --- Interface to TCL speech server --uses module dtk-interp.el
-;;; $Id: dtk-tcl.el,v 1.4 2002/02/02 23:39:35 inoue Exp $
+;;; $Id: dtk-tcl.el,v 1.5 2002/02/05 17:31:40 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Interfacing to the Dectalk via TCL.
 ;;; Keywords: Dectalk, TCL
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/02/02 23:39:35 $ |
-;;;  $Revision: 1.4 $ |
+;;; $Date: 2002/02/05 17:31:40 $ |
+;;;  $Revision: 1.5 $ |
 ;;; Location undetermined
 ;;;
 
@@ -92,9 +92,6 @@ of a specified pattern is found, the TTS engine replaces it
 with a repeat count. "
   :type '(repeat  (string :tag "pattern"))
   :group 'tts)
-
-(defvar dtk-default-language nil
-  "Default language used when no property is set.")
 
 ;;}}}
 ;;{{{  internal variables

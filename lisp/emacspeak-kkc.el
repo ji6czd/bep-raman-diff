@@ -1,5 +1,5 @@
 ;;; emacspeak-kkc.el -- voicifying KKC(Kana Kanji Conversion)
-;;; $Id: emacspeak-kkc.el,v 1.2 2001/06/09 17:27:48 inoue Exp $
+;;; $Id: emacspeak-kkc.el,v 1.3 2002/02/05 17:31:40 inoue Exp $
 ;;; $Author: inoue $ 
 ;;; Description:  Emacspeak extension to speech enable mew
 ;;; Keywords: Emacspeak, Mew, IM, mail, Advice, Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2001/06/09 17:27:48 $ |
-;;;  $Revision: 1.2 $ | 
+;;; $Date: 2002/02/05 17:31:40 $ |
+;;;  $Revision: 1.3 $ | 
 ;;; Location undetermined
 ;;;
 
@@ -36,10 +36,10 @@
 ;;; the Free Software Foundation, 675 Mass Ave, Cambridge, MA 02139, USA.
 
 ;;}}}
-(require 'cl)
+(eval-when-compile
+  (require 'cl)
+  (require 'emacspeak-m17n-ja))
 (declaim  (optimize  (safety 0) (speed 3)))
-(require 'bep)
-(require 'bep-advice)
 (require 'emacspeak-speak)
 (require 'emacspeak-sounds)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -49,7 +49,7 @@
   (let ((kkc-cand (buffer-substring
 		   (overlay-start kkc-overlay-head)
 		   (overlay-end kkc-overlay-head))))
-    (dtk-speak (emacspeak-jp-convert-string-to-phonetic kkc-cand))
+    (dtk-speak (emacspeak-ja-convert-string-to-phonetic kkc-cand) nil 'ja)
     )
 )
 
