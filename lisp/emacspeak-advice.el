@@ -1,5 +1,5 @@
 ;;; emacspeak-advice.el --- Advice all core Emacs functionality to speak intelligently
-;;; $Id: emacspeak-advice.el,v 1.5 2002/03/27 14:51:14 inoue Exp $
+;;; $Id: emacspeak-advice.el,v 1.6 2002/03/31 17:55:16 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Core advice forms that make emacspeak work
 ;;; Keywords: Emacspeak, Speech, Advice, Spoken  output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/03/27 14:51:14 $ |
-;;;  $Revision: 1.5 $ |
+;;; $Date: 2002/03/31 17:55:16 $ |
+;;;  $Revision: 1.6 $ |
 ;;; Location undetermined
 ;;;
 
@@ -2969,7 +2969,7 @@ Variable mark-even-if-inactive is set true ."
 ;;{{ m17n support
 (defadvice toggle-input-method (after emacspeak pre act)
   "speak when input method is toggled"
-  (if (stringp ad-return-value)
+  (if current-input-method
       (dtk-speak "on")
     (dtk-speak "off"))
   ad-return-value)
