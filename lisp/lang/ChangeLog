@@ -1,0 +1,454 @@
+2004-09-24  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-mew.el: Added voice feedback to some new operation
+	about 'escape' ($) marks.
+	* emacspeak-mew.el: Now you can hear the type of mark set on the
+	current line by C-e r k. It is useful when you set reading pattern
+	of summary line other than 'all'.
+
+2004-01-05  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-mew.el(emacspeak-mew-speak-summary-status):
+	C-e r m in summary mode speaks message status displayed on
+	mode-line.
+	While pop connection is active, it speaks process status like
+	number of messages retrieved.
+
+2003-12-27  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-navi2ch: Added.
+	* emacspeak-m17n-override(dtk-speak):
+	Checks not only the first character but the last one.
+
+2003-09-15  Koichi INOUE  <inoue@argv.org>
+
+	* ja/emacspeak-*.el: Followed up some changes of Emacspeak
+	about file names related to voice output core.
+
+2003-05-07  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-mew.el: You can choose the field from which you
+	want to here from by pressing C-e C-i.
+	When moving vertically, the fields after the field you chose are
+	spoken. Currently all, from, and subj is defined but you can
+	customize it with emacspeak-mew-summary-fields-for toggle.
+
+2003-05-05  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-egg.el: In its-fence-mode, characters are spoken
+	when cursor is moved and characters are deleted.
+
+	* emacspeak-egg.el: Speaks after its-hiragana (M-h),
+	its-katakana(M-k), its-half-width(M-<), and its-full-width(M->).
+
+2003-04-27  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-egg.el: If emacspeak-character-echo is nil, results
+	of roma-kana conversion is also not echoed. It can speed up
+	roma-ji input.
+
+2003-04-23  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-mew.el: Improved voice locking.
+
+	* emacspeak-ja-setup.el: Changed default strategy to
+	ke-all(Katakana English mode), because Katakana English mode is
+	most useful in daily use and suitable for default,
+	and outloud locking problem, exists yet, is also concerned.
+
+	* emacspeak-w3m.el: Copied from original Emacspeak and changed
+	a little. We may have to change voice settings.
+
+2003-04-19  Koichi INOUE  <inoue@argv.org>
+
+	* all: Require for dtk-tcl module is removed.
+	* all: Requires for emacspeak-sounds are removed.
+
+2003-04-15  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-mew.el: Re-implemented voice-locking using
+		face-to-voice mapping.
+	* bep-voices.el: Changed voice command definition of basic 10
+		voices to Outloud in-text commands.
+
+2003-04-12  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-m17n-ja.el: Avoid infinit loop when ja-ne is used
+	in internal-strategy.
+	* bep-voice.el: Changed in-text-command rule.
+	New command is basically Outloud in-text command and enclose it
+	by [].
+
+2003-03-31  Koichi INOUE  <inoue@argv.org>
+
+	* all: Started to sync up to current Emacspeak(after 17.0)
+	Voice-locking codes are going to change.
+	Support for speech parameters in speech server looks like
+	unavoidable any more, or we must stick with old implementation.
+
+2002-11-09  Koichi INOUE  <inoue@argv.org>
+
+	* Makefile: target `install` is fixed.
+	lisp/lang/ja directory was not installed.
+
+2002-10-02  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-w3m.el: C-a and C-e in w3m-mode work correctly even
+	in emacs-w3m newer than 1.3.2.
+	emacspeak-w3m-keymap: new keymap for w3m-mode to bind
+	C-e C-e to w3m-end-of-line locally in w3m-mode.
+	w3m-beginning-of-line, w3m-end-of-line: New advice.
+
+2002-09-14    <seiken@argv.org>
+
+	* emacspeak-mew.el:(mew-biff-bark):
+	Playing auditory-icon when mail arrived.
+
+2002-08-13  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-egg.el(its-delete-backward-SYL):
+	  Now speaks deleted char when BS is pressed in fence mode.
+
+	* emacspeak-egg.el(its-buffer-ins/del-SYL):
+	Invalid use of function-local variable `output' in after-advice.
+	It was causing compiler warning when Egg input.
+
+2002-06-06  Koichi INOUE  <inoue@argv.org>
+
+	* BEP Release03 released(Based on emacspeak-16.0)
+
+	* emacspeak-m17n.el, emacspeak-m17n-ja.el, emacspeak-ja-setup.el:
+	emacspeak-m17n-put-language-strategy: local variable.
+	emacspeak-m17n-ja-change-strategy: Changed argument.
+	If you call this function with prefix argument, it changes global
+	value of put-language-strategy and put-language-internal-strategy.
+	If no prefix argument is provided, only put-language-strategy for
+	current buffer is changed.
+	I.E. C-e x m s k turns current buffer to katakana english mode.
+	C-u C-e x m s k turns all buffers and messages into katakana
+	english mode.
+
+	* emacspeak-m17n.el(emacspeak-m17n-set-put-language-internal-strategy): Broken. fixed.
+
+	* emacspeak-m17n-ja.el(emacspeak-m17n-ja-change-strategy):
+	Call recenter() after setting strategy.
+
+2002-06-05  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-m17n-ja.el:
+	emacspeak-m17n-ja-change-strategy: New function.
+	emacspeak-m17n-ja-strategy-sets: new variable instead of
+	emacspeak-m17n-ja-strategy-alist.
+	1. key to select this strategy set.
+	2. description of this strategy set.
+	3. strategy for general purpose.
+	4. strategy for internal use; message for example.
+
+	* emacspeak-ja-setup.el: C-e x m s is now boud to
+	emacspeak-m17n-ja-change-strategy.
+	Use emacspeak-add-put-language-strategy. See below.
+
+	* emacspeak-m17n.el: emacspeak-m17n-put-language-strategy-list:
+	new variable. Available strategies should be listed here.
+	emacspeak-m17n-set-put-language-strategy,
+	emacspeak-m17n-set-put-language-internal-strategy: functions
+	safely set strategy after checking availability.
+	emacspeak-m17n-add-put-language-strategy: Function to add new
+	strategy to the list of available strategies.
+
+2002-05-28  Mitsugu SAKAMOTO  <mitsugu@argv.org>
+
+	* lisp/lang/ja/emacspeak-mew.el (mew-summary-kill): New Advice
+	command, that auditory feedback. this command added mew-3.xx later.
+	
+2002-05-27  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-wl.el (top-level):
+	Enabled voice-lock in message buffer.
+	It can cause problem, because we must change constant value
+	`wl-message-buffer-cache-name' to a name not starts with whitespace.
+
+2002-05-26  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-m17n.el: Removed debug message in loop to add
+	load-path.
+
+2002-05-25  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-yatex.el: Added. (currently) minimal support for
+	YaTeX, e.g. voice locking.
+
+2002-05-19  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-semi.el: enabled voice-lock.
+
+	* emacspeak-m17n-override.el(emacspeak-self-insert-command):
+	Speak inserted char according to its language property.
+	It was implemented before but not merged to current version.
+
+2002-05-17  Mitsugu SAKAMOTO  <mitsugu@argv.org>
+
+	* lang/ja/emacspeak-wl.el: add Some Advice command & Auditory
+	Feedback. (Like emacspeak-mew.el) complete.
+	
+
+2002-05-14  KIRIAKE Masanori  <seiken@ARGV.org>
+
+	* lang/ja/yahtml-voice.el: New advices: yahtml-insert-amps,
+	yahtml-insert-form: Speaking inserted tag or string.
+
+2002-05-10  KIRIAKE Masanori  <seiken@ARGV.org>
+
+	* BEP Release02 released (based on Emacspeak-16.0).
+
+	* lang/ja/yahtml-voice.el: New advice, Speak inserted HTML tag. complete.
+
+
+2002-05-10  Mitsugu SAKAMOTO  <mitsugu@argv.org>
+	
+	* lang/ja/emacspeak-wl.el: New Advice (wl-summary-exit), Speak The
+	mode-line.
+
+	* lang/ja/emacspeak-wl.el: new Advice command
+	(wl-draft-begining-of-line)Stop speech first & Auditory feedback.
+	
+
+2002-05-06  KIRIAKE Masanori  <seiken@ARGV.org>
+
+	* lang/ja/yahtml-voice.el: New advice, Speak inserted HTML tag.
+
+2002-05-05  Koichi INOUE  <inoue@argv.org>
+
+	* dot.emacs.add: Moved some settings to emacspeak-m17n.el,
+	emacspeak-ja-setup.el.
+
+	* Makefile: included lisp/lang module for emacspeak, install,
+	clean targets.
+
+	* lang/ja/Makefile, yahtml-voice.el, emacspeak-ja-setup.el:
+	YaHTML support is activated.
+
+	* lang/ja/ emacspeak-ja-tbl.el, emacspeak-m17n-ja.el: Changed
+	coding-system spec at the beginning of the file.
+	It was preventing byte-compilation in Windows environment.
+
+	* lang/ja/emacspeak-semi.el: return code conversion.
+
+	* emacspeak-m17n.el, emacspeak-m17n-load-path.el:
+	We can use and byte-compile even under emacs-20.7.
+
+	* lang/ja/Makefile: yahtml-voice.el is temporality removed from
+	make targets.
+
+2002-05-04  Koichi INOUE  <inoue@argv.org>
+
+	* lang/ja/emacspeak-egg.el, emacspeak-ja-setup.el,
+	emacspeak-kkc.el, emacspeak-m17n-ja.el, lang/ja/Makefile:
+	Now you can byte-compile m17n extensions by just typing 'make'
+	under 'lisp/lang' directory.
+
+	* lisp/lang/ja/emacspeak-wl.el: Added simply from main trunk.
+
+2002-04-28  Koichi INOUE  <inoue@argv.org>
+
+	* lang/ja/emacspeak-w3m.el: Synched up to original CVS version.
+	If there are advices for the same function, original version is
+	took.
+
+2002-04-23  Koichi INOUE  <inoue@argv.org>
+
+	* lisp/lang/ja/emacspeak-ja-tbl.el: Added {}[] to
+	emacspeak-m17n-ja-char-speech-table.
+	* lisp/lang/emacspeak-m17n-override.el: Fixed
+	emacspeak-speak-this-char.
+	Now reads ascii characters correctly while key input and deletion
+	in Katakana English mode.
+
+2002-04-22  Koichi INOUE  <inoue@argv.org>
+
+	* lisp/lang/ja/emacspeak-ja-setup.el: Call customized version of
+	tts-configure-synthesis-setup after loading emacspeak-m17n.
+
+2002-04-21  Koichi INOUE  <inoue@argv.org>
+
+	* lisp/lang/emacspeak-m17n.el: Fixed  behavior about string
+	without language property, Indentation is now spoken correctly
+	with internal-strategy, and string after indentation is spoken in
+	forground strategy.
+
+2002-04-15  Koichi INOUE  <inoue@argv.org>
+
+	* Fixed dot.emacs.add file for new implementation.
+
+	* Restructured: removed all files under lisp, and put modified
+	version of multilingual extensions in:
+	lisp/lang: multilingualization framework.
+	lisp/lang/ja: Japanese specific extension files.
+	You can simply copy lisp/lang directory over CVS version of Emacspeak.
+
+	* Branch raman-merge.
+
+2002-04-09  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-m17n-ja.el: strategy-ja-ne is more stable.
+
+2002-04-03  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-w3m: Synched up to Emacspeak. Use voice-setup for
+	voice name aliasing so that code don't depend on dtk.
+
+2002-04-01  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-advice.el(advice for toggle-input-method): See
+	current-input-method to determine input-method is activated or
+	deactivated. Works on emacs-21.2.
+
+2002-03-31  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-w3m.el: Voice locking also works on BEP.
+
+2002-03-31  Mitsugu SAKAMOTO  <mitsugu@argv.org>
+
+	* emacspeak-w3m.el: remove mapping font faces to personalities.
+
+2002-03-31  Mitsugu SAKAMOTO  <mitsugu@argv.org>
+
+	* emacspeak-w3m.el: synch up original emacspeak.
+	mapping font faces to personalities.
+
+2002-03-30  Mitsugu SAKAMOTO  <mitsugu@argv.org>
+
+	* emacspeak-w3m.el: synch Up original emacspeak.
+
+2002-03-28  Mitsugu SAKAMOTO  <mitsugu@argv.org>
+
+	* emacspeak-mew.el: fixed scan finish Auditory-icons,
+		Advice	"mew-scan-sentinel" to "mew-scan-sentinel-hook" adding hook and
+remove a	dvice.
+
+2002-03-11  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-advice.el: delete-backward-char now speaks Japanese
+	chars correctly.
+
+2002-03-07  Mitsugu SAKAMOTO  <mitsugu@argv.org>
+
+	* emacspeak-wl.el: add on Package For Old BEP.
+	* bep-setup.el,  devel/difs.lst, devel/rmdiffs.lst: fixed.
+	
+
+2002-03-05  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-m17n-setup:
+	emacspeak-m17n-put-language-string-internal: now work on strings
+	some part of them has no property and other part has property.
+	* emacspeak-m17n-setup: -region and -internal clears
+	window-scroll-functions and window-size-change-functions, in
+	addition to before-change-functions, after-change-functions.
+
+2002-03-04  Mitsugu SAKAMOTO  <mitsugu@argv.org>
+
+	* emacspeak-w3m.el: Synch with Old BEP.
+	marged Advice command on Old Emacspeak-w3m.el.
+
+2002-02-23  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-m17n-setup.el, bep-setup.el:
+	C-e x m r: new command emacspeak-m17n-set-rate-offset.
+	This command asks language name(ja, en) and offset(like -80).
+	Then calls emacspeak-m17n-sync-rate-offset to send the parameter
+	to Speech server.
+
+2002-02-18  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-m17n-ja.el: New structure of
+	emacspeak-m17n-ja-strategy-alist . Each entry has three element
+	name, strategy for buffer content, strategy for other things like
+	messages.
+
+2002-02-16  KIRIAKE Masanori  <seiken@ARGV.org>
+
+	* lisp/emacspeak-mew.el:
+	New key binding: reading from, to, cc, newsgroups header.
+	(mew-message-next-msg): Advice modified.
+	(emacspeak-mew-speak-newsgroups): new function.
+
+2002-02-15  Koichi INOUE  <inoue@argv.org>
+
+	* bep-setup.el: fixed typo.
+	* emacspeak-m17n-ja.el: emacspeak-m17n-ja-strategy-alist is now an
+	alist containing strateg cons cell, containing strategy and its
+	feedback string.
+
+2002-02-14  KIRIAKE Masanori  <seiken@ARGV.org>
+
+	* lisp/emacspeak-mew.el: new functions
+	(emacspeak-mew-speak-header)
+	(emacspeak-mew-speak-from)
+	(emacspeak-mew-speak-to)
+	(emacspeak-mew-speak-subject)
+
+	* lisp/emacspeak-mew.el: Modify auto-reading message feature.
+
+2002-02-12  Mitsugu SAKAMOTO  <mitsugu@argv.org>
+
+	* lisp/emacspeak-mew.el: added Auto-reading feature goto
+	mew-message buffer.
+	Written Kiriake MASANORI <seiken@argv.org>
+
+2002-02-11  Koichi INOUE  <inoue@argv.org>
+
+	* bep-setup.el: Added keymap of
+	emacspeak-m17jn-auto-put-language-mode (C-e x m a) and
+	emacspeak-m17n-ja-toggle-strategy (C-e x m s)
+	to Emacspeak's personal keymap.
+
+2002-02-09  Koichi INOUE  <inoue@argv.org>
+
+	* lisp/emacspeak-w3m.el: Fixed voicification to work.
+
+2002-02-07  Mitsugu SAKAMOTO  <mitsugu@argv.org>
+
+	* lisp/emacspeak-w3m.el: If cursor move anchor, display URL
+	message Buffer not speak.
+
+2002-02-07  Koichi INOUE  <inoue@argv.org>
+
+	* lisp/emacspeak-w3m.el: Voicify hyperlinks.
+
+2002-02-06  Koichi INOUE  <inoue@argv.org>
+
+	* Enabled byte-compile.
+
+2002-01-29  Koichi INOUE  <inoue@argv.org>
+
+	* Synched up to Raman's CVS.
+	merged changes from Jan 10 2002 to today.
+
+2002-01-26  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-m17n-setup, emacspeak-m17n-ja:
+	`emacspeak-m17n-put-language-strategy' points to the function
+	you like to put language automatically. Current choice is
+	emacspeak-m17n-put-language-ja-ne,
+	emacspeak-m17n-put-language-ja-ke-1(default),
+	emacspeak-m17n-put-language-ja-ke-all.
+
+	* Initialization: emacspeak-m17n-setup is now not loaded
+	automatically.
+	After loading emacspeak-setup, you should load
+	emacspeak-m17n-setup yourself or by emacspeak-startup-hook.
+
+2002-01-23  Koichi INOUE  <inoue@argv.org>
+
+	* Prepared for public test.
+
+2002-01-21  Koichi INOUE  <inoue@argv.org>
+
+	* Import. Diff files from Emacspeak CVS development at
+	:pserver:anonymous@cvs.emacspeak.sourceforge.net:/cvsroot/emacspeak
+
+	For developers: execute devel/prepare-cvs from *this* directory
+	to incorporate changed files from your development directory.
+	Add newly changed file to devel/diff.lst.
+	Read devel/prepare-cvs script for details.

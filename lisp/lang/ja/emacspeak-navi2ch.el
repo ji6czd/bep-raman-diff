@@ -1,5 +1,5 @@
 ;;; emacspeak-navi2ch.el -- Speech enable navi2ch - 2ch Reader
-;;; $Id: emacspeak-navi2ch.el,v 1.1 2003/12/23 15:51:22 inoue Exp $
+;;; $Id: emacspeak-navi2ch.el,v 1.2 2004/11/28 09:13:40 inoue Exp $
 ;;; $Author: inoue $ 
 ;;; Description:  Emacspeak extension to speech enable navi2ch
 ;;; Keywords: Emacspeak, navi2ch, Speech, Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2003/12/23 15:51:22 $ |
-;;;  $Revision: 1.1 $ | 
+;;; $Date: 2004/11/28 09:13:40 $ |
+;;;  $Revision: 1.2 $ | 
 ;;; Location undetermined
 ;;;
 

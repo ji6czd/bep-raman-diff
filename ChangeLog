@@ -1,3 +1,10 @@
+2004-11-28  Koichi INOUE  <inoue@argv.org>
+
+	* ChangeLog: This file will be substituted with ChangeLog from
+	raman-merge branch, and moved to lisp/lang directory.
+
+	* all: Merged fromthe branch raman-merge.
+
 2002-05-04  Koichi INOUE  <inoue@argv.org>
 
 	* Synched up to emacspeak-16.0.
