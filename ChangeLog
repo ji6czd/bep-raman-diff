@@ -1,3 +1,8 @@
+2002-02-07  Mitsugu SAKAMOTO  <mitsugu@argv.org>
+
+	* lisp/emacspeak-w3m.el: If cursor move anchor, display URL
+	message Buffer not speak.
+
 2002-02-07  Koichi INOUE  <inoue@argv.org>
 
 	* lisp/emacspeak-w3m.el: Voicify hyperlinks.
