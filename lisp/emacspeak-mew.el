@@ -1,5 +1,5 @@
 ;;; emacspeak-mew.el --- Speech enable Mew -- Fluent spoken access to internet message
-;;; $Id: emacspeak-mew.el,v 1.18 2001/09/27 17:00:18 seiken Exp $
+;;; $Id: emacspeak-mew.el,v 1.19 2001/09/29 03:43:06 seiken Exp $
 ;;; $Author: seiken $ 
 ;;; Description:  Emacspeak extension to speech enable Mew
 ;;; Keywords: Emacspeak, Mew, mail, Advice, Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2001/09/27 17:00:18 $ |
-;;;  $Revision: 1.18 $ | 
+;;; $Date: 2001/09/29 03:43:06 $ |
+;;;  $Revision: 1.19 $ | 
 ;;; Location undetermined
 ;;;
 
@@ -553,12 +553,21 @@
 
 (defun emacspeak-mew-summary-next-line (arg)
   (interactive "p")
+  (when (and (interactive-p)
+             (save-excursion
+               (end-of-line)
+               (eobp)))
+    (emacspeak-auditory-icon 'warn-user))
   (next-line arg)
-  (emacspeak-mew-summary-speak-line)
-)
+  (emacspeak-mew-summary-speak-line))
 
 (defun emacspeak-mew-summary-previous-line (arg)
   (interactive "p")
+  (when (and (interactive-p)
+             (save-excursion
+               (beginning-of-line)
+               (bobp)))
+    (emacspeak-auditory-icon 'warn-user))
   (previous-line arg)
   (emacspeak-mew-summary-speak-line)
 )
