@@ -1,5 +1,5 @@
 ;;; emacspeak-speak.el --- Implements Emacspeak's core speech services
-;;; $Id: emacspeak-speak.el,v 1.2 2002/01/22 16:51:06 inoue Exp $
+;;; $Id: emacspeak-speak.el,v 1.3 2002/01/25 19:08:03 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Contains the functions for speaking various chunks of text
 ;;; Keywords: Emacspeak,  Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/01/22 16:51:06 $ |
-;;;  $Revision: 1.2 $ |
+;;; $Date: 2002/01/25 19:08:03 $ |
+;;;  $Revision: 1.3 $ |
 ;;; Location undetermined
 ;;;
 
@@ -628,18 +628,55 @@ by cut -c on UNIX."
 
 (make-variable-buffer-local 'emacspeak-speak-line-column-filter)
 
-(defsubst emacspeak-speak-line-apply-column-filter (line)
+(defcustom emacspeak-speak-line-invert-filter nil
+  "Non-nil means the sense of `filter' is inverted when filtering
+columns in a line --see 
+command emacspeak-speak-line-set-column-filter."
+  :type 'boolean
+  :group 'emacspeak-speak)
+
+(make-variable-buffer-local 'emacspeak-speak-line-invert-filter)
+
+(defun emacspeak-toggle-speak-line-invert-filter (&optional prefix)
+  "Toggle state of   how column filter is interpreted.
+Interactive PREFIX arg means toggle  the global default value, and then set the
+current local  value to the result."
+  (interactive  "P")
+  (declare  (special  emacspeak-speak-line-invert-filter ))
+  (cond
+   (prefix
+    (setq-default  emacspeak-speak-line-invert-filter
+                   (not  (default-value 'emacspeak-speak-line-invert-filter )))
+    (setq emacspeak-speak-line-invert-filter (default-value 'emacspeak-speak-line-invert-filter )))
+   (t (make-local-variable 'emacspeak-speak-line-invert-filter)
+      (setq emacspeak-speak-line-invert-filter
+	    (not emacspeak-speak-line-invert-filter ))))
+  (when (interactive-p)
+    (emacspeak-auditory-icon
+     (if emacspeak-speak-line-invert-filter 'on 'off))
+    (message "Turned %s invert filter %s "
+             (if emacspeak-speak-line-invert-filter "on" "off" )
+             (if prefix "" " locally"))))
+
+
+
+(defsubst emacspeak-speak-line-apply-column-filter (line &optional invert-filter)
   (declare (special emacspeak-speak-line-column-filter))
   (let ((filter emacspeak-speak-line-column-filter)
-        (l (1+ (length line)))
-        (pair nil))
+        (l  (length line))
+        (pair nil)
+        (personality (if invert-filter nil
+                       'inaudible)))
+    (when invert-filter
+      (put-text-property  0   l
+                          'personality 'inaudible line))
     (while filter 
       (setq pair (pop filter))
-      (when (and (< (first pair) l)
-                 (< (second pair) l))
+      (when (and (<= (first pair) l)
+                 (<= (second pair) l))
         (put-text-property (first pair)
                            (second pair)
-                           'personality 'inaudible
+                           'personality personality
                            line)))
     line))
 
@@ -651,10 +688,12 @@ by cut -c on UNIX."
  '%s
  emacspeak-speak-filter-table)\n" k v )))
 
-(defvar emacspeak-speak-filter-persistent-store
+(defcustom emacspeak-speak-filter-persistent-store
   (expand-file-name ".filters"
                     emacspeak-resource-directory)
-  "File where emacspeak filters are persisted.")
+  "File where emacspeak filters are persisted."
+  :type 'file
+  :group 'emacspeak-speak)
 
 (defvar emacspeak-speak-filters-loaded-p nil
   "Records if we    have loaded filters in this session.")
@@ -689,40 +728,40 @@ by cut -c on UNIX."
 
 
 (defsubst emacspeak-speak-load-filter-settings ()
-  "Load emacspeak filter settings for future sessions."
+  "Load emacspeak filter settings.."
   (declare (special emacspeak-speak-filter-persistent-store
                     emacspeak-speak-filter-table
                     emacspeak-speak-filters-loaded-p))
   (unless emacspeak-speak-filters-loaded-p
     (load-file emacspeak-speak-filter-persistent-store)
     (setq emacspeak-speak-filters-loaded-p t)
-    (add-hook 'emacspeak-speak-persist-filter-settings
-              'kill-emacs-hook)))
+    (add-hook 'kill-emacs-hook
+              'emacspeak-speak-persist-filter-settings)))
 
 (defun emacspeak-speak-line-set-column-filter (filter)
   "Set up filter for selectively ignoring portions of lines.
 The filter is specified as a list of pairs.
 For example, to filter out columns 1 -- 10 and 20 -- 25,
 specify filter as 
-((0 9) (20 25)). Filter settings are persisted across
-sessions.
-A persisted filter is used as the default when prompting for
-a filter.
-This allows one to accumulate a set of filters for specific
-files like /var/adm/messages and /var/adm/maillog over time."
+((0 9) (20 25)). Filter settings are persisted across sessions.  A
+persisted filter is used as the default when prompting for a filter.
+This allows one to accumulate a set of filters for specific files like
+/var/adm/messages and /var/adm/maillog over time."
   (interactive
-   (list 
-    (read-minibuffer "Specify columns to filter out: "
-                     (format "%s"
-                             (if  (buffer-file-name )
-                                 (emacspeak-speak-lookup-persistent-filter (buffer-file-name))
-                               "")))))
+   (list
+    (progn
+      (emacspeak-speak-load-filter-settings)
+      (read-minibuffer "Specify columns to filter out: "
+                       (format "%s"
+                               (if  (buffer-file-name )
+                                   (emacspeak-speak-lookup-persistent-filter (buffer-file-name))
+                                 ""))))))
   (cond
    ((and (listp filter)
          (every 
-          (lambda (l)
-            (and (listp l)
-                 (= 2 (length l))))
+          #'(lambda (l)
+              (and (listp l)
+                   (= 2 (length l))))
           filter))
     (setq emacspeak-speak-line-column-filter filter)
     (when (buffer-file-name)
@@ -751,9 +790,9 @@ turned on --see command `emacspeak-show-point' bound to
 text, e.g.  outline header lines, or header lines of blocks
 created by command `emacspeak-hide-or-expose-block' are
 indicated with auditory icon ellipses."
-
   (interactive "P")
   (declare (special voice-lock-mode
+                    emacspeak-speak-line-invert-filter
                     emacspeak-speak-space-regexp
                     outline-minor-mode folding-mode
                     emacspeak-speak-maximum-line-length
@@ -848,7 +887,8 @@ indicated with auditory icon ellipses."
             (when (and (null arg)
                        emacspeak-speak-line-column-filter)
               (setq line
-                    (emacspeak-speak-line-apply-column-filter line)))
+                    (emacspeak-speak-line-apply-column-filter line
+                                                              emacspeak-speak-line-invert-filter)))
             (if (and (string= "speak" emacspeak-audio-indentation )
                      (null arg )
                      indent

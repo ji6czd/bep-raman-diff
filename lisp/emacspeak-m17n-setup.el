@@ -73,7 +73,7 @@ auditory-display-table.")
   (interactive "r")
   (let ((inhibit-read-only t) (buffer-undo-list t)
 	(modified (buffer-modified-p))
-	befor-change-functions after-change-functions
+	before-change-functions after-change-functions
 	put-language-func)
     (setq put-language-func 'emacspeak-m17n-put-language-ja-ne)
     (unwind-protect
