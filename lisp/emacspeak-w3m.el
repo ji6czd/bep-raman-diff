@@ -1,5 +1,5 @@
 ;;; emacspeak-w3m.el --- speech-enables w3m-el
-;;;$Id: emacspeak-w3m.el,v 1.17 2002/04/02 18:10:23 inoue Exp $
+;;;$Id: emacspeak-w3m.el,v 1.18 2002/04/03 17:51:29 mitsugu Exp $
 ;;; This file is not part of Emacspeak, but the same terms and
 ;;; conditions apply.
 
@@ -233,7 +233,8 @@
   "Produce auditory feedback."
   (when (interactive-p)
     (emacspeak-auditory-icon 'close-object)
-    (emacspeak-speak-mode-line)))
+    (emacspeak-speak-mode-line)
+(setq dtk-set-punctuations "all")))
 
 (defadvice w3m-view-this-url (after emacspeak pre act)
   "speak page title"
