@@ -1,3 +1,4 @@
+Makefile
 dot.emacs.add
 lisp/bep-css-speech.el
 lisp/bep-setup.el
