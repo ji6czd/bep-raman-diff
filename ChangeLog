@@ -1,3 +1,8 @@
+2002-04-03  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-w3m: Synched up to Emacspeak. Use voice-setup for
+	voice name aliasing so that code don't depend on dtk.
+
 2002-04-01  Koichi INOUE  <inoue@argv.org>
 
 	* emacspeak-advice.el(advice for toggle-input-method): See
