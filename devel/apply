@@ -1,0 +1,10 @@
+#!/bin/sh
+#
+# Copy required files to the Emacspeak directory pointed with SOURCE_DIR.
+#
+. devel/settings
+#
+files=`cat $DIFF_LIST`
+for f in $files; do
+cp -pv $f $SOURCE_DIR/$f
+done
