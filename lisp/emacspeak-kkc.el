@@ -1,5 +1,5 @@
 ;;; emacspeak-kkc.el -- voicifying KKC(Kana Kanji Conversion)
-;;; $Id: emacspeak-kkc.el,v 1.1 2001/06/09 16:42:16 inoue Exp $
+;;; $Id: emacspeak-kkc.el,v 1.2 2001/06/09 17:27:48 inoue Exp $
 ;;; $Author: inoue $ 
 ;;; Description:  Emacspeak extension to speech enable mew
 ;;; Keywords: Emacspeak, Mew, IM, mail, Advice, Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2001/06/09 16:42:16 $ |
-;;;  $Revision: 1.1 $ | 
+;;; $Date: 2001/06/09 17:27:48 $ |
+;;;  $Revision: 1.2 $ | 
 ;;; Location undetermined
 ;;;
 

@@ -1,5 +1,5 @@
 ;;; html-voice.el --- Voice locking for html-helper-mode
-;;; $Id: yahtml-voice.el,v 1.1 2001/06/09 16:42:31 inoue Exp $
+;;; $Id: yahtml-voice.el,v 1.2 2001/06/09 17:28:01 inoue Exp $
 ;;; $Author: inoue $ 
 ;;; Description:  Voice locking for html helper  mode. Cloned from html-font.el
 ;;; Keywords: voice lock, html-helper-mode, emacspeak, speech 
@@ -7,8 +7,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interpersonality to Emacs |
-;;; $Date: 2001/06/09 16:42:31 $ |
-;;;  $Revision: 1.1 $ | 
+;;; $Date: 2001/06/09 17:28:01 $ |
+;;;  $Revision: 1.2 $ | 
 ;;; Location undetermined
 ;;;
 

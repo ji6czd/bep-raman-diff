@@ -73,7 +73,12 @@
 )
 
 (defadvice w3m (after emacspeak pre act)
-  "speak mode line"
+  "speak page title"
+  (dtk-speak w3m-current-title)
+)
+
+(defadvice w3m-find-file (after emacspeak pre act)
+  "speak page title"
   (dtk-speak w3m-current-title)
 )
 
@@ -97,10 +102,16 @@
 (defadvice w3m-view-next-page (after emacspeak pre act)
   "speak page title"
   (dtk-speak w3m-current-title))
+(defadvice w3m-edit-current-url (after emacspeak pre act)
+  "enter edit page speak the mode line"
+(emacspeak-speak-mode-line))
 
 (defadvice w3m-view-parent-page (after emacspeak pre act)
   "speak page title"
   (dtk-speak w3m-current-title))
+(defadvice w3m-edit-current-url (after emacspeak pre act)
+  "edit current URL after speak the modeline"
+  (emacspeak-speak-mode-line))
 
 ;;}}}
 

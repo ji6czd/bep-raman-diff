@@ -1,5 +1,5 @@
 ;;; emacspeak-mew.el --- Speech enable Mew -- Fluent spoken access to internet message
-;;; $Id: emacspeak-mew.el,v 1.2 2001/06/09 16:42:17 inoue Exp $
+;;; $Id: emacspeak-mew.el,v 1.3 2001/06/09 17:27:49 inoue Exp $
 ;;; $Author: inoue $ 
 ;;; Description:  Emacspeak extension to speech enable mew
 ;;; Keywords: Emacspeak, Mew, IM, mail, Advice, Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2001/06/09 16:42:17 $ |
-;;;  $Revision: 1.2 $ | 
+;;; $Date: 2001/06/09 17:27:49 $ |
+;;;  $Revision: 1.3 $ | 
 ;;; Location undetermined
 ;;;
 
@@ -38,10 +38,96 @@
 ;;}}}
 (require 'cl)
 (declaim  (optimize  (safety 0) (speed 3)))
+(eval-when (compile)
+  (require 'mew)
+  (require 'dtk-voices)
+  (require 'mew-vars2)
+  (require 'mew-summary)
+  (require 'mew-message)
+  (require 'mew-virtual)
+  (require 'mew-mark)
+)
 (require 'emacspeak-speak)
 
 (require 'emacspeak-sounds)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+;;{{{ voices
+(defvar emacspeak-mew-mark-delete-voice 'paul-monotone)
+(defvar emacspeak-mew-mark-review-voice 'paul-animated)
+(defvar emacspeak-mew-mark-refile-voice 'betty)
+(defvar emacspeak-mew-mark-multi-voice 'paul-animated)
+(defvar emacspeak-mew-cite-voice  'paul-monotone)
+
+;;}}}
+
+;;{{{ voice lock keywords
+(defvar mew-summary-voice-lock-keywords nil
+  "keywords for mew-summary-mode")
+(setq mew-summary-voice-lock-keywords
+      (append mew-summary-voice-lock-keywords
+	      '(("\\(^ *[0-9]+D\\)" 1 emacspeak-mew-mark-delete-voice)
+		("\\(^ *[0-9]+o\\)" 1 emacspeak-mew-mark-refile-voice)
+		("\\(^ *[0-9]+\\*\\)" 1 emacspeak-mew-mark-review-voice)
+		("\\(^ *[0-9]+@\\)" 1 emacspeak-mew-mark-multi-voice)
+		)))
+(defvar mew-message-voice-lock-keywords nil
+  "keywords for mew-message-mode")
+(setq mew-message-voice-lock-keywords
+      (append mew-message-voice-lock-keywords
+              '(
+                ("^\\(\\([ \t]*\\w*[A-Za-z0-9'-]*[>|}]+\\)+\\).*" 0 emacspeak-mew-cite-voice )
+)))
+
+(defvar mew-virtual-voice-lock-keywords nil
+  "keywords for mew-virtual-mode")
+(setq mew-virtual-voice-lock-keywords
+      (append mew-virtual-voice-lock-keywords
+	      '(("\\(^ *[0-9]+D\\)" 1 emacspeak-mew-mark-delete-voice)
+		("\\(^ *[0-9]+o\\)" 1 emacspeak-mew-mark-refile-voice)
+		("\\(^ *[0-9]+\\*\\)" 1 emacspeak-mew-mark-review-voice)
+		("\\(^ *[0-9]+@\\)" 1 emacspeak-mew-mark-multi-voice)
+		)))
+
+;;}}}
+
+;;{{{ hook
+(add-hook 'mew-summary-mode-hook
+	  (function (lambda ()
+		      (make-local-variable 'voice-lock-support-mode)
+		      (setq voice-lock-support-mode 'lazy-voice-lock-mode)
+		      (make-local-variable 'voice-lock-defaults)
+		      (setq voice-lock-defaults '(mew-summary-voice-lock-keywords t))
+		      (voice-lock-mode 1)
+
+		      (define-key mew-summary-mode-map "\C-p"
+			'emacspeak-mew-summary-previous-line)
+		      (define-key mew-summary-mode-map "\C-n"
+			'emacspeak-mew-summary-next-line)
+		      (define-key mew-summary-mode-map '[up]
+			'emacspeak-mew-summary-previous-line)
+		      (define-key mew-summary-mode-map '[down]
+			'emacspeak-mew-summary-next-line)
+		      )))
+
+(add-hook 'mew-message-mode-hook
+	  (function (lambda ()
+		      (make-local-variable 'voice-lock-support-mode)
+		      (setq voice-lock-support-mode 'lazy-voice-lock-mode)
+		      (make-local-variable 'voice-lock-defaults)
+		      (setq voice-lock-defaults '(mew-message-voice-lock-keywords t))
+		      (voice-lock-mode 1)
+		      )))
+
+(add-hook 'mew-virtual-mode-hook
+	  (function (lambda ()
+		      (make-local-variable 'voice-lock-support-mode)
+		      (setq voice-lock-support-mode 'lazy-voice-lock-mode)
+		      (make-local-variable 'voice-lock-defaults)
+		      (setq voice-lock-defaults '(mew-virtual-voice-lock-keywords t))
+		      (voice-lock-mode 1)
+		      )))
+;;}}}
 
 ;;{{{ Advise top-level Mew command
 (defadvice mew (after emacspeak pre act )
@@ -56,6 +142,14 @@
 (defadvice mew-summary-quit (after emacspeak pre act )
   "announces after Mew quitss."
 ;  (dtk-interp-queue "Mew quit")
+  (emacspeak-speak-mode-line))
+
+(defadvice mew-kill-buffer (after emacspeak pre act)
+  "announce kill buffer"
+  (emacspeak-speak-mode-line))
+
+(defadvice mew-draft-kill (after emacspeak pre act)
+  "announce kill draft buffer"
   (emacspeak-speak-mode-line))
 
 (defadvice mew-draft-circular-comp (around emacspeak pre act)
@@ -171,12 +265,12 @@
 
 (defadvice mew-summary-display-up (after emacspeak pre act )
   "speeks the message after movement"
-  (emacspeak-speak-line)
+  (emacspeak-mew-summary-speak-line)
 )
 
 (defadvice mew-summary-display-down (after emacspeak pre act )
   "speeks the message after movement"
-  (emacspeak-speak-line)
+  (emacspeak-mew-summary-speak-line)
 )
 
 (defadvice mew-summary-jump-top (after emacspeak pre act )
@@ -247,12 +341,12 @@
   (dtk-speak "marked all messages for delete")
 )
 
-(defadvice mew-message-prev-msg (after emacspeak pre act )
+
+(defadvice mew-message-next-msg (after emacspeak pre act )
   "speaks the summary line or message number"
   (save-excursion
-    (let* ((sum-num (mew-current-get 'message))
-	   (sum (car sum-num))
-	   (num (cdr sum-num)))
+    (let ((sum (mew-current-get-fld (mew-frame-id)))
+	  (num (mew-current-get-msg (mew-frame-id))))
       (if (not (get-buffer sum))
 	  (dtk-speak (format "%s of %s" num sum))
 	(progn
@@ -261,22 +355,6 @@
 	  (dtk-speak (format "%s of %s" num sum))
 	  ))
 )))
-
-(defadvice mew-message-next-msg (after emacspeak pre act )
-  "speaks the summary line or message number"
-  (save-excursion
-    (let* ((sum-num (mew-current-get 'message))
-	   (sum (car sum-num))
-	   (num (cdr sum-num)))
-      (if (not (get-buffer sum))
-	  (dtk-speak (format "%s of %s" num sum))
-	(progn
-;	  (set-buffer sum)
-;	  (emacspeak-speak-line)
-	  (dtk-interp-queue (format "%s of %s" num sum))
-	  (dtk-speak "next")
-	  ))
-      )))
 
 (defadvice mew-summary-send (after emacspeak pre act )
   "speeks the current line after new message is opened."
@@ -393,6 +471,23 @@
 	      (setq start (1+ (point)))
 	      (end-of-line)))
 	start))))
+
+(defun emacspeak-mew-summary-speak-line ()
+  "Speaks current summary line as specified."
+  (emacspeak-speak-line)
+)
+
+(defun emacspeak-mew-summary-next-line (arg)
+  (interactive "p")
+  (next-line arg)
+  (emacspeak-mew-summary-speak-line)
+)
+
+(defun emacspeak-mew-summary-previous-line (arg)
+  (interactive "p")
+  (previous-line arg)
+  (emacspeak-mew-summary-speak-line)
+)
 
 ;;}}}
 (provide 'emacspeak-mew)
