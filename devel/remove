@@ -5,3 +5,9 @@
 #
 files=`cat $REMOVE_LIST`
 (cd $SOURCE_DIR && rm -rf $files)
+for d in $ADDITIONAL_DIR; do
+if [ -d $SOURCE_DIR/$d ]; then
+rm -rf $SOURCE_DIR/$d
+fi
+done
+
