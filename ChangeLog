@@ -1,3 +1,8 @@
+2002-03-11  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-advice.el: delete-backward-char now speaks Japanese
+	chars correctly.
+
 2002-03-07  Mitsugu SAKAMOTO  <mitsugu@argv.org>
 
 	* emacspeak-wl.el: add on Package For Old BEP.
