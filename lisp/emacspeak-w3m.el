@@ -1,5 +1,5 @@
 
-;;;$Id: emacspeak-w3m.el,v 1.10 2002/03/04 01:21:03 mitsugu Exp $;;; emacspeak-w3m.el --- speech-enables w3m-el
+;;;$Id: emacspeak-w3m.el,v 1.11 2002/03/30 06:20:49 mitsugu Exp $;;; emacspeak-w3m.el --- speech-enables w3m-el
 ;;; This file is not part of Emacspeak, but the same terms and
 ;;; conditions apply.
 
@@ -36,6 +36,7 @@
 (require 'advice)
 (require 'w3m nil t)
 (require 'w3m-form nil t)
+(require 'dtk-speak)
 (require 'emacspeak-speak)
 (require 'voice-lock)
 (require 'emacspeak-sounds)
@@ -247,14 +248,18 @@
   (dtk-speak w3m-current-title)
 )
 
-(defadvice w3m-close-window (after emacspeak pre act)
-  "speak mode line"
-  (emacspeak-speak-mode-line)
-)
 
-(defadvice w3m-quit (after emacspeak pre act)
-  "speak the modeline"
-  (emacspeak-speak-mode-line))
+(defadvice w3m-close-window (after emacspeak pre act comp)
+  "Produce auditory feedback."
+  (when (interactive-p)
+    (emacspeak-auditory-icon 'close-object)
+    (emacspeak-speak-mode-line)))
+
+(defadvice w3m-quit (after emacspeak pre act comp)
+  "Produce auditory feedback."
+  (when (interactive-p)
+    (emacspeak-auditory-icon 'close-object)
+    (emacspeak-speak-mode-line)))
 
 (defadvice w3m-view-this-url (after emacspeak pre act)
   "speak page title"
@@ -285,12 +290,14 @@
 (defadvice w3m-goto-url (around emacspeak pre act)
   (let ((emacspeak-speak-messages nil))
     ad-do-it)
+  (emacspeak-auditory-icon 'open-object)
   (when (stringp w3m-current-title)
     (message "%s" w3m-current-title)))
 
 (defadvice w3m-next-anchor (around emacspeak pre act)
   (let ((emacspeak-speak-messages nil))
     ad-do-it)
+  (emacspeak-auditory-icon 'large-movement)
   (when (interactive-p)
     (emacspeak-w3m-speak-this-anchor)))
 
@@ -298,19 +305,32 @@
   (let ((emacspeak-speak-messages nil))
     ad-do-it)
   (when (interactive-p)
+    (emacspeak-auditory-icon 'large-movement)
     (emacspeak-w3m-speak-this-anchor)))
 
 (defadvice w3m-next-form (around emacspeak pre act comp)
-  (let ((emacspeak-speak-messages nil))
-    ad-do-it)
-  (when (interactive-p)
-    (emacspeak-w3m-speak-this-anchor)))
-
+  "Speech-enable form navigation."
+  (cond
+   ((interactive-p)
+    (let ((emacspeak-speak-messages nil))
+      ad-do-it)
+    (when (interactive-p)
+      (emacspeak-auditory-icon 'large-movement)
+      (emacspeak-w3m-speak-this-anchor)))
+   (t ad-do-it))
+  ad-return-value)
+ 
 (defadvice w3m-previous-form (around emacspeak pre act comp)
-  (let ((emacspeak-speak-messages nil))
-    ad-do-it)
-  (when (interactive-p)
-    (emacspeak-w3m-speak-this-anchor)))
+  "Speech enable form navigation."
+  (cond
+   ((interactive-p)
+    (let ((emacspeak-speak-messages nil))
+      ad-do-it)
+    (when (interactive-p)
+      (emacspeak-w3m-speak-this-anchor)
+      (emacspeak-auditory-icon 'large-movement)))
+   (t ad-do-it)))
+
 
 (defadvice w3m-view-this-url (around emacspeak pre act comp)
   (let ((url (emacspeak-w3m-anchor))
@@ -324,6 +344,46 @@
 		       w3m-form-input-radio
 		       w3m-form-input-password)))
       (emacspeak-w3m-speak-this-anchor))))
+
+(defadvice w3m-scroll-up-or-next-url (around emacspeak pre act comp)
+  "Speech-enable scrolling."
+  (cond
+   ((interactive-p)
+    (let ((opoint (save-excursion
+		    (beginning-of-line)
+		    (point))))
+      ;; hide opoint from advised function
+      (let (opoint) ad-do-it)
+      (emacspeak-auditory-icon 'scroll)
+      (emacspeak-speak-region opoint
+			      (save-excursion (end-of-line)
+					      (point)))))
+   (t ad-do-it))
+  ad-return-value)
+
+(defadvice w3m-scroll-down-or-previous-url (around emacspeak pre act
+                                                   comp)
+  "Speech-enable scrolling."
+  (cond
+   ((interactive-p)
+    (let ((opoint (save-excursion
+		    (end-of-line)
+		    (point))))
+      ;; hide opoint from advised function
+      (let (opoint) ad-do-it)
+      (emacspeak-auditory-icon 'scroll)
+      (emacspeak-speak-region opoint
+			      (save-excursion (beginning-of-line)
+					      (point)))))
+   (t ad-do-it))
+  ad-return-value)
+
+
+(defadvice w3m (after emacspeak pre act comp)
+  (when (and (interactive-p)
+	     (eq (ad-get-arg 0) 'popup))
+    (emacspeak-speak-mode-line)))
+
 
 ;;}}}
 ;;{{{ advice forms 
@@ -393,6 +453,8 @@ Nil means no transform is used.")
                      emacspeak-xslt-directory))))
   (declare (special emacspeak-w3m-xsl-transform))
   (setq emacspeak-w3m-xsl-transform xsl)
+  (setq emacspeak-w3m-xsl-transform xsl
+	emacspeak-w3m-xsl-p	    t)
   (message "Will apply %s before displaying HTML pages."
            (file-name-sans-extension
             (file-name-nondirectory
