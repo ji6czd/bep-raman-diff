@@ -1,5 +1,5 @@
 ;;; emacspeak-advice.el --- Advice all core Emacs functionality to speak intelligently
-;;; $Id: emacspeak-advice.el,v 1.6 2002/03/31 17:55:16 inoue Exp $
+;;; $Id: emacspeak-advice.el,v 1.7 2002/04/11 23:51:56 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Core advice forms that make emacspeak work
 ;;; Keywords: Emacspeak, Speech, Advice, Spoken  output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/03/31 17:55:16 $ |
-;;;  $Revision: 1.6 $ |
+;;; $Date: 2002/04/11 23:51:56 $ |
+;;;  $Revision: 1.7 $ |
 ;;; Location undetermined
 ;;;
 
@@ -1511,46 +1511,46 @@ in completion buffers"
 
 
 (defadvice vc-toggle-read-only (around emacspeak pre act)
-    "Provide auditory feedback."
-    (cond
-     ((interactive-p)
-      (let ((message (format  "Checking %s version %s "
-                              (if buffer-read-only  "out previous " " in new  ")
-                              (emacspeak-vc-get-version-id))))
-        (if buffer-read-only
-            (emacspeak-auditory-icon 'open-object )
-          (emacspeak-auditory-icon 'close-object))
-        ad-do-it
-        (message message )))
-     (t ad-do-it ))
-    ad-return-value )
+  "Provide auditory feedback."
+  (cond
+   ((interactive-p)
+    (let ((message (format  "Checking %s version %s "
+                            (if buffer-read-only  "out previous " " in new  ")
+                            (emacspeak-vc-get-version-id))))
+      (if buffer-read-only
+          (emacspeak-auditory-icon 'open-object )
+        (emacspeak-auditory-icon 'close-object))
+      ad-do-it
+      (message message )))
+   (t ad-do-it ))
+  ad-return-value )
 
 (defadvice vc-next-action (around  emacspeak pre act)
-    "Provide auditory feedback."
-    (cond
-     ((interactive-p)
-      (let ((message (format  "Checking %s version %s "
-                              (if buffer-read-only  "out previous " " in new  ")
-                              (emacspeak-vc-get-version-id))))
-        (if buffer-read-only
-            (emacspeak-auditory-icon 'close-object)
-          (emacspeak-auditory-icon 'open-object ))
-        ad-do-it
-        (message message)))
-     (t ad-do-it ))
-    ad-return-value )
+  "Provide auditory feedback."
+  (cond
+   ((interactive-p)
+    (let ((message (format  "Checking %s version %s "
+                            (if buffer-read-only  "out previous " " in new  ")
+                            (emacspeak-vc-get-version-id))))
+      (if buffer-read-only
+          (emacspeak-auditory-icon 'close-object)
+        (emacspeak-auditory-icon 'open-object ))
+      ad-do-it
+      (message message)))
+   (t ad-do-it ))
+  ad-return-value )
 
 (defadvice vc-revert-buffer (after emacspeak pre act)
-    "Provide auditory feedback."
-    (when (interactive-p  )
-      (emacspeak-auditory-icon 'open-object)))
+  "Provide auditory feedback."
+  (when (interactive-p  )
+    (emacspeak-auditory-icon 'open-object)))
 
 (defadvice vc-finish-logentry (after emacspeak pre act)
-    "Provide auditory feedback."
-    (when (interactive-p)
-      (emacspeak-auditory-icon  'close-object)
-      (message "Checked   in  version %s "
-               (emacspeak-vc-get-version-id))))
+  "Provide auditory feedback."
+  (when (interactive-p)
+    (emacspeak-auditory-icon  'close-object)
+    (message "Checked   in  version %s "
+             (emacspeak-vc-get-version-id))))
   
 ;;}}}
 ;;{{{  misc functions that have to be hand fixed:
@@ -2965,6 +2965,15 @@ Variable mark-even-if-inactive is set true ."
   (emacspeak-fix-commands-loaded-from 
    (file-name-sans-extension
     (ad-get-arg 0))))
+;;}}}
+;;{{{ eldoc 
+(defadvice eldoc-message (around  emacspeak pre act comp)
+  "Speech enable ELDoc for the rare times we use it."
+  (let ((emacspeak-speak-messages nil))
+    ad-do-it
+    (when eldoc-last-message
+      (dtk-speak eldoc-last-message))
+    ad-return-value))
 ;;}}}
 ;;{{ m17n support
 (defadvice toggle-input-method (after emacspeak pre act)
