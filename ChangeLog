@@ -1,3 +1,12 @@
+2002-03-05  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-m17n-setup:
+	emacspeak-m17n-put-language-string-internal: now work on strings
+	some part of them has no property and other part has property.
+	* emacspeak-m17n-setup: -region and -internal clears
+	window-scroll-functions and window-size-change-functions, in
+	addition to before-change-functions, after-change-functions.
+
 2002-03-04  Mitsugu SAKAMOTO  <mitsugu@argv.org>
 
 	* emacspeak-w3m.el: Synch with Old BEP.
