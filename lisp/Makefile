@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.7 2002/03/27 14:51:13 inoue Exp $
+# $Id: Makefile,v 1.8 2002/05/04 04:22:16 inoue Exp $
 # $Author: inoue $ 
 # Description:  Makefile for Emacspeak 
 # Keywords: Emacspeak, Dectalk, Makefile 
@@ -7,8 +7,8 @@
 # LCD Archive Entry:
 # emacspeak| T. V. Raman |raman@cs.cornell.edu 
 # A speech interface to Emacs |
-# $Date: 2002/03/27 14:51:13 $ |
-#  $Revision: 1.7 $ | 
+# $Date: 2002/05/04 04:22:16 $ |
+#  $Revision: 1.8 $ | 
 # Location undetermined
 #
 

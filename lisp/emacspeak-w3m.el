@@ -1,11 +1,10 @@
-;;; emacspeak-w3m.el --- speech-enables w3m-el
-;;;$Id: emacspeak-w3m.el,v 1.19 2002/04/04 14:28:08 inoue Exp $
+;;;$Id: emacspeak-w3m.el,v 1.20 2002/05/04 04:22:17 inoue Exp $;;; emacspeak-w3m.el --- speech-enables w3m-el
 ;;; This file is not part of Emacspeak, but the same terms and
 ;;; conditions apply.
-
 ;; Copyright (C) 2001,2002  Dimitri V. Paduchih
 
 ;; Author: Dimitri Paduchih <paduch@imm.uran.ru>
+;;;author: T. V. Raman (integration with Emacspeak, and sections marked TVR)
 ;; Keywords: emacspeak, w3m
 
 ;; This file is free software; you can redistribute it and/or modify
@@ -56,15 +55,6 @@
 (define-key w3m-mode-map "l" 'emacspeak-forward-char)
 
 ;;}}}
-;;{{{ hooks
-(defvar emacspeak-w3m-mode-hook
-  (function (lambda ()
-	      (setq w3m-after-cursor-move-hook   '(w3m-highlight-current-anchor))
-	      (make-local-variable 'voice-lock-mode)
-	      (setq voice-lock-mode t)))
-  "hook run after entering w3m-mode")
-
-;;}}}
 ;;{{{ helpers
 
 ;;; The following definitions through fset are needed because at the
@@ -108,17 +98,18 @@
     (w3m-form-input-textarea . emacspeak-w3m-speak-form-input-textarea)
     (w3m-form-submit . emacspeak-w3m-speak-form-submit)
     (w3m-form-input-password . emacspeak-w3m-speak-form-input-password)
-    (w3m-form-reset . emacspeak-w3m-speak-form-reset)))
+    (w3m-form-reset . emacspeak-w3m-speak-form-reset))
+  )
 
 
 (defun emacspeak-w3m-anchor-text (&optional default)
   "Return string containing text of anchor under point."
-  (if (get-text-property (point) 'w3m-href-anchor)
+  (if (get-text-property (point) 'w3m-anchor-sequence)
       (buffer-substring
        (previous-single-property-change
-	(1+ (point)) 'w3m-href-anchor nil (point-min))
+	(1+ (point)) 'w3m-anchor-sequence nil (point-min))
        (next-single-property-change
-	(point) 'w3m-href-anchor nil (point-max)))
+	(point) 'w3m-anchor-sequence nil (point-max)))
     (or default "")))
 
 (defun emacspeak-w3m-speak-cursor-anchor ()
@@ -213,54 +204,6 @@
 ;;}}}
 ;;{{{  advice interactive commands.
 
-(defadvice w3m (after emacspeak pre act)
-  "speak page title"
-  (dtk-speak w3m-current-title))
-
-(defadvice w3m-find-file (after emacspeak pre act)
-  "speak page title"
-  (dtk-speak w3m-current-title)
-)
-
-
-(defadvice w3m-close-window (after emacspeak pre act comp)
-  "Produce auditory feedback."
-  (when (interactive-p)
-    (emacspeak-auditory-icon 'close-object)
-    (emacspeak-speak-mode-line)))
-
-(defadvice w3m-quit (after emacspeak pre act comp)
-  "Produce auditory feedback."
-  (when (interactive-p)
-    (emacspeak-auditory-icon 'close-object)
-    (emacspeak-speak-mode-line)))
-
-(defadvice w3m-view-this-url (after emacspeak pre act)
-  "speak page title"
-  (dtk-speak w3m-current-title))
-
-(defadvice w3m-reload-this-page (after emacspeak pre act)
-  "speak page title"
-  (dtk-speak w3m-current-title))
-
-(defadvice w3m-view-previous-page (after emacspeak pre act)
-  "speak page title"
-  (dtk-speak w3m-current-title))
-
-(defadvice w3m-view-next-page (after emacspeak pre act)
-  "speak page title"
-  (dtk-speak w3m-current-title))
-(defadvice w3m-edit-current-url (after emacspeak pre act)
-  "enter edit page speak the mode line"
-(emacspeak-speak-mode-line))
-
-(defadvice w3m-view-parent-page (after emacspeak pre act)
-  "speak page title"
-  (dtk-speak w3m-current-title))
-(defadvice w3m-edit-current-url (after emacspeak pre act)
-  "edit current URL after speak the modeline"
-  (emacspeak-speak-mode-line))
-
 (defadvice w3m-goto-url (around emacspeak pre act)
   "Speech-enable W3M."
   (cond
@@ -307,7 +250,7 @@
       (emacspeak-w3m-speak-this-anchor)))
    (t ad-do-it))
   ad-return-value)
- 
+
 (defadvice w3m-previous-form (around emacspeak pre act comp)
   "Speech enable form navigation."
   (cond
@@ -319,22 +262,21 @@
       (emacspeak-auditory-icon 'large-movement)))
    (t ad-do-it)))
 
-
 (defadvice w3m-view-this-url (around emacspeak pre act comp)
   "Speech-enable W3M."
   (cond
    ((interactive-p)
     (let ((url (emacspeak-w3m-anchor))
-	  (act (emacspeak-w3m-action)))
+          (act (emacspeak-w3m-action)))
       ad-do-it
       (when (and (interactive-p)
-		 (not url)
-		 (consp act)
-		 (memq (car act)
-		       '(w3m-form-input
-			 w3m-form-input-radio
-		       w3m-form-input-password)))
-	(emacspeak-w3m-speak-this-anchor))
+                 (not url)
+                 (consp act)
+                 (memq (car act)
+                       '(w3m-form-input
+                         w3m-form-input-radio
+                         w3m-form-input-password)))
+        (emacspeak-w3m-speak-this-anchor))
       (emacspeak-auditory-icon 'select-object)))
    (t ad-do-it))
   ad-return-value)
@@ -344,8 +286,8 @@
   (cond
    ((interactive-p)
     (let ((opoint (save-excursion
-		    (beginning-of-line)
-		    (point))))
+                    (beginning-of-line)
+                    (point))))
       ;; hide opoint from advised function
       (let (opoint) ad-do-it)
       (emacspeak-auditory-icon 'scroll)
@@ -361,8 +303,8 @@
   (cond
    ((interactive-p)
     (let ((opoint (save-excursion
-		    (end-of-line)
-		    (point))))
+                    (end-of-line)
+                    (point))))
       ;; hide opoint from advised function
       (let (opoint) ad-do-it)
       (emacspeak-auditory-icon 'scroll)
@@ -378,11 +320,44 @@
 	     (eq (ad-get-arg 0) 'popup))
     (emacspeak-speak-mode-line)))
 
+(defadvice w3m-close-window (after emacspeak pre act comp)
+  "Produce auditory feedback."
+  (when (interactive-p)
+    (emacspeak-auditory-icon 'close-object)
+    (emacspeak-speak-mode-line)))
+
+(defadvice w3m-quit (after emacspeak pre act comp)
+  "Produce auditory feedback."
+  (when (interactive-p)
+    (emacspeak-auditory-icon 'close-object)
+    (emacspeak-speak-mode-line)))
+
+(defadvice w3m-find-file (after emacspeak pre act)
+  "speak title."
+  (dtk-speak w3m-current-title))
+
+(defadvice w3m-reload-this-page (after emacspeak pre act)
+  "Speak title."
+  (dtk-speak w3m-current-title))
+
+(defadvice w3m-view-previous-page (after emacspeak pre act)
+  "Speak title."
+  (dtk-speak w3m-current-title))
+
+(defadvice w3m-view-next-page (after emacspeak pre act)
+  "Speak title."
+  (dtk-speak w3m-current-title))
+
+(defadvice w3m-edit-current-url (after emacspeak pre act)
+  "Speak title."
+  (dtk-speak w3m-current-title))
+
+(defadvice w3m-view-parent-page (after emacspeak pre act)
+  "Speak title."
+  (dtk-speak w3m-current-title))
 
 ;;}}}
-;;{{{ advice forms 
-
-;;; w3m-form-input-select-mode
+;;{{{ input select mode
 
 (add-hook 'w3m-form-input-select-mode-hook
 	  (lambda ()
@@ -390,14 +365,15 @@
 	    (emacspeak-speak-line)))
 
 (defadvice w3m-form-input-select-set (after emacspeak pre act comp)
-  (when (and (interactive-p) (emacspeak-w3m-cursor-anchor))
+  (when (and (interactive-p) (w3m-cursor-anchor))
     (emacspeak-w3m-speak-this-anchor)))
 
 (defadvice w3m-form-input-select-exit (after emacspeak pre act comp)
   (when (interactive-p)
     (emacspeak-auditory-icon 'close-object)))
 
-;;; w3m-form-input-textarea-mode
+;;}}}
+;;{{{ input textarea mode
 
 (add-hook 'w3m-form-input-textarea-mode-hook
 	  (lambda ()
@@ -446,7 +422,6 @@ Nil means no transform is used.")
      (read-file-name "XSL Transformation: "
                      emacspeak-xslt-directory))))
   (declare (special emacspeak-w3m-xsl-transform))
-  (setq emacspeak-w3m-xsl-transform xsl)
   (setq emacspeak-w3m-xsl-transform xsl
 	emacspeak-w3m-xsl-p	    t)
   (message "Will apply %s before displaying HTML pages."
@@ -492,6 +467,7 @@ libxslt package."
 (voice-setup-set-voice-for-face 'w3m-tab-selected-face 'paul-animated)
 
 (defun emacspeak-w3m-voiceify-faces-in-buffer ()
+  "Map base fonts to voices."
   (interactive )
   (declare (special voice-lock-mode))
   (setq voice-lock-mode t)
@@ -501,15 +477,23 @@ libxslt package."
   "Set punctuation mode."
   (declare (special dtk-punctuation-mode))
   (make-variable-buffer-local 'dtk-punctuation-mode)
+  (setq w3m-after-cursor-move-hook
+	'(w3m-highlight-current-anchor))
   (setq dtk-punctuation-mode "some"))
 
 (add-hook 'w3m-fontify-after-hook 'emacspeak-w3m-voiceify-faces-in-buffer)
 
-(add-hook 'w3m-mode-hook '(lambda () (run-hooks 'emacspeak-w3m-mode-hook)))
+
+
+;;}}}
 (provide 'emacspeak-w3m)
+;;{{{ end of file 
+
 ;;; emacspeak-w3m.el ends here
 
 ;;; local variables:
 ;;; folded-file: t
 ;;; byte-compile-dynamic: t
 ;;; end: 
+
+;;}}}

@@ -1,5 +1,5 @@
 ;;; dtk-tcl.el --- Interface to TCL speech server --uses module dtk-interp.el
-;;; $Id: dtk-tcl.el,v 1.8 2002/03/27 14:51:13 inoue Exp $
+;;; $Id: dtk-tcl.el,v 1.9 2002/05/04 04:22:16 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Interfacing to the Dectalk via TCL.
 ;;; Keywords: Dectalk, TCL
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/03/27 14:51:13 $ |
-;;;  $Revision: 1.8 $ |
+;;; $Date: 2002/05/04 04:22:16 $ |
+;;;  $Revision: 1.9 $ |
 ;;; Location undetermined
 ;;;
 
@@ -749,7 +749,10 @@ Argument TEXT  is the list of strings to speak."
   "Set speaking RATE for the tts.
 Interactive PREFIX arg means set   the global default value, and then set the
 current local  value to the result."
-  (interactive "nEnter new rate:\nP")
+  (interactive 
+   (list
+    (read-from-minibuffer "Enter new rate: ")
+    current-prefix-arg))
   (declare (special dtk-speech-rate dtk-speaker-process
                     tts-default-speech-rate
                     dtk-program dtk-speak-server-initialized))
@@ -763,9 +766,10 @@ current local  value to the result."
     (dtk-interp-set-rate rate)
     (when prefix
       (tts-configure-synthesis-setup dtk-program))
-    (message "Set speech rate to %s %s\n"
-             rate
-             (if prefix "" "locally"))))
+    (when (interactive-p)
+      (message "Set speech rate to %s %s\n"
+               rate
+               (if prefix "" "locally")))))
 
 
 
@@ -795,7 +799,11 @@ speech rate:")))
      (t (dtk-set-rate
          (+ dtk-speech-rate-base
             (* dtk-speech-rate-step  level ))
-         prefix )))))
+         prefix )
+        (when (interactive-p)
+          (message "Set speech rate to level %s %s"
+level
+(if prefix " globaly " " locally ")))))))
 
 
 (defun dtk-set-character-scale (factor &optional prefix)
@@ -954,9 +962,10 @@ current local  value to the result."
      (t (make-local-variable 'dtk-punctuation-mode)
         (setq dtk-punctuation-mode mode )))
     (dtk-interp-set-punctuations mode)
+    (when (interactive-p)
     (message "set punctuation mode to %s %s"
              mode
-             (if prefix "" "locally"))))
+             (if prefix "" "locally")))))
 
 (defun dtk-set-punctuations-to-all (&optional prefix )
   "Set punctuation  mode to all.

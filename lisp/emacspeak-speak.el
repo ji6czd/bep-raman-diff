@@ -1,5 +1,5 @@
 ;;; emacspeak-speak.el --- Implements Emacspeak's core speech services
-;;; $Id: emacspeak-speak.el,v 1.14 2002/03/30 15:36:50 inoue Exp $
+;;; $Id: emacspeak-speak.el,v 1.15 2002/05/04 04:22:16 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Contains the functions for speaking various chunks of text
 ;;; Keywords: Emacspeak,  Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/03/30 15:36:50 $ |
-;;;  $Revision: 1.14 $ |
+;;; $Date: 2002/05/04 04:22:16 $ |
+;;;  $Revision: 1.15 $ |
 ;;; Location undetermined
 ;;;
 
@@ -1780,7 +1780,7 @@ See the documentation for function
                            emacspeak-speak-time-format-string))))
                              
 (defconst emacspeak-codename
-  "SmartDog"
+  "CleverDog"
   "Code name of present release.")
 
 

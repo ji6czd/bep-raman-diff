@@ -1,5 +1,5 @@
 ;;; emacspeak-advice.el --- Advice all core Emacs functionality to speak intelligently
-;;; $Id: emacspeak-advice.el,v 1.7 2002/04/11 23:51:56 inoue Exp $
+;;; $Id: emacspeak-advice.el,v 1.8 2002/05/04 04:22:16 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Core advice forms that make emacspeak work
 ;;; Keywords: Emacspeak, Speech, Advice, Spoken  output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/04/11 23:51:56 $ |
-;;;  $Revision: 1.7 $ |
+;;; $Date: 2002/05/04 04:22:16 $ |
+;;;  $Revision: 1.8 $ |
 ;;; Location undetermined
 ;;;
 
@@ -835,23 +835,20 @@ Produce an auditory icon as well."
     ad-return-value))
 (unless emacspeak-xemacs-p
                                         ; we need to advice these only for FSF Emacs
-  (defadvice completing-read (around emacspeak pre act )
-    "Prompt using speech."
-    (let ((dtk-stop-immediately t )
-          (prompt (ad-get-arg 0))
-          (initial (ad-get-arg 4 ))
-          (default (ad-get-arg 6)))
-      (dtk-speak
-       (format "%s %s%s"
-               (or prompt " ")
-               (or initial " ")
-               (if default
-                   (format "Default: %s" default)
-                 "")))
-      ad-do-it
-      (tts-with-punctuations "all"
-                             (dtk-speak (format "%s" ad-return-value )))
-      ad-return-value ))
+(defadvice completing-read (around emacspeak pre act )
+  "Prompt using speech."
+  (let ((dtk-stop-immediately t )
+        (prompt (ad-get-arg 0))
+        (initial (ad-get-arg 4 ))
+        (default (ad-get-arg 6)))
+    (dtk-speak
+     (format "%s %s"
+             (or prompt " ")
+             (or initial default " ")))
+    ad-do-it
+    (tts-with-punctuations "all"
+                           (dtk-speak (format "%s" ad-return-value )))
+    ad-return-value ))
 
   (defadvice read-buffer(around emacspeak pre act )
     "Prompt using speech as well. "
@@ -1747,7 +1744,7 @@ Indicate change of selection with an auditory icon
 
 (defadvice execute-extended-command (before emacspeak pre act)
   "Prompt using speech."
-  (dtk-say "Command "))
+  (dtk-speak "Command "))
 
 (defadvice rename-buffer  (around emacspeak pre act)
   "Provide spoken feedback."

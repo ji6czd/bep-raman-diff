@@ -1,5 +1,5 @@
 ;;; dtk-speak.el --- Provides Emacs Lisp interface to speech server
-;;;$Id: dtk-speak.el,v 1.5 2002/03/27 14:51:13 inoue Exp $
+;;;$Id: dtk-speak.el,v 1.6 2002/05/04 04:22:16 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Emacs interface to the dectalk
 ;;; Keywords: Dectalk Emacs Elisp
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/03/27 14:51:13 $ |
-;;;  $Revision: 1.5 $ |
+;;; $Date: 2002/05/04 04:22:16 $ |
+;;;  $Revision: 1.6 $ |
 ;;; Location undetermined
 ;;;
 
@@ -612,7 +612,7 @@ This is setup on a per engine basis.")
   (unless tts-name
     (setq tts-name dtk-program))
   (cond
-   ((string= tts-name "outloud")
+   ((string-match "outloud" tts-name)
     (require 'outloud-voices)
     (require 'outloud-css-speech)
     (fset 'tts-get-voice-command 'outloud-get-voice-command)
@@ -712,8 +712,7 @@ Default is to use pipes.")
 		 (consp dtk-speaker-process-coding-system))
 	(apply 'set-process-coding-system dtk-speaker-process dtk-speaker-process-coding-system))
       (tts-configure-synthesis-setup dtk-program)
-      (run-hooks 'dtk-startup-hook )
-      (dtk-interp-sync))
+      (run-hooks 'dtk-startup-hook ))
      (t 
       (message "The speech server is not running.")))))
 
