@@ -38,6 +38,14 @@
   'emacspeak-m17n-put-language-ja-ke-1
   "How to determine language automatically.")
 
+(defvar emacspeak-m17n-put-language-internal-strategy
+  'emacspeak-m17n-put-language-ja-ne
+  "Put-Language strategy used for string without language property.")
+
+(defvar emacspeak-m17n-rate-offset-alist 
+  '((en 0) (ja 0))
+  "alist of language and rate offset.")
+
 (put 'auditory-display-table 'char-table-extra-slots 6)
 
 (defvar emacspeak-display-table-alist nil
@@ -113,10 +121,6 @@ even if it is a non-ascii character."
 	    (funcall emacspeak-m17n-put-language-strategy begm endm len)))
       ;;; Clean up
       (and (not modified) (buffer-modified-p) (set-buffer-modified-p nil))))))
-
-(defvar emacspeak-m17n-put-language-internal-strategy
-  'emacspeak-m17n-put-language-ja-ne
-  "Put-Language strategy used for string without language property.")
 
 (defun emacspeak-m17n-put-language-string-internal (str)
   "Return string with language property, which is put by
@@ -241,6 +245,23 @@ If BUFFER is not specified, see if currentbuffer is visible."
     (or lang
 	dtk-default-language)
 ))
+
+(defun emacspeak-m17n-get-rate-offset (lang)
+  (let ((off (assoc lang emacspeak-m17n-rate-offset-alist)))
+    (if off
+	(cdr off) 0)
+))
+
+(defun emacspeak-m17n-sync-rate-offset ()
+  "Send language-specific rate offset to speech server."
+  (interactive)
+  (mapcar
+   (function (lambda (ent)
+	       (process-send-string dtk-speaker-process
+				    (format "tts_set_speed_offet %s %s\n"
+					    (symbol-name (car ent))
+					    (car (cdr ent))))))
+	     emacspeak-m17n-rate-offset-alist))
 
 ;;}}
 ;;{{ Redefinition of emacspeak-speak functions

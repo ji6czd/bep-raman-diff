@@ -1,5 +1,5 @@
 ;;; emacspeak-m17n-ja.el --- Bilingual extension to emacspeak
-;;; $Id: emacspeak-m17n-ja.el,v 1.3 2002/02/02 15:38:11 inoue Exp $
+;;; $Id: emacspeak-m17n-ja.el,v 1.4 2002/02/03 01:15:42 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description: Contains functions that handle Japanese characters
 ;;; Keywords: Emacspeak, Japanese, multilingualization
@@ -55,6 +55,12 @@
 ;; The table provided with this package is based on GrassRoots,
 ;; a Japanese screen reader for DOS
 ;; developed by Jun Ishikawa <ishikawa@u-shizuoka-ken.ac.jp>
+
+(defvar emacspeak-m17n-ja-strategy-list
+  '(emacspeak-m17n-put-language-ja-ne
+    emacspeak-m17n-put-language-ja-ke-1
+    emacspeak-m17n-put-language-ja-ke-all)
+"List of available put-language-strategy.")
 
 (defvar auditory-display-table-ja
   (make-char-table 'auditory-display-table)
@@ -329,6 +335,19 @@ and `en' property to others."
   (put-text-property beg end 'emacspeak-language 'ja))
 
 ;;}}
+
+;;{{{
+
+(defun emacspeak-m17n-ja-toggle-strategy ()
+  "Toggle around put-language-strategy"
+  (interactive)
+  (let ((strategy (car emacspeak-m17n-ja-strategy-list))
+	(strategy-cdr (cdr emacspeak-m17n-ja-strategy-list)))
+    (setq dtk-tcl strategy)
+    (setq emacspeak-m17n-ja-strategy-list (nconc strategy-cdr (cons strategy nil)))
+    (recenter)
+    (message (format "%s" strategy))))
+;;}}}
 
 (provide 'emacspeak-m17n-ja)
 ;;{{{ end of file
