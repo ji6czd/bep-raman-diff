@@ -19,8 +19,7 @@
   ;;; Default language. 'ja or 'en is valid.
   (setq dtk-default-language 'en)
   ;;; Full pathname of emacspeak-setup.el
-  (load-file "/home/inoue/proj/bep/emacspeak/lisp/emacspeak-setup.el")
-  (require 'emacspeak-m17n-setup)
+  (load-file "/home/inoue/proj/bep/emacspeak/lisp/bep-setup.el")
   ;;; Speech rate
   (dtk-set-rate 300 t)
   ;;; Play auditory-icon
