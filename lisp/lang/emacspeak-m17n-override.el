@@ -150,6 +150,7 @@ Arguments START and END specify region to speak."
 		  dtk-default-language
 		  'en)))		; en is default
     (emacspeak-m17n-set-language lang))
+  (dtk-interp-queue (format "%s\n" tts-voice-reset-code))
   (cond
    (voice-lock-mode
     (let ((last  nil)
@@ -163,8 +164,9 @@ Arguments START and END specify region to speak."
                                    (buffer-substring start last ))
           (dtk-interp-queue (buffer-substring  start last)))
         (setq start  last
-              personality (get-text-property last  'personality))) ; end while
-      ))                                ; end clause
+              personality
+	      (get-text-property last  'personality))) ; end while
+      ))					       ; end clause
    (t (dtk-interp-queue (buffer-substring start end  ))))
   (let ((lang (or dtk-default-language
 		  'en)))		; en is default
