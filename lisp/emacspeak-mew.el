@@ -1,15 +1,15 @@
 ;;; emacspeak-mew.el --- Speech enable Mew -- Fluent spoken access to internet message
-;;; $Id: emacspeak-mew.el,v 1.7 2001/07/20 10:43:57 seiken Exp $
+;;; $Id: emacspeak-mew.el,v 1.8 2001/07/26 09:04:24 seiken Exp $
 ;;; $Author: seiken $ 
-;;; Description:  Emacspeak extension to speech enable mew
-;;; Keywords: Emacspeak, Mew, IM, mail, Advice, Spoken Output
+;;; Description:  Emacspeak extension to speech enable Mew
+;;; Keywords: Emacspeak, Mew, mail, Advice, Spoken Output
 ;;{{{  LCD Archive entry: 
 
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2001/07/20 10:43:57 $ |
-;;;  $Revision: 1.7 $ | 
+;;; $Date: 2001/07/26 09:04:24 $ |
+;;;  $Revision: 1.8 $ | 
 ;;; Location undetermined
 ;;;
 
@@ -290,12 +290,22 @@
 
 (defadvice mew-summary-display-review-up (after emacspeak pre act )
   "speeks the message after movement"
-  (emacspeak-speak-line)
+  (emacspeak-mew-summary-speak-line)
 )
 
 (defadvice mew-summary-display-review-down (after emacspeak pre act )
   "speeks the message after movement"
-  (emacspeak-speak-line)
+  (emacspeak-mew-summary-speak-line)
+)
+
+(defadvice mew-summary-goto-msg-mode (after emacspeak pre act )
+  "Announce move to message mode."
+  (emacspeak-speak-mode-line)
+)
+
+(defadvice mew-message-goto-summary (after emacspeak pre act )
+  "Announce move to summary mode."
+  (emacspeak-mew-summary-speak-line)
 )
 
 (defadvice mew-summary-goto-folder (after emacspeak pre act )
