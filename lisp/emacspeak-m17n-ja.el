@@ -1,5 +1,5 @@
 ;;; emacspeak-m17n-ja.el --- Bilingual extension to emacspeak
-;;; $Id: emacspeak-m17n-ja.el,v 1.2 2002/01/25 21:08:17 inoue Exp $
+;;; $Id: emacspeak-m17n-ja.el,v 1.3 2002/02/02 15:38:11 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description: Contains functions that handle Japanese characters
 ;;; Keywords: Emacspeak, Japanese, multilingualization
@@ -270,7 +270,7 @@ Japanese specific."
       ))))
 ;;}}}
 ;;{{ Japanese specific put-language functions
-(defun emacspeak-m17n-put-language-ja-ne (beg end)
+(defun emacspeak-m17n-put-language-ja-ne (beg end &optional len)
   "Put `ja' Property to Japanese characters,
 and `en' property to ASCII characters."
   (goto-char beg)
@@ -290,13 +290,22 @@ and `en' property to ASCII characters."
        ) ; end of cond
       )))
 
-(defvar emacspeak-m17n-ja-ke-limit 80
+(defvar emacspeak-m17n-ja-ke-limit 40
   "Non-Japanese string shorter than this value is spoken as Katakana English.")
 
-(defun emacspeak-m17n-put-language-ja-ke-1 (beg end)
+(defvar emacspeak-m17n-ja-ke-view 3
+  "The line numbers the emacspeak-m17n-put-language-ja-ke-1 looks
+before and after the point, if the changed portion is shorter than
+emacspeak-m17n-ja-ke-limit")
+
+(defun emacspeak-m17n-put-language-ja-ke-1 (beg end &optional len)
   "Put `ja' Property to Japanese characters
 and ascii string shorter than `emacspeak-m17n-ja-ke-limit',
 and `en' property to others."
+  (when (and len
+	     (< len emacspeak-m17n-ja-ke-limit))
+    (setq beg (line-beginning-position (- emacspeak-m17n-ja-ke-view)))
+    (setq end (line-end-position emacspeak-m17n-ja-ke-view)))
   (goto-char beg)
   (while (and (< (point) end)
 	      (re-search-forward "\\([\011\012\014 -~]+\\|\\(\\cj\\|\n\\)+\\)" end t))
@@ -315,7 +324,7 @@ and `en' property to others."
        ) ; end of cond
       )))
 
-(defun emacspeak-m17n-put-language-ja-ke-all (beg end)
+(defun emacspeak-m17n-put-language-ja-ke-all (beg end &optional len)
   "Speek all characters as Japanese."
   (put-text-property beg end 'emacspeak-language 'ja))
 

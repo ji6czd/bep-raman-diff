@@ -110,7 +110,7 @@ even if it is a non-ascii character."
     (unwind-protect
 	(save-match-data
 	  (save-excursion
-	    (funcall emacspeak-m17n-put-language-strategy begm endm)))
+	    (funcall emacspeak-m17n-put-language-strategy begm endm len)))
       ;;; Clean up
       (and (not modified) (buffer-modified-p) (set-buffer-modified-p nil))))))
 
