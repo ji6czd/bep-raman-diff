@@ -26,6 +26,10 @@
 
 ;;; Code:
 
+;;{{ Require
+;;}}
+;;}}
+
 ;;{{ Variables
 (defvar emacspeak-m17n-auto-put-language-mode nil
   "If t, guess language of characters automatically.")
@@ -36,6 +40,13 @@
   "Map from language to auditory-display-table.\n
 Car of each cell is naming symbol of language and cdr is corresponding\n
 auditory-display-table.")
+
+(defcustom emacspeak-character-echo-non-ascii nil
+  "If t, then emacspeak echoes characters  as you type,
+even if it is a non-ascii character."
+  :group 'emacspeak-speak
+  :type 'boolean)
+
 ;;}}
 ;;{{ Generic m17n support functions
 (defsubst emacspeak-m17n-register-display-table (lang table)
@@ -214,6 +225,21 @@ If BUFFER is not specified, see if currentbuffer is visible."
     (or lang
 	dtk-default-language)
 ))
+
+;;}}
+;;{{ Redefinition of emacspeak-speak functions
+(defun emacspeak-m17n-speak-this-char (char &optional lang)
+  "Speak this CHAR."
+  (let ((dtk-stop-immediately t )
+	(lang (if lang lang 'en)))
+    (when char
+      (emacspeak-handle-action-at-point)
+      (cond
+       ((not (eq lang 'en))		; chara with language property
+	(dtk-speak (emacspeak-m17n-get-cursor-string char lang) nil lang))
+       ((emacspeak-is-alpha-p char) (dtk-letter (char-to-string char )))
+       (t (dtk-dispatch
+           (dtk-char-to-speech char )))))))
 
 ;;}}
 ;;{{ Global Initialization

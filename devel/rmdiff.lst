@@ -7,6 +7,9 @@ lisp/emacspeak-egg.el
 lisp/emacspeak-ja-tbl.el
 lisp/emacspeak-m17n-ja.el
 lisp/emacspeak-m17n-setup.el
+lisp/emacspeak-mew.el
 lisp/emacspeak-redefine.el
 lisp/emacspeak-speak.el
+lisp/emacspeak-w3m.el
+lisp/yahtml-voice.el
 lisp/emacspeak.el

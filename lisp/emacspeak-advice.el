@@ -1,5 +1,5 @@
 ;;; emacspeak-advice.el --- Advice all core Emacs functionality to speak intelligently
-;;; $Id: emacspeak-advice.el,v 1.1 2002/01/20 18:57:16 inoue Exp $
+;;; $Id: emacspeak-advice.el,v 1.2 2002/01/25 20:03:59 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Core advice forms that make emacspeak work
 ;;; Keywords: Emacspeak, Speech, Advice, Spoken  output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/01/20 18:57:16 $ |
-;;;  $Revision: 1.1 $ |
+;;; $Date: 2002/01/25 20:03:59 $ |
+;;;  $Revision: 1.2 $ |
 ;;; Location undetermined
 ;;;
 
@@ -439,10 +439,14 @@ current after deletion."
    ((interactive-p )
     (dtk-tone 500 30 'force)
     (and emacspeak-backward-delete-char-speak-deleted-char
-         (emacspeak-speak-this-char (preceding-char ) lang))
+	 (if (featurep 'emacspeak-m17n-setup)
+	     (emacspeak-m17n-speak-this-char (preceding-char) lang)
+	   (emacspeak-speak-this-char (preceding-char ))))
     ad-do-it
     (and emacspeak-backward-delete-char-speak-current-char
-         (emacspeak-speak-this-char (preceding-char ) lang)))
+	 (if (featurep 'emacspeak-m17n-setup)
+	     (emacspeak-m17n-speak-this-char (preceding-char) lang)
+	   (emacspeak-speak-this-char (preceding-char )))))
    (t ad-do-it))
   ) ;; end of let
   ad-return-value)

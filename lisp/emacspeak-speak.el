@@ -1,5 +1,5 @@
 ;;; emacspeak-speak.el --- Implements Emacspeak's core speech services
-;;; $Id: emacspeak-speak.el,v 1.3 2002/01/25 19:08:03 inoue Exp $
+;;; $Id: emacspeak-speak.el,v 1.4 2002/01/25 20:03:59 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Contains the functions for speaking various chunks of text
 ;;; Keywords: Emacspeak,  Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/01/25 19:08:03 $ |
-;;;  $Revision: 1.3 $ |
+;;; $Date: 2002/01/25 20:03:59 $ |
+;;;  $Revision: 1.4 $ |
 ;;; Location undetermined
 ;;;
 
@@ -47,7 +47,6 @@
 (require 'thingatpt)
 (require 'dtk-speak)
 (eval-when-compile
-  (require 'emacspeak-m17n-setup)
   (require 'voice-lock)
   (require 'emacspeak-sounds)
   (require 'shell))
@@ -1060,7 +1059,8 @@ Pronounces character phonetically unless  called with a PREFIX arg."
     (when char
       (emacspeak-handle-action-at-point)
       (cond
-       ((not (eq lang 'en))		; chara with language property
+       ((and (not (eq lang 'en)) 	; chara with language property
+	     (featurep 'emacspeak-m17n-setup))
 	(if (not prefix)
 	    (dtk-speak (emacspeak-m17n-get-phonetic-string char lang) nil lang)
 	  (dtk-speak (emacspeak-m17n-get-cursor-string char lang) nil lang)))
@@ -1071,15 +1071,12 @@ Pronounces character phonetically unless  called with a PREFIX arg."
        (t (dtk-dispatch
            (dtk-char-to-speech char )))))))
 
-(defun emacspeak-speak-this-char (char &optional lang)
+(defun emacspeak-speak-this-char (char)
   "Speak this CHAR."
-  (let ((dtk-stop-immediately t )
-	(lang (if lang lang 'en)))
+  (let ((dtk-stop-immediately t ))
     (when char
       (emacspeak-handle-action-at-point)
       (cond
-       ((not (eq lang 'en))		; chara with language property
-	(dtk-speak (emacspeak-m17n-get-cursor-string char lang) nil lang))
        ((emacspeak-is-alpha-p char) (dtk-letter (char-to-string char )))
        (t (dtk-dispatch
            (dtk-char-to-speech char )))))))
@@ -1255,7 +1252,8 @@ voice annotated first,  see command `emacspeak-speak-voice-annotate-paragraphs'.
             end (point-max)))
      (t (setq start (point-min)
               end (point))))
-    (emacspeak-m17n-put-language-region start end)
+    (when (featurep 'emacspeak-m17n-setup)
+      (emacspeak-m17n-put-language-region start end))
     (dtk-speak (buffer-substring start end ))))
 (defun emacspeak-speak-front-of-buffer()
   "Speak   the buffer from start to   point"

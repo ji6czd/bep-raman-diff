@@ -1,5 +1,5 @@
 ;;; emacspeak-redefine.el --- Redefines some key Emacs builtins to speak
-;;; $Id: emacspeak-redefine.el,v 1.1 2002/01/20 18:57:44 inoue Exp $
+;;; $Id: emacspeak-redefine.el,v 1.2 2002/01/25 20:03:59 inoue Exp $
 ;;; $Author: inoue $ 
 ;;; Description:  Emacspeak's redefinition of some key functions.
 ;;; Emacspeak does most of its work by advising other functions to speak.
@@ -10,8 +10,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/01/20 18:57:44 $ |
-;;;  $Revision: 1.1 $ | 
+;;; $Date: 2002/01/25 20:03:59 $ |
+;;;  $Revision: 1.2 $ | 
 ;;; Location undetermined
 ;;;
 
@@ -111,8 +111,12 @@ speech flush as you type."
    ((and emacspeak-character-echo
          (interactive-p ))
     (when dtk-stop-immediately-while-typing (dtk-stop))
-    (emacspeak-speak-this-char last-input-char
-			       (emacspeak-m17n-maybe-last-input-language))))
+    (if (featurep 'emacspeak-m17n-setup)
+	(and (or emacspeak-character-echo-non-ascii
+		 (< last-input-char 255))
+	     (emacspeak-m17n-speak-this-char last-input-char
+					     (emacspeak-m17n-maybe-last-input-language)))
+      (emacspeak-speak-this-char last-input-char))))
   (and
    (= (char-syntax  last-input-char) 32)
    (>= (current-column) fill-column)

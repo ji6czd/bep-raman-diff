@@ -1,3 +1,10 @@
+2002-01-26  Koichi INOUE  <inoue@argv.org>
+
+	* Initialization: emacspeak-m17n-setup is now not loaded
+	automatically.
+	After loading emacspeak-setup, you should load
+	emacspeak-m17n-setup yourself or by emacspeak-startup-hook.
+
 2002-01-23  Koichi INOUE  <inoue@argv.org>
 
 	* Prepared for public test.
