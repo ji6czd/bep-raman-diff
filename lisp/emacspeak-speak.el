@@ -1,5 +1,5 @@
 ;;; emacspeak-speak.el --- Implements Emacspeak's core speech services
-;;; $Id: emacspeak-speak.el,v 1.5 2002/01/28 14:03:00 inoue Exp $
+;;; $Id: emacspeak-speak.el,v 1.6 2002/01/29 17:54:25 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Contains the functions for speaking various chunks of text
 ;;; Keywords: Emacspeak,  Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/01/28 14:03:00 $ |
-;;;  $Revision: 1.5 $ |
+;;; $Date: 2002/01/29 17:54:25 $ |
+;;;  $Revision: 1.6 $ |
 ;;; Location undetermined
 ;;;
 
@@ -1558,7 +1558,13 @@ semantic to do the work."
   (force-mode-line-update)
   (emacspeak-dtk-sync)
   (let ((dtk-stop-immediately nil )
-        (global-info (mapcar 'eval global-mode-string))
+        (global-info (mapcar
+		      (function (lambda(x)
+				  (cond
+				   ((consp x)
+				    (when (eval (car x)) (eval (cdr x))))
+				   (t (eval x)))))
+		      global-mode-string))
         (frame-info nil)
         (recursion-depth (recursion-depth))
         (recursion-info nil)
