@@ -1,3 +1,11 @@
+2002-02-23  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-m17n-setup.el, bep-setup.el:
+	C-e x m r: new command emacspeak-m17n-set-rate-offset.
+	This command asks language name(ja, en) and offset(like -80).
+	Then calls emacspeak-m17n-sync-rate-offset to send the parameter
+	to Speech server.
+
 2002-02-18  Koichi INOUE  <inoue@argv.org>
 
 	* emacspeak-m17n-ja.el: New structure of
