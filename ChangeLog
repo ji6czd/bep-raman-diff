@@ -1,3 +1,10 @@
+2002-02-16  KIRIAKE Masanori  <seiken@ARGV.org>
+
+	* lisp/emacspeak-mew.el:
+	New key binding: reading from, to, cc, newsgroups header.
+	(mew-message-next-msg): Advice modified.
+	(emacspeak-mew-speak-newsgroups): new function.
+
 2002-02-15  Koichi INOUE  <inoue@argv.org>
 
 	* bep-setup.el: fixed typo.
