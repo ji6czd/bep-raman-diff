@@ -1,6 +1,6 @@
 ;;; bep-setup.el --- ption: Setup of the BEP for convention
 
-;;; $Id: bep-setup.el,v 1.5 2002/02/22 18:02:04 inoue Exp $
+;;; $Id: bep-setup.el,v 1.6 2002/02/24 15:09:53 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Module to set up dtk voices and personalities
 ;;; Keywords: Voice, Personality, BEP
@@ -9,8 +9,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/02/22 18:02:04 $ |
-;;;  $Revision: 1.5 $ |
+;;; $Date: 2002/02/24 15:09:53 $ |
+;;;  $Revision: 1.6 $ |
 ;;; Location undetermined
 ;;;
 
@@ -47,6 +47,8 @@
 ;; 
 
 ;;; Code:
+
+(require 'emacspeak-fix-interactive)
 
 (defvar bep-setup-hook nil
   "hook variable called after the setup of BEP finished.")
