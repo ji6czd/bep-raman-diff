@@ -1,3 +1,7 @@
+2002-02-07  Koichi INOUE  <inoue@argv.org>
+
+	* lisp/emacspeak-w3m.el: Voicify hyperlinks.
+
 2002-02-06  Koichi INOUE  <inoue@argv.org>
 
 	* Enabled byte-compile.

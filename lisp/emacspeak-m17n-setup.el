@@ -129,9 +129,10 @@ emacspeak-m17n-put-language-internal-strategy"
   (with-temp-buffer
     (insert str)
     (let ((emacspeak-m17n-auto-put-language-mode t))
-      (and emacspeak-m17n-put-language-internal-strategy
-	   (funcall emacspeak-m17n-put-language-internal-strategy
-		    (point-min) (point-max))))
+      (save-match-data
+	(and emacspeak-m17n-put-language-internal-strategy
+	     (funcall emacspeak-m17n-put-language-internal-strategy
+		      (point-min) (point-max)))))
     (buffer-string)))
 
 ;;}}
