@@ -1,5 +1,5 @@
 ;;; emacspeak-advice.el --- Advice all core Emacs functionality to speak intelligently
-;;; $Id: emacspeak-advice.el,v 1.3 2002/01/28 14:03:00 inoue Exp $
+;;; $Id: emacspeak-advice.el,v 1.4 2002/03/10 19:09:45 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Core advice forms that make emacspeak work
 ;;; Keywords: Emacspeak, Speech, Advice, Spoken  output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/01/28 14:03:00 $ |
-;;;  $Revision: 1.3 $ |
+;;; $Date: 2002/03/10 19:09:45 $ |
+;;;  $Revision: 1.4 $ |
 ;;; Location undetermined
 ;;;
 
@@ -406,15 +406,23 @@ current after deletion."
 
 (defadvice delete-backward-char (around emacspeak pre act)
   "Speak character you're deleting."
+  (let ((lang (or (and (> (point) (point-min))
+		       (get-text-property (1- (point)) 'emacspeak-language))
+		  dtk-default-language 'en)))
   (cond
    ((interactive-p )
     (dtk-tone 500 30 'force)
     (and emacspeak-backward-delete-char-speak-deleted-char
-         (emacspeak-speak-this-char (preceding-char )))
+	 (if (featurep 'emacspeak-m17n-setup)
+	     (emacspeak-m17n-speak-this-char (preceding-char) lang)
+	   (emacspeak-speak-this-char (preceding-char ))))
     ad-do-it
     (and emacspeak-backward-delete-char-speak-current-char
-         (emacspeak-speak-this-char  (preceding-char ))))
+	 (if (featurep 'emacspeak-m17n-setup)
+	     (emacspeak-m17n-speak-this-char (preceding-char) lang)
+	   (emacspeak-speak-this-char  (preceding-char )))))
    (t ad-do-it))
+  ) ; end of let
   ad-return-value)
 
 (defadvice delete-char (around emacspeak pre act)
