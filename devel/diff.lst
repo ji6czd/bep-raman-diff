@@ -16,3 +16,4 @@ lisp/emacspeak-semi.el
 lisp/emacspeak-speak.el
 lisp/emacspeak-w3m.el
 lisp/yahtml-voice.el
+lisp/Makefile
