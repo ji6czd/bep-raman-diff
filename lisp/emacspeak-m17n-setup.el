@@ -31,7 +31,7 @@
 ;;}}
 
 ;;{{ Variables
-(defvar emacspeak-m17n-auto-put-language-mode nil
+(defvar emacspeak-m17n-auto-put-language-mode 'en
   "If t, guess language of characters automatically.")
 
 (defvar emacspeak-m17n-put-language-strategy

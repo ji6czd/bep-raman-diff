@@ -1,4 +1,5 @@
 lisp/bep-css-speech.el
+lisp/bep-setup.el
 lisp/bep-voices.el
 lisp/dtk-speak.el
 lisp/dtk-tcl.el
@@ -11,6 +12,7 @@ lisp/emacspeak-m17n-ja.el
 lisp/emacspeak-m17n-setup.el
 lisp/emacspeak-mew.el
 lisp/emacspeak-redefine.el
+lisp/emacspeak-semi.el
 lisp/emacspeak-speak.el
 lisp/emacspeak-w3m.el
 lisp/yahtml-voice.el
