@@ -96,7 +96,8 @@ even if it is a non-ascii character."
   (interactive "r")
   (let ((inhibit-read-only t) (buffer-undo-list t)
 	(modified (buffer-modified-p))
-	before-change-functions after-change-functions)
+	before-change-functions after-change-functions
+	window-size-change-functions window-scroll-functions)
     (unwind-protect
 	(save-match-data
 	  (save-excursion
@@ -114,6 +115,7 @@ even if it is a non-ascii character."
   (let ((inhibit-read-only t) (buffer-undo-list t)
 	(modified (buffer-modified-p))
 	before-change-functions after-change-functions
+	window-size-change-functions window-scroll-functions
 	(begm (max (window-start) beg))
 	(endm (min (window-end) end)))
     (unwind-protect
@@ -129,12 +131,20 @@ even if it is a non-ascii character."
 emacspeak-m17n-put-language-internal-strategy"
   (with-temp-buffer
     (insert str)
-    (let ((emacspeak-m17n-auto-put-language-mode t))
-      (save-match-data
-	(and emacspeak-m17n-put-language-internal-strategy
-	     (funcall emacspeak-m17n-put-language-internal-strategy
-		      (point-min) (point-max)))))
-    (buffer-string)))
+    (let ((emacspeak-m17n-auto-put-language-mode t)
+	  before-change-functions after-change-functions
+	  window-scroll-functions window-size-change-functions
+	  (pt (point-min)))
+      (goto-char (point-min))
+      (while (not (eobp))
+	(save-match-data
+	  (goto-char (next-single-property-change pt 'emacspeak-language nil (point-max)))
+	  (when (not (get-text-property pt 'emacspeak-language))
+	    (and emacspeak-m17n-put-language-internal-strategy
+		 (funcall emacspeak-m17n-put-language-internal-strategy
+			  pt (point))))
+	  (setq pt (point))))
+      (buffer-string))))
 
 ;;}}
 ;;{{ Put language property
