@@ -1,5 +1,5 @@
 ;;; dtk-tcl.el --- Interface to TCL speech server --uses module dtk-interp.el
-;;; $Id: dtk-tcl.el,v 1.1 2002/01/20 18:57:10 inoue Exp $
+;;; $Id: dtk-tcl.el,v 1.2 2002/01/21 18:19:43 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Interfacing to the Dectalk via TCL.
 ;;; Keywords: Dectalk, TCL
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/01/20 18:57:10 $ |
-;;;  $Revision: 1.1 $ |
+;;; $Date: 2002/01/21 18:19:43 $ |
+;;;  $Revision: 1.2 $ |
 ;;; Location undetermined
 ;;;
 
@@ -54,8 +54,7 @@
 (require 'emacspeak-pronounce)
 (eval-when (compile)
   (provide 'dtk-tcl);;keep byte compiler from recursing
-  (require 'dtk-speak)
-  (require 'emacspeak-m17n-setup))
+  (require 'dtk-speak))
 
 ;;}}}
 ;;{{{  Introduction:
@@ -474,7 +473,6 @@ Argument COMPLEMENT  is the complement of separator."
   "Send language selection for the following text."
   (declare (special dtk-speaker-process))
   (process-send-string dtk-speaker-process
-;                       (format "q {%s}\n"
                        (format "tts_set_language %s\n"
                                (symbol-name language))))
 

@@ -1,5 +1,5 @@
 ;;; emacspeak.el --- Emacspeak -- The Complete Audio Desktop
-;;; $Id: emacspeak.el,v 1.1 2002/01/20 18:57:53 inoue Exp $
+;;; $Id: emacspeak.el,v 1.2 2002/01/21 18:19:43 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Emacspeak: A speech interface to Emacs
 ;;; Keywords: Emacspeak, Speech, Dectalk,
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/01/20 18:57:53 $ |
-;;;  $Revision: 1.1 $ |
+;;; $Date: 2002/01/21 18:19:43 $ |
+;;;  $Revision: 1.2 $ |
 ;;; Location undetermined
 ;;;
 
@@ -51,8 +51,7 @@
 (eval-when (compile)
   (require 'dtk-speak)
   (require 'emacspeak-speak)
-  (require 'emacspeak-keymap)
-  (require 'emacspeak-m17n-setup))
+  (require 'emacspeak-keymap))
 (require 'emacspeak-fix-interactive)
 (require 'custom)
 ;;}}}
@@ -97,7 +96,7 @@
 ;;{{{  Setting up things:
 
 (defconst emacspeak-version
-  (let ((x "$Revision: 1.1 $"))
+  (let ((x "$Revision: 1.2 $"))
     (string-match "[0-9.]+" x)
     (substring x (match-beginning 0)
                (match-end 0)))
@@ -287,7 +286,6 @@ functions for details.   "
     (setq default-enable-multibyte-characters nil))
   (emacspeak-export-environment)
   (require 'dtk-speak)
-  (require 'emacspeak-m17n-setup)
   (dtk-initialize)
   (require 'emacspeak-speak)
   (require 'emacspeak-redefine)
