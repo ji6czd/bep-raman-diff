@@ -1,5 +1,5 @@
 ;;; emacspeak-mew.el --- Speech enable Mew -- Fluent spoken access to internet message
-;;; $Id: emacspeak-mew.el,v 1.11 2001/07/27 07:30:10 mitsugu Exp $
+;;; $Id: emacspeak-mew.el,v 1.12 2001/08/01 17:02:35 mitsugu Exp $
 ;;; $Author: mitsugu $ 
 ;;; Description:  Emacspeak extension to speech enable Mew
 ;;; Keywords: Emacspeak, Mew, mail, Advice, Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2001/07/27 07:30:10 $ |
-;;;  $Revision: 1.11 $ | 
+;;; $Date: 2001/08/01 17:02:35 $ |
+;;;  $Revision: 1.12 $ | 
 ;;; Location undetermined
 ;;;
 
@@ -132,7 +132,9 @@
 ;;{{{ Advise top-level Mew command
 (defadvice mew (after emacspeak pre act )
   "read the mode line after Mew starts."
-  (emacspeak-speak-mode-line))
+  (when (interactive-p)
+    (emacspeak-auditory-icon 'select-object)
+  (emacspeak-speak-mode-line)))
 
 (defadvice mew-summary-suspend (after emacspeak pre act )
   "announces after Mew suspends."
@@ -146,10 +148,12 @@
 
 (defadvice mew-kill-buffer (after emacspeak pre act)
   "announce kill buffer"
-  (emacspeak-speak-mode-line))
+  (when (interactive-p)
+    (emacspeak-auditory-icon 'quit)
+  (emacspeak-speak-mode-line)))
 
 (defadvice mew-draft-kill (after emacspeak pre act)
-  "announce kill draft buffer"
+  "announce kill draft buffer "
   (emacspeak-speak-mode-line))
 
 (defadvice mew-draft-circular-comp (around emacspeak pre act)
