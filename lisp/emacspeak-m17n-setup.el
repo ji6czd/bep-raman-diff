@@ -30,6 +30,7 @@
 (eval-when-compile
   (require 'cl)
   (require 'dtk-speak))
+(require 'emacspeak-fix-interactive)
 ;;}}
 ;;}}
 
