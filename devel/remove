@@ -1,0 +1,7 @@
+#!/bin/sh
+# Remove some files from Emacspeak directory to avoid update problem
+#
+. devel/settings
+#
+files=`cat $REMOVE_LIST`
+(cd $SOURCE_DIR && rm -rf $files)

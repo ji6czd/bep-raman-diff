@@ -1,0 +1,3 @@
+SOURCE_DIR=../emacspeak
+DIFF_LIST=devel/diff.lst
+REMOVE_LIST=devel/rmdiff.lst

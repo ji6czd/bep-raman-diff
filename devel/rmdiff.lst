@@ -9,3 +9,4 @@ lisp/emacspeak-m17n-ja.el
 lisp/emacspeak-m17n-setup.el
 lisp/emacspeak-redefine.el
 lisp/emacspeak-speak.el
+lisp/emacspeak.el
