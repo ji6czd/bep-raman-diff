@@ -1,3 +1,10 @@
+2002-02-15  Koichi INOUE  <inoue@argv.org>
+
+	* bep-setup.el: fixed typo.
+	* emacspeak-m17n-ja.el: emacspeak-m17n-ja-strategy-alist is now an
+	alist containing strateg cons cell, containing strategy and its
+	feedback string.
+
 2002-02-14  KIRIAKE Masanori  <seiken@ARGV.org>
 
 	* lisp/emacspeak-mew.el: new functions

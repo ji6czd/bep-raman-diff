@@ -1,6 +1,6 @@
 ;;; -*- coding: iso-2022-7bit-unix -*-
 ;;; emacspeak-m17n-ja.el --- Bilingual extension to emacspeak
-;;; $Id: emacspeak-m17n-ja.el,v 1.5 2002/02/05 17:31:40 inoue Exp $
+;;; $Id: emacspeak-m17n-ja.el,v 1.6 2002/02/14 16:06:55 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description: Contains functions that handle Japanese characters
 ;;; Keywords: Emacspeak, Japanese, multilingualization
@@ -47,11 +47,11 @@
 (require 'emacspeak-ja-tbl)
 ;;}}
 ;;{{{ Variables
-(defvar emacspeak-m17n-ja-strategy-list
-  '(emacspeak-m17n-put-language-ja-ne
-    emacspeak-m17n-put-language-ja-ke-1
-    emacspeak-m17n-put-language-ja-ke-all)
-"List of available put-language-strategy.")
+(defvar emacspeak-m17n-ja-strategy-alist
+  '((emacspeak-m17n-put-language-ja-ne . "Native English mode")
+    (emacspeak-m17n-put-language-ja-ke-1 . "Adaptive English mode")
+    (emacspeak-m17n-put-language-ja-ke-all . "Katakana English mode"))
+"List of available put-language-strategy and its feedback message.")
 ;;}}}
 ;;{{{ Access functions for auditory-display-table-ja
 
@@ -342,13 +342,13 @@ and `en' property to others."
   "Toggle around put-language-strategy"
   (interactive)
   (declare (special emacspeak-m17n-put-language-strategy
-		    emacspeak-m17n-ja-strategy-list))
-  (let ((strategy (car emacspeak-m17n-ja-strategy-list))
-	(strategy-cdr (cdr emacspeak-m17n-ja-strategy-list)))
-    (setq emacspeak-m17n-put-language-strategy strategy)
-    (setq emacspeak-m17n-ja-strategy-list (nconc strategy-cdr (cons strategy nil)))
+		    emacspeak-m17n-ja-strategy-alist))
+  (let ((strategy (car emacspeak-m17n-ja-strategy-alist))
+	(strategy-cdr (cdr emacspeak-m17n-ja-strategy-alist)))
+    (setq emacspeak-m17n-put-language-strategy (car strategy))
+    (setq emacspeak-m17n-ja-strategy-alist (nconc strategy-cdr (cons strategy nil)))
     (recenter)
-    (message (format "%s" strategy))))
+    (message (format "%s" (cdr strategy)))))
 ;;}}}
 
 (provide 'emacspeak-m17n-ja)
