@@ -1,5 +1,5 @@
 ;;; emacspeak-w3m.el --- speech-enables w3m-el
-;;;$Id: emacspeak-w3m.el,v 1.15 2002/03/31 03:21:57 inoue Exp $
+;;;$Id: emacspeak-w3m.el,v 1.16 2002/03/31 04:38:31 inoue Exp $
 ;;; This file is not part of Emacspeak, but the same terms and
 ;;; conditions apply.
 
@@ -495,70 +495,84 @@ libxslt package."
            (if emacspeak-w3m-xsl-p 'on 'off)))
 ;;}}}
 ;;{{{ tvr: mapping font faces to personalities 
-;(defvar emacspeak-w3m-font-faces-to-voiceify
-;  (list 'bold 'italic   'bold-italic 'underline
-;        'w3m-anchor-face  'w3m-arrived-anchor-face 'w3m-bold-face 'w3m-underline-face)
-;  "List of font faces we voiceify")
+(defvar emacspeak-w3m-font-faces-to-voiceify
+ (list 'bold 'italic   'bold-italic 'underline
+       'w3m-anchor-face  'w3m-arrived-anchor-face 'w3m-bold-face 'w3m-underline-face)
+ "List of font faces we voiceify")
 
 
-;(dtk-define-voice-alias 'w3m-arrived-anchor-face 'betty)
-;(dtk-define-voice-alias 'w3m-anchor-face 'harry)
-;(dtk-define-voice-alias 'w3m-bold-face 'bold)
-;(dtk-define-voice-alias 'w3m-underline-face 'underlined)
-;(dtk-define-voice-alias 'w3m-header-line-location-title-face
-;                        'harry)
-;(dtk-define-voice-alias 'w3m-header-line-location-content-face
-;                        'paul-animated)
-;(dtk-define-voice-alias 'w3m-form-button-face
-;                        'paul-smooth)
-;(dtk-define-voice-alias 'w3m-form-button-pressed-face
-;'paul-animated)
-;(dtk-define-voice-alias 'w3m-tab-unselected-face
-;'paul-monotone)
-;(dtk-define-voice-alias 'w3m-tab-selected-face 'paul-animated)
+(dtk-define-voice-alias 'w3m-arrived-anchor-face 'betty)
+(dtk-define-voice-alias 'w3m-anchor-face 'harry)
+(dtk-define-voice-alias 'w3m-bold-face 'bold)
+(dtk-define-voice-alias 'w3m-underline-face 'underlined)
+(dtk-define-voice-alias 'w3m-header-line-location-title-face
+                       'harry)
+(dtk-define-voice-alias 'w3m-header-line-location-content-face
+                       'paul-animated)
+(dtk-define-voice-alias 'w3m-form-button-face
+                       'paul-smooth)
+(dtk-define-voice-alias 'w3m-form-button-pressed-face
+'paul-animated)
+(dtk-define-voice-alias 'w3m-tab-unselected-face
+'paul-monotone)
+(dtk-define-voice-alias 'w3m-tab-selected-face 'paul-animated)
+(if (fboundp 'bep-define-voice)
+    (progn
+      (bep-define-voice-alias 'w3m-arrived-anchor-face 'betty)
+      (bep-define-voice-alias 'w3m-anchor-face 'harry)
+      (bep-define-voice-alias 'w3m-bold-face 'bold)
+      (bep-define-voice-alias 'w3m-underline-face 'underlined)
+      (bep-define-voice-alias 'w3m-header-line-location-title-face
+			      'harry)
+      (bep-define-voice-alias 'w3m-header-line-location-content-face
+			      'paul-animated)
+      (bep-define-voice-alias 'w3m-form-button-face
+			      'paul-smooth)
+      (bep-define-voice-alias 'w3m-form-button-pressed-face
+			      'paul-animated)
+      (bep-define-voice-alias 'w3m-tab-unselected-face
+			      'paul-monotone)
+      (bep-define-voice-alias 'w3m-tab-selected-face 'paul-animated)
+))
 
-;(defun emacspeak-w3m-voiceify-faces-in-buffer ()
-;  "Map base fonts to voices."
-;  (interactive )
-;  (declare (special emacspeak-w3m-font-faces-to-voiceify))
-;  (set (make-local-variable 'voice-lock-mode) t)
-;  (ems-modify-buffer-safely
-;   (save-excursion
-;     (goto-char (point-min))
-;     (let* ((face nil )
-;           (start (point-min))
-;           (end (point-max))
-;           (orig start)
-;           (pos nil))
-;       (while (and  (not (eobp))
-;                    (< start end))
-;         (setq face (get-text-property (point) 'face ))
-;         (goto-char
-;          (or
-;           (next-single-property-change (point) 'face
-;                                        (current-buffer) end)
-;           end))
-;           (put-text-property start  (point)
-;                              'personality
-;                              (if (listp face)
-;                                  (loop for f in emacspeak-w3m-font-faces-to-voiceify
-;                                        thereis (find f face))
-;                                face ))
-;         (setq start (point)))))
-;  (message "voicified faces")))
+(defun emacspeak-w3m-voiceify-faces-in-buffer ()
+ "Map base fonts to voices."
+ (interactive )
+ (declare (special emacspeak-w3m-font-faces-to-voiceify))
+ (set (make-local-variable 'voice-lock-mode) t)
+ (ems-modify-buffer-safely
+  (save-excursion
+    (goto-char (point-min))
+    (let* ((face nil )
+          (start (point-min))
+          (end (point-max))
+          (orig start)
+          (pos nil))
+      (while (and  (not (eobp))
+                   (< start end))
+        (setq face (get-text-property (point) 'face ))
+        (goto-char
+         (or
+          (next-single-property-change (point) 'face
+                                       (current-buffer) end)
+          end))
+          (put-text-property start  (point)
+                             'personality
+                             (if (listp face)
+                                 (loop for f in emacspeak-w3m-font-faces-to-voiceify
+                                       thereis (find f face))
+                               face ))
+        (setq start (point)))))
+ (message "voicified faces")))
 
 (defadvice w3m-mode (after emacspeak pre act comp)
   "Set punctuation mode."
   (declare (special dtk-punctuation-mode))
   (setq dtk-punctuation-mode "some"))
 
-;(add-hook 'w3m-fontify-after-hook 'emacspeak-w3m-voiceify-faces-in-buffer)
-
+(add-hook 'w3m-fontify-after-hook 'emacspeak-w3m-voiceify-faces-in-buffer)
 
 (add-hook 'w3m-mode-hook '(lambda () (run-hooks 'emacspeak-w3m-mode-hook)))
-(add-hook 'w3m-fontify-after-hook
-	  '(lambda () (run-hooks 'emacspeak-w3m-fontify-after-hook)))
-
 (provide 'emacspeak-w3m)
 ;;; emacspeak-w3m.el ends here
 

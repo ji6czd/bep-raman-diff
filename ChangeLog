@@ -1,3 +1,7 @@
+2002-03-31  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-w3m.el: Voice locking also works on BEP.
+
 2002-03-31  Mitsugu SAKAMOTO  <mitsugu@argv.org>
 
 	* emacspeak-w3m.el: remove mapping font faces to personalities.
