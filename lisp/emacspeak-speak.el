@@ -1,5 +1,5 @@
 ;;; emacspeak-speak.el --- Implements Emacspeak's core speech services
-;;; $Id: emacspeak-speak.el,v 1.1 2002/01/20 18:57:52 inoue Exp $
+;;; $Id: emacspeak-speak.el,v 1.2 2002/01/22 16:51:06 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Contains the functions for speaking various chunks of text
 ;;; Keywords: Emacspeak,  Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/01/20 18:57:52 $ |
-;;;  $Revision: 1.1 $ |
+;;; $Date: 2002/01/22 16:51:06 $ |
+;;;  $Revision: 1.2 $ |
 ;;; Location undetermined
 ;;;
 
@@ -1506,17 +1506,20 @@ semantic to do the work."
   (interactive)
   (declare (special  mode-name  major-mode
                      emacspeak-which-function-mode
+                     global-mode-string
                      column-number-mode line-number-mode
                      emacspeak-mail-alert mode-line-format ))
   (dtk-stop)
   (force-mode-line-update)
   (emacspeak-dtk-sync)
   (let ((dtk-stop-immediately nil )
+        (global-info (mapcar 'eval global-mode-string))
         (frame-info nil)
         (recursion-depth (recursion-depth))
         (recursion-info nil)
         (dir-info (when (eq major-mode 'shell-mode)
                     default-directory)))
+(setq global-info (delete nil global-info))
     (when (and  emacspeak-which-function-mode
                 (fboundp 'which-function)
                 (which-function))
@@ -1561,7 +1564,9 @@ semantic to do the work."
                                         mode-name
                                         (emacspeak-get-current-percentage-verbously))
                                frame-info
-                               recursion-info)))))))
+                               recursion-info
+                               (mapconcat #'identity
+                                          global-info " "))))))))
 
 ;;}}}
 ;;;Helper --return string describing coding system info if
