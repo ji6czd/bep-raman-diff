@@ -1,5 +1,5 @@
 ;;; emacspeak-w3m.el --- speech-enables w3m-el
-;;;$Id: emacspeak-w3m.el,v 1.14 2002/03/30 20:21:15 mitsugu Exp $
+;;;$Id: emacspeak-w3m.el,v 1.15 2002/03/31 03:21:57 inoue Exp $
 ;;; This file is not part of Emacspeak, but the same terms and
 ;;; conditions apply.
 
