@@ -1,3 +1,9 @@
+2002-03-07  Mitsugu SAKAMOTO  <mitsugu@argv.org>
+
+	* emacspeak-wl.el: add on Package For Old BEP.
+	* bep-setup.el,  devel/difs.lst, devel/rmdiffs.lst: fixed.
+	
+
 2002-03-05  Koichi INOUE  <inoue@argv.org>
 
 	* emacspeak-m17n-setup:
