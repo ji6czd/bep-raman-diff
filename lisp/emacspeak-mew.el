@@ -1,5 +1,5 @@
 ;;; emacspeak-mew.el --- Speech enable Mew -- Fluent spoken access to internet message
-;;; $Id: emacspeak-mew.el,v 1.27 2002/02/15 15:27:02 seiken Exp $
+;;; $Id: emacspeak-mew.el,v 1.28 2002/02/16 01:03:43 seiken Exp $
 ;;; $Author: seiken $ 
 ;;; Description:  Emacspeak extension to speech enable Mew
 ;;; Keywords: Emacspeak, Mew, mail, Advice, Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/02/15 15:27:02 $ |
-;;;  $Revision: 1.27 $ | 
+;;; $Date: 2002/02/16 01:03:43 $ |
+;;;  $Revision: 1.28 $ | 
 ;;; Location undetermined
 ;;;
 
@@ -103,6 +103,8 @@
 			'emacspeak-mew-speak-subject)
 		      (define-key mew-summary-mode-map "\C-erc"
 			'emacspeak-mew-speak-cc)
+		      (define-key mew-summary-mode-map "\C-ern"
+			'emacspeak-mew-speak-newsgroups)
 		      (define-key mew-message-mode-map "\C-erf"
 			'emacspeak-mew-speak-from)
 		      (define-key mew-message-mode-map "\C-ert"
@@ -111,6 +113,8 @@
 			'emacspeak-mew-speak-subject)
 		      (define-key mew-message-mode-map "\C-erc"
 			'emacspeak-mew-speak-cc)
+		      (define-key mew-message-mode-map "\C-ern"
+			'emacspeak-mew-speak-newsgroups)
 		      )))
 
 (add-hook 'mew-summary-mode-hook
@@ -629,6 +633,10 @@
 (defun emacspeak-mew-speak-cc ()
   (interactive)
   (emacspeak-mew-speak-header "Cc:"))
+
+(defun emacspeak-mew-speak-newsgroups ()
+  (interactive)
+  (emacspeak-mew-speak-header "Newsgroups"))
 
 ;;}}}
 (provide 'emacspeak-mew)
