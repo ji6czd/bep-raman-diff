@@ -1,5 +1,5 @@
 ;;; emacspeak-w3m.el -- speech enable emacs-w3m -- frontend for w3m WEB browser.
-;;;$Id: emacspeak-w3m.el,v 1.6 2002/02/07 11:54:10 mitsugu Exp $
+;;;$Id: emacspeak-w3m.el,v 1.7 2002/02/08 15:22:25 inoue Exp $
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
@@ -52,6 +52,8 @@
 	     (define-key w3m-mode-map "h" 'emacspeak-backward-char)
 	     (define-key w3m-mode-map "l" 'emacspeak-forward-char)
 	     (setq w3m-after-cursor-move-hook   '(w3m-highlight-current-anchor))
+	     (make-local-variable 'voice-lock-mode)
+	     (setq voice-lock-mode t)
 )))
 
 (add-hook 'emacspeak-w3m-fontify-after-hook
@@ -137,11 +139,11 @@
 	(while (< beg (point-max))
 	  (setq end (next-single-property-change beg 'w3m-href-anchor
 						 nil (point-max)))
-	  (message (format "%s %s" beg end))
 	  (when (get-text-property beg 'w3m-href-anchor)
 	    (put-text-property beg end
 			       'personality emacspeak-w3m-href-personality))
-	  (setq beg end))))))
+	  (setq beg end)))))
+  (message "Voicifying...done"))
 
 ;;}}}
 
