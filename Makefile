@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.1 2002/02/13 17:41:32 inoue Exp $
+# $Id: Makefile,v 1.2 2002/03/30 15:36:50 inoue Exp $
 # $Author: inoue $ 
 # Description:  Makefile for Emacspeak 
 # Keywords: Emacspeak,  TTS,Makefile 
@@ -7,8 +7,8 @@
 # LCD Archive Entry:
 # emacspeak| T. V. Raman |raman@cs.cornell.edu 
 # A speech interface to Emacs |
-# $Date: 2002/02/13 17:41:32 $ |
-#  $Revision: 1.1 $ | 
+# $Date: 2002/03/30 15:36:50 $ |
+#  $Revision: 1.2 $ | 
 # Location undetermined
 #
 
@@ -120,7 +120,7 @@
 # {{{  Site Configuration
 
 ##### Site  Configuration #####
-#MAKE=make
+MAKE=make
 prefix = /usr
 # where executables go
 bindir = ${prefix}/bin
@@ -335,6 +335,23 @@ rpm: emacspeak.spec
 
 list_dist:
 	ls -1  $(DISTFILES)
+
+# }}}
+# {{{upload to sourceforge 
+
+TARBALL=emacspeak-${LABEL}.tar.gz
+RPM=/usr/src/redhat/RPMS/i386/emacspeak-${LABEL}-1.i386.rpm
+SF_HOME='raman@emacspeak.sf.net:~/www-emacspeak/htdocs'
+sourceforge: 
+	mv emacspeak.tar.gz ${TARBALL}
+	( echo 'anonymous';				\
+	  echo prompt;					\
+	  echo hash;					\
+	  echo cd incoming;				\
+	  echo put ${TARBALL};			\
+	  echo put ${RPM};		\
+	  echo quit ) | ftp upload.sourceforge.net
+	scp ${RPM} ${TARBALL} ${SF_HOME}
 
 # }}}
 # {{{ end of file 

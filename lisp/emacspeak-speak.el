@@ -1,5 +1,5 @@
 ;;; emacspeak-speak.el --- Implements Emacspeak's core speech services
-;;; $Id: emacspeak-speak.el,v 1.13 2002/03/27 14:51:14 inoue Exp $
+;;; $Id: emacspeak-speak.el,v 1.14 2002/03/30 15:36:50 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Contains the functions for speaking various chunks of text
 ;;; Keywords: Emacspeak,  Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/03/27 14:51:14 $ |
-;;;  $Revision: 1.13 $ |
+;;; $Date: 2002/03/30 15:36:50 $ |
+;;;  $Revision: 1.14 $ |
 ;;; Location undetermined
 ;;;
 
@@ -108,13 +108,6 @@
                    inhibit-read-only save-inhibit-read-only
                    inhibit-point-motion-hooks save-inhibit-point-motion-hooks)
              (set-buffer-modified-p modification-flag )))))))
-
-
-                                        ; Internal macro used by Emacspeak to set a personality temporarily.
-                                        ; The previous property is reset after executing body.
-                                        ; At present, we assume that region from start to end has the
-                                        ; same personality.
-
 (defmacro ems-set-personality-temporarily (start end value
                                                  &rest body)
   "Temporarily set personality.
@@ -845,36 +838,32 @@ indicated with auditory icon ellipses."
       (when (get-text-property  start 'emacspeak-hidden-block)
         (emacspeak-auditory-icon 'ellipses))
       (cond
-       ((string= ""  (buffer-substring start end)) ;blank line
+       ((string= ""  line) ;blank line
         (when dtk-stop-immediately (dtk-stop))
         (dtk-tone 250   75 'force)
         (when (emacspeak-using-midi-p)
           (emacspeak-midi-icon 'empty-line)))
-       ((string-match  emacspeak-speak-space-regexp  (buffer-substring start end )) ;only white space
+       ((string-match  emacspeak-speak-space-regexp  line) ;only white space
         (when dtk-stop-immediately (dtk-stop))
         (dtk-tone 300   120 'force)
         (when (emacspeak-using-midi-p)
           (emacspeak-midi-icon 'blank-line)))
        ((and
          (not (string= "all" dtk-punctuation-mode))
-         (string-match  emacspeak-horizontal-rule
-                        (buffer-substring start end))) ;horizontal rule
+         (string-match  emacspeak-horizontal-rule line)) ;horizontal rule
         (when dtk-stop-immediately (dtk-stop))
         (dtk-tone 350   100 'force)
         (when (emacspeak-using-midi-p)
           (emacspeak-midi-icon 'horizontal-rule)))
        ((and
          (not (string= "all" dtk-punctuation-mode))
-         (string-match  emacspeak-decoration-rule
-                        (buffer-substring start end)) ) ;decorative rule
+         (string-match  emacspeak-decoration-rule line) ) ;decorative rule
         (when dtk-stop-immediately (dtk-stop))
         (dtk-tone 450   100 'force)
         (when (emacspeak-using-midi-p)
           (emacspeak-midi-icon 'decorative-rule)))
-       ((and
-         (not (string= "all" dtk-punctuation-mode))
-         (string-match  emacspeak-unspeakable-rule
-                        (buffer-substring start end)) ) ;unspeakable rule
+       ((and (not (string= "all" dtk-punctuation-mode))
+         (string-match  emacspeak-unspeakable-rule line) ) ;unspeakable rule
         (when dtk-stop-immediately (dtk-stop))
         (dtk-tone 550   100 'force)
         (when (emacspeak-using-midi-p)
