@@ -1,0 +1,11 @@
+#!/bin/sh
+# For development.
+# Copy files from emacspeak directory to CVS working directory.
+#
+SOURCE_DIR=../emacspeak
+DIFF_LIST=devel/diff.lst
+#
+files=`cat $DIFF_LIST`
+for f in $files; do
+	cp -puv $SOURCE_DIR/$f ./$f
+done

@@ -1,0 +1,12 @@
+lisp/bep-css-speech.el
+lisp/bep-voices.el
+lisp/dtk-speak.el
+lisp/dtk-tcl.el
+lisp/emacspeak-advice.el
+lisp/emacspeak-egg.el
+lisp/emacspeak-ja-tbl.el
+lisp/emacspeak-m17n-ja.el
+lisp/emacspeak-m17n-setup.el
+lisp/emacspeak-redefine.el
+lisp/emacspeak-speak.el
+lisp/emacspeak.el

@@ -1,0 +1,9 @@
+2002-01-21  Koichi INOUE  <inoue@argv.org>
+
+	* Import. Diff files from Emacspeak CVS development at
+	:pserver:anonymous@cvs.emacspeak.sourceforge.net:/cvsroot/emacspeak
+
+	For developers: execute devel/prepare-cvs from *this* directory
+	to incorporate changed files from your development directory.
+	Add newly changed file to devel/diff.lst.
+	Read devel/prepare-cvs script for details.
