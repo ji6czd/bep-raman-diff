@@ -1,5 +1,5 @@
 ;;; emacspeak-mew.el --- Speech enable Mew -- Fluent spoken access to internet message
-;;; $Id: emacspeak-mew.el,v 1.13 2001/09/21 12:52:14 seiken Exp $
+;;; $Id: emacspeak-mew.el,v 1.14 2001/09/25 13:49:22 seiken Exp $
 ;;; $Author: seiken $ 
 ;;; Description:  Emacspeak extension to speech enable Mew
 ;;; Keywords: Emacspeak, Mew, mail, Advice, Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2001/09/21 12:52:14 $ |
-;;;  $Revision: 1.13 $ | 
+;;; $Date: 2001/09/25 13:49:22 $ |
+;;;  $Revision: 1.14 $ | 
 ;;; Location undetermined
 ;;;
 
@@ -283,12 +283,12 @@
 
 (defadvice mew-summary-jump-top (after emacspeak pre act )
   "speeks the message after movement"
-  (emacspeak-auditory-icon 'left)
+  (emacspeak-auditory-icon 'large-movement)
   (emacspeak-speak-line)
 )
 
 (defadvice mew-summary-jump-bottom (after emacspeak pre act )
-  (emacspeak-auditory-icon 'left)
+  (emacspeak-auditory-icon 'large-movement)
   "speeks the message after movement"
   (emacspeak-speak-line)
 )
@@ -310,21 +310,25 @@
 
 (defadvice mew-summary-goto-msg-mode (after emacspeak pre act )
   "Announce move to message mode."
+  (emacspeak-auditory-icon 'on)
   (emacspeak-speak-mode-line)
 )
 
 (defadvice mew-message-goto-summary (after emacspeak pre act )
   "Announce move to summary mode."
+  (emacspeak-auditory-icon 'on)
   (emacspeak-mew-summary-speak-line)
 )
 
 (defadvice mew-summary-goto-folder (after emacspeak pre act )
   "speeks the message after movement"
+  (emacspeak-auditory-icon 'on)
   (emacspeak-speak-line)
 )
 
 (defadvice mew-summary-delete (after emacspeak pre act )
   "tells the message is marked for delete."
+  (emacspeak-auditory-icon 'delete-object)
   (dtk-interp-queue "delete")
   (emacspeak-speak-line)
 )
@@ -348,6 +352,7 @@
 
 (defadvice mew-summary-review (after emacspeak pre act )
   "tells the message is marked for review."
+  (emacspeak-auditory-icon 'mark-object)
   (dtk-speak "review")
 )
 
