@@ -1,6 +1,6 @@
 ;;; emacspeak-mew.el --- Speech enable Mew -- Fluent spoken access to internet message
-;;; $Id: emacspeak-mew.el,v 1.21 2002/02/11 14:51:18 seiken Exp $
-;;; $Author: seiken $ 
+;;; $Id: emacspeak-mew.el,v 1.22 2002/02/12 06:11:56 mitsugu Exp $
+;;; $Author: mitsugu $ 
 ;;; Description:  Emacspeak extension to speech enable Mew
 ;;; Keywords: Emacspeak, Mew, mail, Advice, Spoken Output
 ;;{{{  LCD Archive entry: 
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/02/11 14:51:18 $ |
-;;;  $Revision: 1.21 $ | 
+;;; $Date: 2002/02/12 06:11:56 $ |
+;;;  $Revision: 1.22 $ | 
 ;;; Location undetermined
 ;;;
 
@@ -120,9 +120,22 @@
 		      (voice-lock-mode 1)
 		      )))
 
+;(add-hook 'mew-message-hook
+;	  (function (lambda ()
+;		    (emacspeak-auditory-icon 'on)
+;		    ;; (dtk-speak "Displayed message.")
+;		    )))
+
 (add-hook 'mew-message-hook
 	  (function (lambda ()
 		    (emacspeak-auditory-icon 'on)
+		    (set-buffer "*Mew message*0")
+		    (make-local-variable 'voice-lock-support-mode)
+		    (setq voice-lock-support-mode 'lazy-voice-lock-mode)
+		    (make-local-variable 'voice-lock-defaults)
+		    (setq voice-lock-defaults '(mew-message-voice-lock-keywords t))
+		    (voice-lock-mode 1)
+		    (emacspeak-speak-rest-of-buffer)
 		    ;; (dtk-speak "Displayed message.")
 		    )))
 				      
