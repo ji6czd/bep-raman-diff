@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.3 2002/02/05 17:31:39 inoue Exp $
+# $Id: Makefile,v 1.4 2002/02/22 15:46:03 inoue Exp $
 # $Author: inoue $ 
 # Description:  Makefile for Emacspeak 
 # Keywords: Emacspeak, Dectalk, Makefile 
@@ -7,8 +7,8 @@
 # LCD Archive Entry:
 # emacspeak| T. V. Raman |raman@cs.cornell.edu 
 # A speech interface to Emacs |
-# $Date: 2002/02/05 17:31:39 $ |
-#  $Revision: 1.3 $ | 
+# $Date: 2002/02/22 15:46:03 $ |
+#  $Revision: 1.4 $ | 
 # Location undetermined
 #
 
@@ -187,6 +187,7 @@ emacspeak-view-process.elc \
 emacspeak-view.elc \
 emacspeak-vm.elc \
 emacspeak-w3.elc \
+emacspeak-w3m.elc \
 emacspeak-websearch.elc \
 emacspeak-widget.elc \
 emacspeak-windmove.elc \
@@ -366,6 +367,7 @@ emacspeak-view-process.elc: emacspeak-view-process.el dtk-speak.elc
 emacspeak-view.elc: emacspeak-view.el dtk-speak.elc
 emacspeak-vm.elc: emacspeak-vm.el dtk-speak.elc
 emacspeak-w3.elc: emacspeak-w3.el dtk-speak.elc
+emacspeak-w3m.elc: emacspeak-w3m.el dtk-speak.elc
 emacspeak-websearch.elc: emacspeak-websearch.el dtk-speak.elc
 emacspeak-widget.elc: emacspeak-widget.el dtk-speak.elc
 emacspeak-winring.elc: emacspeak-winring.el dtk-speak.elc
