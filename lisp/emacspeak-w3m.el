@@ -1,5 +1,5 @@
 ;;; emacspeak-w3m.el -- speech enable emacs-w3m -- frontend for w3m WEB browser.
-;;;$Id: emacspeak-w3m.el,v 1.5 2002/02/06 15:40:29 inoue Exp $
+;;;$Id: emacspeak-w3m.el,v 1.6 2002/02/07 11:54:10 mitsugu Exp $
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
@@ -46,11 +46,12 @@
 (defvar emacspeak-w3m-href-personality 'betty
   "Personality to speak hyperlinks.")
 
-;;; setting keymap
+;;; setting keymap & default settings
 (add-hook 'emacspeak-w3m-mode-hook
 	  (function (lambda ()
 	     (define-key w3m-mode-map "h" 'emacspeak-backward-char)
 	     (define-key w3m-mode-map "l" 'emacspeak-forward-char)
+	     (setq w3m-after-cursor-move-hook   '(w3m-highlight-current-anchor))
 )))
 
 (add-hook 'emacspeak-w3m-fontify-after-hook
