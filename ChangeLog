@@ -1,3 +1,9 @@
+2002-02-12  Mitsugu SAKAMOTO  <mitsugu@argv.org>
+
+	* lisp/emacspeak-mew.el: added Auto-reading feature goto
+	mew-message buffer.
+Written Kiriake MASANORI <seiken@argv.org>
+
 2002-02-11  Koichi INOUE  <inoue@argv.org>
 
 	* bep-setup.el: Added keymap of
