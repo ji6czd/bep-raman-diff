@@ -1,5 +1,5 @@
-
-;;;$Id: emacspeak-w3m.el,v 1.11 2002/03/30 06:20:49 mitsugu Exp $;;; emacspeak-w3m.el --- speech-enables w3m-el
+;;; emacspeak-w3m.el --- speech-enables w3m-el
+;;;$Id: emacspeak-w3m.el,v 1.12 2002/03/30 15:34:29 mitsugu Exp $
 ;;; This file is not part of Emacspeak, but the same terms and
 ;;; conditions apply.
 
@@ -288,25 +288,39 @@
   (emacspeak-speak-mode-line))
 
 (defadvice w3m-goto-url (around emacspeak pre act)
-  (let ((emacspeak-speak-messages nil))
-    ad-do-it)
-  (emacspeak-auditory-icon 'open-object)
-  (when (stringp w3m-current-title)
-    (message "%s" w3m-current-title)))
+  "Speech-enable W3M."
+  (cond
+   ((interactive-p)
+    (let ((emacspeak-speak-messages nil))
+      ad-do-it)
+    (emacspeak-auditory-icon 'open-object)
+    (when (stringp w3m-current-title)
+      (message "%s" w3m-current-title)))
+   (t ad-do-it))ad-return-value)
 
 (defadvice w3m-next-anchor (around emacspeak pre act)
-  (let ((emacspeak-speak-messages nil))
-    ad-do-it)
-  (emacspeak-auditory-icon 'large-movement)
-  (when (interactive-p)
-    (emacspeak-w3m-speak-this-anchor)))
+  "Speech-enable W3M."
+  (cond
+   ((interactive-p)
+    (let ((emacspeak-speak-messages nil))
+      ad-do-it)
+    (when (interactive-p)
+      (emacspeak-auditory-icon 'large-movement)
+      (emacspeak-w3m-speak-this-anchor)))
+   (t ad-do-it))
+  ad-return-value)
 
 (defadvice w3m-previous-anchor (around emacspeak pre act)
-  (let ((emacspeak-speak-messages nil))
-    ad-do-it)
-  (when (interactive-p)
-    (emacspeak-auditory-icon 'large-movement)
-    (emacspeak-w3m-speak-this-anchor)))
+  "Speech-enable link navigation."
+  (cond
+   ((interactive-p)
+    (let ((emacspeak-speak-messages nil))
+      ad-do-it)
+    (when (interactive-p)
+      (emacspeak-auditory-icon 'large-movement)
+      (emacspeak-w3m-speak-this-anchor)))
+   (t ad-do-it))
+  ad-return-value)
 
 (defadvice w3m-next-form (around emacspeak pre act comp)
   "Speech-enable form navigation."
@@ -333,17 +347,23 @@
 
 
 (defadvice w3m-view-this-url (around emacspeak pre act comp)
-  (let ((url (emacspeak-w3m-anchor))
-	(act (emacspeak-w3m-action)))
-    ad-do-it
-    (when (and (interactive-p)
-	       (not url)
-	       (consp act)
-	       (memq (car act)
-		     '(w3m-form-input
-		       w3m-form-input-radio
+  "Speech-enable W3M."
+  (cond
+   ((interactive-p)
+    (let ((url (emacspeak-w3m-anchor))
+	  (act (emacspeak-w3m-action)))
+      ad-do-it
+      (when (and (interactive-p)
+		 (not url)
+		 (consp act)
+		 (memq (car act)
+		       '(w3m-form-input
+			 w3m-form-input-radio
 		       w3m-form-input-password)))
-      (emacspeak-w3m-speak-this-anchor))))
+	(emacspeak-w3m-speak-this-anchor))
+      (emacspeak-auditory-icon 'select-object)))
+   (t ad-do-it))
+  ad-return-value)
 
 (defadvice w3m-scroll-up-or-next-url (around emacspeak pre act comp)
   "Speech-enable scrolling."
