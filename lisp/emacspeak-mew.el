@@ -1,5 +1,5 @@
 ;;; emacspeak-mew.el --- Speech enable Mew -- Fluent spoken access to internet message
-;;; $Id: emacspeak-mew.el,v 1.1 2001/06/09 15:56:41 inoue Exp $
+;;; $Id: emacspeak-mew.el,v 1.2 2001/06/09 16:42:17 inoue Exp $
 ;;; $Author: inoue $ 
 ;;; Description:  Emacspeak extension to speech enable mew
 ;;; Keywords: Emacspeak, Mew, IM, mail, Advice, Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2001/06/09 15:56:41 $ |
-;;;  $Revision: 1.1 $ | 
+;;; $Date: 2001/06/09 16:42:17 $ |
+;;;  $Revision: 1.2 $ | 
 ;;; Location undetermined
 ;;;
 
@@ -332,6 +332,15 @@
 (defadvice mew-attach-previous (after emacspeak pre act )
   "speaks the current line."
   (emacspeak-speak-line)
+)
+
+(defadvice mew-summary-make-thread (around emacspeak pre act)
+  "announce when Making thread"
+  (dtk-speak "making thread...")
+  (let ((emacspeak-speak-messages nil))
+    ad-do-it)
+  (emacspeak-speak-mode-line)
+  ad-return-value
 )
 
 ;;; helper functions
