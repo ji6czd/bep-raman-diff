@@ -1,5 +1,5 @@
 ;;; emacspeak-mew.el --- Speech enable Mew -- Fluent spoken access to internet message
-;;; $Id: emacspeak-mew.el,v 1.24 2002/02/13 15:35:38 seiken Exp $
+;;; $Id: emacspeak-mew.el,v 1.25 2002/02/14 11:31:24 seiken Exp $
 ;;; $Author: seiken $ 
 ;;; Description:  Emacspeak extension to speech enable Mew
 ;;; Keywords: Emacspeak, Mew, mail, Advice, Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/02/13 15:35:38 $ |
-;;;  $Revision: 1.24 $ | 
+;;; $Date: 2002/02/14 11:31:24 $ |
+;;;  $Revision: 1.25 $ | 
 ;;; Location undetermined
 ;;;
 
@@ -585,16 +585,14 @@
 )
 
 (defun emacspeak-mew-speak-header (header)
-  "Speak specifyed header"
+  "Speak specified header"
   (save-excursion
     (set-buffer "*Mew message*0")
-    (goto-char (point-min))
-    (if (and (search-forward "\n\n" nil t) 
-	     (search-backward (concat "\n" header) nil t))
-	(progn
-	  (forward-char)
-	  (emacspeak-speak-line))
-      (dtk-speak "Not found"))))
+    (let ((header-string (mew-header-get-value header)))
+      (if header-string
+	  (dtk-speak (format "%s %s" header header-string))
+	(dtk-speak "Not found.")
+	))))
 
 (defun emacspeak-mew-speak-from ()
   (interactive)
@@ -607,6 +605,10 @@
 (defun emacspeak-mew-speak-to ()
   (interactive)
   (emacspeak-mew-speak-header "To:"))
+
+(defun emacspeak-mew-speak-cc ()
+  (interactive)
+  (emacspeak-mew-speak-header "Cc:"))
 
 ;;}}}
 (provide 'emacspeak-mew)
