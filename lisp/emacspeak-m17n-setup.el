@@ -123,8 +123,9 @@ even if it is a non-ascii character."
 emacspeak-m17n-put-language-internal-strategy"
   (with-temp-buffer
     (insert str)
+    (let ((emacspeak-m17n-auto-put-language-mode t))
     (funcall emacspeak-m17n-put-language-internal-strategy
-	     (point-min) (point-max))
+	     (point-min) (point-max)))
     (buffer-string)))
 
 ;;}}
