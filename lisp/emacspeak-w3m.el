@@ -1,5 +1,5 @@
 
-;;;$Id: emacspeak-w3m.el,v 1.8 2002/02/25 17:34:00 inoue Exp $;;; emacspeak-w3m.el --- speech-enables w3m-el
+;;;$Id: emacspeak-w3m.el,v 1.9 2002/02/25 18:21:52 inoue Exp $;;; emacspeak-w3m.el --- speech-enables w3m-el
 ;;; This file is not part of Emacspeak, but the same terms and
 ;;; conditions apply.
 
@@ -292,7 +292,7 @@
 	    (emacspeak-speak-line)))
 
 (defadvice w3m-form-input-select-set (after emacspeak pre act comp)
-  (when (and (interactive-p) (w3m-cursor-anchor))
+  (when (and (interactive-p) (emacspeak-w3m-cursor-anchor))
     (emacspeak-w3m-speak-this-anchor)))
 
 (defadvice w3m-form-input-select-exit (after emacspeak pre act comp)
