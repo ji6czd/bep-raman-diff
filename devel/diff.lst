@@ -17,6 +17,7 @@ lisp/emacspeak-redefine.el
 lisp/emacspeak-semi.el
 lisp/emacspeak-speak.el
 lisp/emacspeak-w3m.el
+lisp/emacspeak-wl.el
 lisp/yahtml-voice.el
 lisp/Makefile
 realaudio/ja/radio/champla.ram
