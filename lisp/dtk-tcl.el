@@ -1,5 +1,5 @@
 ;;; dtk-tcl.el --- Interface to TCL speech server --uses module dtk-interp.el
-;;; $Id: dtk-tcl.el,v 1.3 2002/01/28 14:03:00 inoue Exp $
+;;; $Id: dtk-tcl.el,v 1.4 2002/02/02 23:39:35 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Interfacing to the Dectalk via TCL.
 ;;; Keywords: Dectalk, TCL
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/01/28 14:03:00 $ |
-;;;  $Revision: 1.3 $ |
+;;; $Date: 2002/02/02 23:39:35 $ |
+;;;  $Revision: 1.4 $ |
 ;;; Location undetermined
 ;;;
 
@@ -628,10 +628,13 @@ only speak upto the first ctrl-m."
         (and ctrl-m
              (setq text (substring  text 0 ctrl-m ))
              (emacspeak-auditory-icon 'ellipses))))
-    (when force-language
-      (put-text-property 0 (length text)
-			 'emacspeak-language force-language
-			 text))
+    (when (featurep 'emacspeak-m17n-setup)
+      (when force-language
+	(put-text-property 0 (length text)
+			   'emacspeak-language force-language
+			   text))
+      (when (not (get-text-property 0 'emacspeak-language text))
+	(setq text (emacspeak-m17n-put-language-string-internal text))))
     (let ((lstart 0)
 	  (lend nil)
 	  (lmax (length text)))

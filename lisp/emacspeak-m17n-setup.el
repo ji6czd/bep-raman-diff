@@ -114,6 +114,19 @@ even if it is a non-ascii character."
       ;;; Clean up
       (and (not modified) (buffer-modified-p) (set-buffer-modified-p nil))))))
 
+(defvar emacspeak-m17n-put-language-internal-strategy
+  'emacspeak-m17n-put-language-ja-ne
+  "Put-Language strategy used for string without language property.")
+
+(defun emacspeak-m17n-put-language-string-internal (str)
+  "Return string with language property, which is put by
+emacspeak-m17n-put-language-internal-strategy"
+  (with-temp-buffer
+    (insert str)
+    (funcall emacspeak-m17n-put-language-internal-strategy
+	     (point-min) (point-max))
+    (buffer-string)))
+
 ;;}}
 ;;{{ Put language property
 
