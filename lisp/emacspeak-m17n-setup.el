@@ -104,7 +104,7 @@ even if it is a non-ascii character."
 	     (emacspeak-buffer-visible-p))
   (let ((inhibit-read-only t) (buffer-undo-list t)
 	(modified (buffer-modified-p))
-	befor-change-functions after-change-functions
+	before-change-functions after-change-functions
 	(begm (max (window-start) beg))
 	(endm (min (window-end) end)))
     (unwind-protect
