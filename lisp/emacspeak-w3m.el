@@ -1,5 +1,5 @@
 ;;; emacspeak-w3m.el --- speech-enables w3m-el
-;;;$Id: emacspeak-w3m.el,v 1.18 2002/04/03 17:51:29 mitsugu Exp $
+;;;$Id: emacspeak-w3m.el,v 1.19 2002/04/04 14:28:08 inoue Exp $
 ;;; This file is not part of Emacspeak, but the same terms and
 ;;; conditions apply.
 
@@ -233,8 +233,7 @@
   "Produce auditory feedback."
   (when (interactive-p)
     (emacspeak-auditory-icon 'close-object)
-    (emacspeak-speak-mode-line)
-(setq dtk-set-punctuations "all")))
+    (emacspeak-speak-mode-line)))
 
 (defadvice w3m-view-this-url (after emacspeak pre act)
   "speak page title"
@@ -501,6 +500,7 @@ libxslt package."
 (defadvice w3m-mode (after emacspeak pre act comp)
   "Set punctuation mode."
   (declare (special dtk-punctuation-mode))
+  (make-variable-buffer-local 'dtk-punctuation-mode)
   (setq dtk-punctuation-mode "some"))
 
 (add-hook 'w3m-fontify-after-hook 'emacspeak-w3m-voiceify-faces-in-buffer)
