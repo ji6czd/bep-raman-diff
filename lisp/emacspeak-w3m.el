@@ -1,5 +1,5 @@
 ;;; emacspeak-w3m.el -- speech enable emacs-w3m -- frontend for w3m WEB browser.
-
+;;;$id:  $
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
@@ -86,6 +86,10 @@
   "speak mode line"
   (emacspeak-speak-mode-line)
 )
+
+(defadvice w3m-quit (after emacspeak pre act)
+  "speak the modeline"
+  (emacspeak-speak-mode-line))
 
 (defadvice w3m-view-this-url (after emacspeak pre act)
   "speak page title"
