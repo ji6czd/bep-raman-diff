@@ -1,6 +1,6 @@
 ;;; emacspeak-mew.el --- Speech enable Mew -- Fluent spoken access to internet message
-;;; $Id: emacspeak-mew.el,v 1.10 2001/07/27 01:12:47 inoue Exp $
-;;; $Author: inoue $ 
+;;; $Id: emacspeak-mew.el,v 1.11 2001/07/27 07:30:10 mitsugu Exp $
+;;; $Author: mitsugu $ 
 ;;; Description:  Emacspeak extension to speech enable Mew
 ;;; Keywords: Emacspeak, Mew, mail, Advice, Spoken Output
 ;;{{{  LCD Archive entry: 
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2001/07/27 01:12:47 $ |
-;;;  $Revision: 1.10 $ | 
+;;; $Date: 2001/07/27 07:30:10 $ |
+;;;  $Revision: 1.11 $ | 
 ;;; Location undetermined
 ;;;
 
@@ -430,6 +430,19 @@
   (emacspeak-speak-mode-line)
   ad-return-value
 )
+(defadvice mew-summary-thread-up (after emacspeak pre act)
+  "speak the current line"
+  (emacspeak-speak-line))
+
+(defadvice mew-summary-thread-down (after emacspeak pre act)
+  "speak the current line"
+  (emacspeak-speak-line))
+
+;(defadvice mew-summary-thread-parent (after emacspeak pre act)
+;  "Provide auditory feedback"
+;  (when (interactive-p)
+;    (emacspeak-auditory-icon 'search-hit)))
+
 
 (defadvice  mew-scan-sentinel (after emacspeak pre act )
   "Provide auditory feedback"
