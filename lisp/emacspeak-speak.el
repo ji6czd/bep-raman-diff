@@ -1,5 +1,5 @@
 ;;; emacspeak-speak.el --- Implements Emacspeak's core speech services
-;;; $Id: emacspeak-speak.el,v 1.6 2002/01/29 17:54:25 inoue Exp $
+;;; $Id: emacspeak-speak.el,v 1.7 2002/02/02 13:57:26 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Contains the functions for speaking various chunks of text
 ;;; Keywords: Emacspeak,  Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/01/29 17:54:25 $ |
-;;;  $Revision: 1.6 $ |
+;;; $Date: 2002/02/02 13:57:26 $ |
+;;;  $Revision: 1.7 $ |
 ;;; Location undetermined
 ;;;
 
@@ -1546,6 +1546,27 @@ semantic to do the work."
 
 
 
+(defsubst ems-process-mode-line-format (spec)
+  "Process mode line format spec."
+  (cond
+   ((symbolp spec) (symbol-value  spec))
+   ((stringp spec) spec)
+   ((and (listp spec)
+         (stringp (car spec)))
+    (concat 
+     (car spec)
+     (ems-process-mode-line-format (cdr spec))))
+   ((and (listp spec)
+         (symbolp (car spec))
+         (null (car spec)))
+     (ems-process-mode-line-format (cdr spec)))
+   ((and (listp spec)
+         (symbolp (car spec)))
+    (concat
+     (ems-process-mode-line-format (symbol-value (car spec)))
+     (ems-process-mode-line-format (cdr spec))))))
+
+
 (defun emacspeak-speak-mode-line ()
   "Speak the mode-line."
   (interactive)
@@ -1558,19 +1579,12 @@ semantic to do the work."
   (force-mode-line-update)
   (emacspeak-dtk-sync)
   (let ((dtk-stop-immediately nil )
-        (global-info (mapcar
-		      (function (lambda(x)
-				  (cond
-				   ((consp x)
-				    (when (eval (car x)) (eval (cdr x))))
-				   (t (eval x)))))
-		      global-mode-string))
+        (global-info (ems-process-mode-line-format global-mode-string))
         (frame-info nil)
         (recursion-depth (recursion-depth))
         (recursion-info nil)
         (dir-info (when (eq major-mode 'shell-mode)
                     default-directory)))
-(setq global-info (delete nil global-info))
     (when (and  emacspeak-which-function-mode
                 (fboundp 'which-function)
                 (which-function))
@@ -1616,8 +1630,7 @@ semantic to do the work."
                                         (emacspeak-get-current-percentage-verbously))
                                frame-info
                                recursion-info
-                               (mapconcat #'identity
-                                          global-info " "))))))))
+                               global-info)))))))
 
 ;;}}}
 ;;;Helper --return string describing coding system info if
