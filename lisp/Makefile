@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.1 2002/02/03 15:23:11 seiken Exp $
+# $Id: Makefile,v 1.2 2002/02/03 15:26:46 seiken Exp $
 # $Author: seiken $ 
 # Description:  Makefile for Emacspeak 
 # Keywords: Emacspeak, Dectalk, Makefile 
@@ -7,8 +7,8 @@
 # LCD Archive Entry:
 # emacspeak| T. V. Raman |raman@cs.cornell.edu 
 # A speech interface to Emacs |
-# $Date: 2002/02/03 15:23:11 $ |
-#  $Revision: 1.1 $ | 
+# $Date: 2002/02/03 15:26:46 $ |
+#  $Revision: 1.2 $ | 
 # Location undetermined
 #
 
@@ -45,7 +45,7 @@ SRC=".."
 # How to run in batch mode
 BATCH = -batch -q -no-site-file
 # How to compile 
-COMPILE = -eval "(setq byte-compile-dynamic t)" -f batch-byte-compile
+COMPILE = -eval "(setq byte-compile-dynamic t)" -eval "(setq recursive-load-depth-limit nil)" -f batch-byte-compile
 %.elc:  %.el
 	$(EMACS) $(BATCH)  -l $(SRC)/lisp/emacspeak-load-path.el $(COMPILE) $<
 
