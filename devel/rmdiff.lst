@@ -5,6 +5,8 @@ lisp/dtk-tcl.el
 lisp/emacspeak-advice.el
 lisp/emacspeak-egg.el
 lisp/emacspeak-ja-tbl.el
+lisp/emacspeak-kkc.el
+lisp/emacspeak-liece.el
 lisp/emacspeak-m17n-ja.el
 lisp/emacspeak-m17n-setup.el
 lisp/emacspeak-mew.el
