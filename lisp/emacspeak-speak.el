@@ -1,5 +1,5 @@
 ;;; emacspeak-speak.el --- Implements Emacspeak's core speech services
-;;; $Id: emacspeak-speak.el,v 1.11 2002/03/10 19:09:46 inoue Exp $
+;;; $Id: emacspeak-speak.el,v 1.12 2002/03/17 19:12:24 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Contains the functions for speaking various chunks of text
 ;;; Keywords: Emacspeak,  Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/03/10 19:09:46 $ |
-;;;  $Revision: 1.11 $ |
+;;; $Date: 2002/03/17 19:12:24 $ |
+;;;  $Revision: 1.12 $ |
 ;;; Location undetermined
 ;;;
 
@@ -48,6 +48,7 @@
  (eval-when-compile
    (provide 'emacspeak-speak) ;avoid recursive include
    (require 'dtk-speak )
+   (require 'voice-lock)
    (require 'emacspeak-sounds)
    (require 'shell)
    (require 'which-func nil)
@@ -2930,12 +2931,7 @@ typed. If no such group exists, then we dont move. "
 
 ;;}}}
 ;;{{{ customize emacspeak
-(defun emacspeak-customize ()
-  "Customize Emacspeak."
-  (interactive)
-  (customize-group 'emacspeak)
-  (emacspeak-auditory-icon 'open-object)
-  (emacspeak-custom-goto-group))
+
 
 ;;}}}
 (provide 'emacspeak-speak )
