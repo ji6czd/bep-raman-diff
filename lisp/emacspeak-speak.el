@@ -1,5 +1,5 @@
 ;;; emacspeak-speak.el --- Implements Emacspeak's core speech services
-;;; $Id: emacspeak-speak.el,v 1.4 2002/01/25 20:03:59 inoue Exp $
+;;; $Id: emacspeak-speak.el,v 1.5 2002/01/28 14:03:00 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Contains the functions for speaking various chunks of text
 ;;; Keywords: Emacspeak,  Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/01/25 20:03:59 $ |
-;;;  $Revision: 1.4 $ |
+;;; $Date: 2002/01/28 14:03:00 $ |
+;;;  $Revision: 1.5 $ |
 ;;; Location undetermined
 ;;;
 
@@ -738,23 +738,30 @@ current local  value to the result."
               'emacspeak-speak-persist-filter-settings)))
 
 (defun emacspeak-speak-line-set-column-filter (filter)
-  "Set up filter for selectively ignoring portions of lines.
+  "Set up filter for selectively speaking or ignoring portions of lines.
 The filter is specified as a list of pairs.
-For example, to filter out columns 1 -- 10 and 20 -- 25,
+For example, to filter  columns 1 -- 10 and 20 -- 25,
 specify filter as 
 ((0 9) (20 25)). Filter settings are persisted across sessions.  A
 persisted filter is used as the default when prompting for a filter.
 This allows one to accumulate a set of filters for specific files like
-/var/adm/messages and /var/adm/maillog over time."
+/var/adm/messages and /var/adm/maillog over time.
+Option emacspeak-speak-line-invert-filter determines 
+the sense of the filter. "
   (interactive
    (list
     (progn
       (emacspeak-speak-load-filter-settings)
-      (read-minibuffer "Specify columns to filter out: "
-                       (format "%s"
-                               (if  (buffer-file-name )
-                                   (emacspeak-speak-lookup-persistent-filter (buffer-file-name))
-                                 ""))))))
+      (read-minibuffer
+       (format 
+        "Specify columns to %s: "
+        (if emacspeak-speak-line-invert-filter
+            " speak"
+          "filter out"))
+       (format "%s"
+               (if  (buffer-file-name )
+                   (emacspeak-speak-lookup-persistent-filter (buffer-file-name))
+                 ""))))))
   (cond
    ((and (listp filter)
          (every 

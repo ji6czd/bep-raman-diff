@@ -1,5 +1,5 @@
 ;;; emacspeak-redefine.el --- Redefines some key Emacs builtins to speak
-;;; $Id: emacspeak-redefine.el,v 1.2 2002/01/25 20:03:59 inoue Exp $
+;;; $Id: emacspeak-redefine.el,v 1.3 2002/01/28 14:03:00 inoue Exp $
 ;;; $Author: inoue $ 
 ;;; Description:  Emacspeak's redefinition of some key functions.
 ;;; Emacspeak does most of its work by advising other functions to speak.
@@ -10,8 +10,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/01/25 20:03:59 $ |
-;;;  $Revision: 1.2 $ | 
+;;; $Date: 2002/01/28 14:03:00 $ |
+;;;  $Revision: 1.3 $ | 
 ;;; Location undetermined
 ;;;
 
