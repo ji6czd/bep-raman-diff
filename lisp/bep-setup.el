@@ -1,6 +1,6 @@
 ;;; bep-setup.el --- ption: Setup of the BEP for convention
 
-;;; $Id: bep-setup.el,v 1.6 2002/02/24 15:09:53 inoue Exp $
+;;; $Id: bep-setup.el,v 1.7 2002/02/25 14:43:35 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Module to set up dtk voices and personalities
 ;;; Keywords: Voice, Personality, BEP
@@ -9,8 +9,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/02/24 15:09:53 $ |
-;;;  $Revision: 1.6 $ |
+;;; $Date: 2002/02/25 14:43:35 $ |
+;;;  $Revision: 1.7 $ |
 ;;; Location undetermined
 ;;;
 
@@ -48,10 +48,11 @@
 
 ;;; Code:
 
-(require 'emacspeak-fix-interactive)
-
 (defvar bep-setup-hook nil
   "hook variable called after the setup of BEP finished.")
+
+(eval-when-compile
+  (require 'cl))
 
 ;;; Set up Emacspeak first.
 (load
@@ -61,6 +62,7 @@
 ;;; Load Multilingual extension.
 (setq emacspeak-m17n-auto-put-language-mode t)
 (require 'emacspeak-m17n-setup)
+(emacspeak-fix-interactive 'emacspeak-m17n-set-rate-offset)
 
 ;;; Japanese specific settings
 (require 'emacspeak-m17n-ja)

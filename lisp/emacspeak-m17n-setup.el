@@ -30,7 +30,7 @@
 (eval-when-compile
   (require 'cl)
   (require 'dtk-speak))
-(require 'emacspeak-fix-interactive)
+(require 'dtk-speak)
 ;;}}
 ;;}}
 
@@ -276,9 +276,8 @@ If BUFFER is not specified, see if currentbuffer is visible."
 	    (append emacspeak-m17n-rate-offset-alist (list (cons lang offset)))))
       (emacspeak-m17n-sync-rate-offset)
 ))
-(emacspeak-fix-interactive 'emacspeak-m17n-set-rate-offset)
 
-;;}}
+;}}
 ;;{{ Redefinition of emacspeak-speak functions
 (defun emacspeak-m17n-speak-this-char (char &optional lang)
   "Speak this CHAR."
@@ -301,7 +300,7 @@ If BUFFER is not specified, see if currentbuffer is visible."
   (add-hook 'window-scroll-functions 'emacspeak-m17n-put-language-after-scroll)
   (add-hook 'window-size-change-functions 'emacspeak-m17n-put-language-after-resize)
   (add-hook 'before-change-functions 'emacspeak-m17n-put-language-arrange-before-change)
-)
+  )
 ;;}}
 ;;{{ Final setup
 ;;}}
