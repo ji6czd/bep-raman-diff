@@ -1,6 +1,6 @@
 ;;; emacspeak-mew.el --- Speech enable Mew -- Fluent spoken access to internet message
-;;; $Id: emacspeak-mew.el,v 1.22 2002/02/12 06:11:56 mitsugu Exp $
-;;; $Author: mitsugu $ 
+;;; $Id: emacspeak-mew.el,v 1.23 2002/02/12 11:13:18 seiken Exp $
+;;; $Author: seiken $ 
 ;;; Description:  Emacspeak extension to speech enable Mew
 ;;; Keywords: Emacspeak, Mew, mail, Advice, Spoken Output
 ;;{{{  LCD Archive entry: 
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/02/12 06:11:56 $ |
-;;;  $Revision: 1.22 $ | 
+;;; $Date: 2002/02/12 11:13:18 $ |
+;;;  $Revision: 1.23 $ | 
 ;;; Location undetermined
 ;;;
 
@@ -120,22 +120,9 @@
 		      (voice-lock-mode 1)
 		      )))
 
-;(add-hook 'mew-message-hook
-;	  (function (lambda ()
-;		    (emacspeak-auditory-icon 'on)
-;		    ;; (dtk-speak "Displayed message.")
-;		    )))
-
 (add-hook 'mew-message-hook
 	  (function (lambda ()
 		    (emacspeak-auditory-icon 'on)
-		    (set-buffer "*Mew message*0")
-		    (make-local-variable 'voice-lock-support-mode)
-		    (setq voice-lock-support-mode 'lazy-voice-lock-mode)
-		    (make-local-variable 'voice-lock-defaults)
-		    (setq voice-lock-defaults '(mew-message-voice-lock-keywords t))
-		    (voice-lock-mode 1)
-		    (emacspeak-speak-rest-of-buffer)
 		    ;; (dtk-speak "Displayed message.")
 		    )))
 				      
@@ -335,9 +322,7 @@
 (defadvice mew-summary-goto-msg-mode (after emacspeak pre act )
   "Announce move to message mode."
   (emacspeak-auditory-icon 'on)
-  (set-buffer "*Mew message*0")
-  (emacspeak-speak-rest-of-buffer)
-  ;; (emacspeak-speak-mode-line)
+  (emacspeak-speak-mode-line)
 )
 
 (defadvice mew-message-goto-summary (after emacspeak pre act )
@@ -406,6 +391,17 @@
 	  (dtk-speak (format "%s of %s" num sum))
 	  ))
 )))
+
+(defadvice mew-summary-analyze-again (after emacspeak pre act)
+  "Automaticaly read message"
+  (set-buffer "*Mew message*0")
+  (make-local-variable 'voice-lock-support-mode)
+  (setq voice-lock-support-mode 'lazy-voice-lock-mode)
+  (make-local-variable 'voice-lock-defaults)
+  (setq voice-lock-defaults '(mew-message-voice-lock-keywords t))
+  (voice-lock-mode 1)
+  (emacspeak-speak-rest-of-buffer))
+
 
 (defadvice mew-summary-send (after emacspeak pre act )
   "speeks the current line after new message is opened."
