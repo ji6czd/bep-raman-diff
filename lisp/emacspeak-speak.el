@@ -1,5 +1,5 @@
 ;;; emacspeak-speak.el --- Implements Emacspeak's core speech services
-;;; $Id: emacspeak-speak.el,v 1.9 2002/03/09 09:40:28 inoue Exp $
+;;; $Id: emacspeak-speak.el,v 1.10 2002/03/10 10:40:52 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Contains the functions for speaking various chunks of text
 ;;; Keywords: Emacspeak,  Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/03/09 09:40:28 $ |
-;;;  $Revision: 1.9 $ |
+;;; $Date: 2002/03/10 10:40:52 $ |
+;;;  $Revision: 1.10 $ |
 ;;; Location undetermined
 ;;;
 
@@ -2943,7 +2943,7 @@ typed. If no such group exists, then we dont move. "
 
 ;;; local variables:
 ;;; folded-file: t
-;;; byte-compile-dynamic: nil
+;;; byte-compile-dynamic: t
 ;;; end:
 
 ;;}}}
