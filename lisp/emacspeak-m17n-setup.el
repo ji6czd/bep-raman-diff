@@ -139,11 +139,13 @@ if negative."
 (defun emacspeak-m17n-put-language-install ()
   (add-hook 'after-change-functions 'emacspeak-m17n-put-language-internal nil t)
   (add-hook 'window-scroll-functions 'emacspeak-m17n-put-language-after-scroll nil t)
+  (add-hook 'window-size-change-functions 'emacspeak-m17n-put-language-after-resize)
   (add-hook 'before-change-functions 'emacspeak-m17n-put-language-arrange-before-change nil t))
 
 (defun emacspeak-m17n-put-language-uninstall ()
   (remove-hook 'after-change-functions 'emacspeak-m17n-put-language-internal)
   (remove-hook 'window-scroll-functions 'emacspeak-m17n-put-language-after-scroll)
+  (remove-hook 'window-size-change-functions 'emacspeak-m17n-put-language-after-resize)
   (remove-hook 'before-change-functions 'emacspeak-m17n-put-language-arrange-before-change))
 
 (defun emacspeak-m17n-put-language-after-scroll (window window-start)
@@ -248,6 +250,7 @@ If BUFFER is not specified, see if currentbuffer is visible."
 
 (add-hook 'after-change-functions 'emacspeak-m17n-put-language-internal)
 (add-hook 'window-scroll-functions 'emacspeak-m17n-put-language-after-scroll)
+(add-hook 'window-size-change-functions 'emacspeak-m17n-put-language-after-resize)
 (add-hook 'before-change-functions 'emacspeak-m17n-put-language-arrange-before-change)
 (setq emacspeak-m17n-auto-put-language-mode t)
 ;;}}
