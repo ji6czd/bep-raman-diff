@@ -1,5 +1,5 @@
 ;;; emacspeak-mew.el --- Speech enable Mew -- Fluent spoken access to internet message
-;;; $Id: emacspeak-mew.el,v 1.26 2002/02/15 14:42:38 seiken Exp $
+;;; $Id: emacspeak-mew.el,v 1.27 2002/02/15 15:27:02 seiken Exp $
 ;;; $Author: seiken $ 
 ;;; Description:  Emacspeak extension to speech enable Mew
 ;;; Keywords: Emacspeak, Mew, mail, Advice, Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/02/15 14:42:38 $ |
-;;;  $Revision: 1.26 $ | 
+;;; $Date: 2002/02/15 15:27:02 $ |
+;;;  $Revision: 1.27 $ | 
 ;;; Location undetermined
 ;;;
 
@@ -93,6 +93,26 @@
 ;;}}}
 
 ;;{{{ hook
+(add-hook 'mew-init-hook
+	  (function (lambda ()
+		      (define-key mew-summary-mode-map "\C-erf"
+			'emacspeak-mew-speak-from)
+		      (define-key mew-summary-mode-map "\C-ert"
+			'emacspeak-mew-speak-to)
+		      (define-key mew-summary-mode-map "\C-ers"
+			'emacspeak-mew-speak-subject)
+		      (define-key mew-summary-mode-map "\C-erc"
+			'emacspeak-mew-speak-cc)
+		      (define-key mew-message-mode-map "\C-erf"
+			'emacspeak-mew-speak-from)
+		      (define-key mew-message-mode-map "\C-ert"
+			'emacspeak-mew-speak-to)
+		      (define-key mew-message-mode-map "\C-ers"
+			'emacspeak-mew-speak-subject)
+		      (define-key mew-message-mode-map "\C-erc"
+			'emacspeak-mew-speak-cc)
+		      )))
+
 (add-hook 'mew-summary-mode-hook
 	  (function (lambda ()
 		      (make-local-variable 'voice-lock-support-mode)
@@ -109,14 +129,6 @@
 			'emacspeak-mew-summary-previous-line)
 		      (define-key mew-summary-mode-map '[down]
 			'emacspeak-mew-summary-next-line)
-		      (define-key mew-summary-mode-map "\C-erf"
-			'emacspeak-mew-speak-from)
-		      (define-key mew-summary-mode-map "\C-ert"
-			'emacspeak-mew-speak-to)
-		      (define-key mew-summary-mode-map "\C-ers"
-			'emacspeak-mew-speak-subject)
-		      (define-key mew-summary-mode-map "\C-erc"
-			'emacspeak-mew-speak-cc)
 		      )))
 
 (add-hook 'mew-message-mode-hook
