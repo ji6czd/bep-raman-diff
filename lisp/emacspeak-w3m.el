@@ -1,5 +1,5 @@
 
-;;;$Id: emacspeak-w3m.el,v 1.9 2002/02/25 18:21:52 inoue Exp $;;; emacspeak-w3m.el --- speech-enables w3m-el
+;;;$Id: emacspeak-w3m.el,v 1.10 2002/03/04 01:21:03 mitsugu Exp $;;; emacspeak-w3m.el --- speech-enables w3m-el
 ;;; This file is not part of Emacspeak, but the same terms and
 ;;; conditions apply.
 
@@ -237,6 +237,50 @@
 
 ;;}}}
 ;;{{{  advice interactive commands.
+
+(defadvice w3m (after emacspeak pre act)
+  "speak page title"
+  (dtk-speak w3m-current-title))
+
+(defadvice w3m-find-file (after emacspeak pre act)
+  "speak page title"
+  (dtk-speak w3m-current-title)
+)
+
+(defadvice w3m-close-window (after emacspeak pre act)
+  "speak mode line"
+  (emacspeak-speak-mode-line)
+)
+
+(defadvice w3m-quit (after emacspeak pre act)
+  "speak the modeline"
+  (emacspeak-speak-mode-line))
+
+(defadvice w3m-view-this-url (after emacspeak pre act)
+  "speak page title"
+  (dtk-speak w3m-current-title))
+
+(defadvice w3m-reload-this-page (after emacspeak pre act)
+  "speak page title"
+  (dtk-speak w3m-current-title))
+
+(defadvice w3m-view-previous-page (after emacspeak pre act)
+  "speak page title"
+  (dtk-speak w3m-current-title))
+
+(defadvice w3m-view-next-page (after emacspeak pre act)
+  "speak page title"
+  (dtk-speak w3m-current-title))
+(defadvice w3m-edit-current-url (after emacspeak pre act)
+  "enter edit page speak the mode line"
+(emacspeak-speak-mode-line))
+
+(defadvice w3m-view-parent-page (after emacspeak pre act)
+  "speak page title"
+  (dtk-speak w3m-current-title))
+(defadvice w3m-edit-current-url (after emacspeak pre act)
+  "edit current URL after speak the modeline"
+  (emacspeak-speak-mode-line))
 
 (defadvice w3m-goto-url (around emacspeak pre act)
   (let ((emacspeak-speak-messages nil))

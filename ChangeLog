@@ -1,3 +1,8 @@
+2002-03-04  Mitsugu SAKAMOTO  <mitsugu@argv.org>
+
+	* emacspeak-w3m.el: Synch with Old BEP.
+	marged Advice command on Old Emacspeak-w3m.el.
+
 2002-02-23  Koichi INOUE  <inoue@argv.org>
 
 	* emacspeak-m17n-setup.el, bep-setup.el:
