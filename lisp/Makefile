@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.6 2002/03/09 09:40:28 inoue Exp $
+# $Id: Makefile,v 1.7 2002/03/27 14:51:13 inoue Exp $
 # $Author: inoue $ 
 # Description:  Makefile for Emacspeak 
 # Keywords: Emacspeak, Dectalk, Makefile 
@@ -7,8 +7,8 @@
 # LCD Archive Entry:
 # emacspeak| T. V. Raman |raman@cs.cornell.edu 
 # A speech interface to Emacs |
-# $Date: 2002/03/09 09:40:28 $ |
-#  $Revision: 1.6 $ | 
+# $Date: 2002/03/27 14:51:13 $ |
+#  $Revision: 1.7 $ | 
 # Location undetermined
 #
 
@@ -88,6 +88,7 @@ emacspeak-freeamp.elc \
 	emacspeak-tabulate.elc 
 
 AUX_OBJECTS =  cd-tool.elc \
+emacspeak-analog.elc \
 emacspeak-ansi-color.elc \
 emacspeak-arc.elc \
 emacspeak-auctex.elc \
@@ -119,6 +120,7 @@ emacspeak-ecb.elc \
 emacspeak-ediff.elc \
 emacspeak-enriched.elc \
 emacspeak-entertain.elc \
+emacspeak-eperiodic.elc \
 emacspeak-erc.elc \
 emacspeak-eshell.elc \
 emacspeak-eterm.elc \
@@ -258,6 +260,7 @@ html-outline.elc: html-outline.el
 cd-tool.elc: cd-tool.el
 emacspeak-actions.elc: emacspeak-actions.el  voice-lock.elc
 emacspeak-advice.elc: emacspeak-advice.el dtk-speak.elc
+emacspeak-analog.elc: emacspeak-analog.el dtk-speak.elc
 emacspeak-ansi-color.elc: emacspeak-ansi-color.el dtk-speak.elc
 emacspeak-arc.elc: emacspeak-arc.el dtk-speak.elc
 emacspeak-auctex.elc: emacspeak-auctex.el dtk-speak.elc
@@ -288,6 +291,7 @@ emacspeak-ecb.elc: emacspeak-ecb.el dtk-speak.elc
 emacspeak-ediff.elc: emacspeak-ediff.el dtk-speak.elc
 emacspeak-enriched.elc: emacspeak-enriched.el dtk-speak.elc
 emacspeak-entertain.elc: emacspeak-entertain.el dtk-speak.elc
+emacspeak-eperiodic.elc: emacspeak-eperiodic.el dtk-speak.elc
 emacspeak-erc.elc: emacspeak-erc.el dtk-speak.elc
 emacspeak-eshell.elc: emacspeak-eshell.el dtk-speak.elc
 emacspeak-eterm.elc: emacspeak-eterm.el dtk-speak.elc

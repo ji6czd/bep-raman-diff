@@ -1,5 +1,5 @@
 ;;; dtk-tcl.el --- Interface to TCL speech server --uses module dtk-interp.el
-;;; $Id: dtk-tcl.el,v 1.7 2002/03/09 09:40:28 inoue Exp $
+;;; $Id: dtk-tcl.el,v 1.8 2002/03/27 14:51:13 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Interfacing to the Dectalk via TCL.
 ;;; Keywords: Dectalk, TCL
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/03/09 09:40:28 $ |
-;;;  $Revision: 1.7 $ |
+;;; $Date: 2002/03/27 14:51:13 $ |
+;;;  $Revision: 1.8 $ |
 ;;; Location undetermined
 ;;;
 
