@@ -73,7 +73,8 @@
   (if (bufferp buffer)
       (if (string-match "\\*Channel:" (buffer-name buffer))
 	  (if (liece-get-buffer-window buffer)
-	      (let ((dtk-stop-immediately emacspeak-liece-stop-immediately))
+	      (let ((dtk-stop-immediately emacspeak-liece-stop-immediately)
+		    (dtk-stop-immediately-while-typing emacspeak-liece-stop-immediately))
 		(dtk-speak string))))))
 
 (defun emacspeak-liece-toggle-stop ()
