@@ -1,6 +1,6 @@
 ;;; emacspeak-mew.el --- Speech enable Mew -- Fluent spoken access to internet message
-;;; $Id: emacspeak-mew.el,v 1.12 2001/08/01 17:02:35 mitsugu Exp $
-;;; $Author: mitsugu $ 
+;;; $Id: emacspeak-mew.el,v 1.13 2001/09/21 12:52:14 seiken Exp $
+;;; $Author: seiken $ 
 ;;; Description:  Emacspeak extension to speech enable Mew
 ;;; Keywords: Emacspeak, Mew, mail, Advice, Spoken Output
 ;;{{{  LCD Archive entry: 
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2001/08/01 17:02:35 $ |
-;;;  $Revision: 1.12 $ | 
+;;; $Date: 2001/09/21 12:52:14 $ |
+;;;  $Revision: 1.13 $ | 
 ;;; Location undetermined
 ;;;
 
@@ -139,21 +139,25 @@
 (defadvice mew-summary-suspend (after emacspeak pre act )
   "announces after Mew suspends."
 ;  (dtk-interp-queue "Mew suspended")
+  (emacspeak-auditory-icon 'close-object)
   (emacspeak-speak-mode-line))
 
 (defadvice mew-summary-quit (after emacspeak pre act )
   "announces after Mew quitss."
 ;  (dtk-interp-queue "Mew quit")
+  (emacspeak-auditory-icon 'close-object)
   (emacspeak-speak-mode-line))
 
 (defadvice mew-kill-buffer (after emacspeak pre act)
   "announce kill buffer"
   (when (interactive-p)
-    (emacspeak-auditory-icon 'quit)
+    (emacspeak-auditory-icon 'close-object)
+    ;;    (emacspeak-auditory-icon 'quit)
   (emacspeak-speak-mode-line)))
 
 (defadvice mew-draft-kill (after emacspeak pre act)
   "announce kill draft buffer "
+  (emacspeak-auditory-icon 'close-object)
   (emacspeak-speak-mode-line))
 
 (defadvice mew-draft-circular-comp (around emacspeak pre act)
@@ -279,10 +283,12 @@
 
 (defadvice mew-summary-jump-top (after emacspeak pre act )
   "speeks the message after movement"
+  (emacspeak-auditory-icon 'left)
   (emacspeak-speak-line)
 )
 
 (defadvice mew-summary-jump-bottom (after emacspeak pre act )
+  (emacspeak-auditory-icon 'left)
   "speeks the message after movement"
   (emacspeak-speak-line)
 )
