@@ -1,5 +1,5 @@
 ;;; emacspeak-mew.el --- Speech enable Mew -- Fluent spoken access to internet message
-;;; $Id: emacspeak-mew.el,v 1.29 2002/02/16 02:04:36 seiken Exp $
+;;; $Id: emacspeak-mew.el,v 1.30 2002/02/19 13:04:36 seiken Exp $
 ;;; $Author: seiken $ 
 ;;; Description:  Emacspeak extension to speech enable Mew
 ;;; Keywords: Emacspeak, Mew, mail, Advice, Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/02/16 02:04:36 $ |
-;;;  $Revision: 1.29 $ | 
+;;; $Date: 2002/02/19 13:04:36 $ |
+;;;  $Revision: 1.30 $ | 
 ;;; Location undetermined
 ;;;
 
@@ -406,8 +406,9 @@
   "speaks the message header infomation."
   (save-excursion
     (let ((speak-header
-	   (concat "From:" (mew-header-get-value "From:") "Subject:" (mew-header-get-value "Subject:"))))
-      (dtk-speak speak-header)
+	   (concat "From:" (mew-header-get-value "From:") "Subject:" (mew-header-get-value "Subject:")))
+	  (msg (mew-current-get-msg (mew-frame-id))))
+      (dtk-speak (format "%s: %s" msg speak-header))
 )))
 
 (defadvice mew-summary-analyze-again (after emacspeak pre act)
