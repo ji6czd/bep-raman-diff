@@ -1,5 +1,5 @@
 ;;; emacspeak-w3m.el -- speech enable emacs-w3m -- frontend for w3m WEB browser.
-;;;$id:  $
+;;;$Id: emacspeak-w3m.el,v 1.4 2001/06/21 23:26:24 mitsugu Exp $
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
