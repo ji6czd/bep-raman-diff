@@ -1,5 +1,5 @@
 ;;; dtk-speak.el --- Provides Emacs Lisp interface to speech server
-;;;$Id: dtk-speak.el,v 1.3 2002/02/05 17:31:40 inoue Exp $
+;;;$Id: dtk-speak.el,v 1.4 2002/03/09 09:40:28 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Emacs interface to the dectalk
 ;;; Keywords: Dectalk Emacs Elisp
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/02/05 17:31:40 $ |
-;;;  $Revision: 1.3 $ |
+;;; $Date: 2002/03/09 09:40:28 $ |
+;;;  $Revision: 1.4 $ |
 ;;; Location undetermined
 ;;;
 
@@ -53,8 +53,8 @@
 (declaim  (optimize  (safety 0) (speed 3)))
 (require 'backquote)
 (require 'custom)
-(require 'dtk-tcl)
-(require 'emacspeak-sounds)
+  (require 'dtk-tcl)
+
 ;;}}}
 ;;{{{  user customizations:
 

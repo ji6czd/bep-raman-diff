@@ -1,5 +1,5 @@
 ;;; emacspeak-speak.el --- Implements Emacspeak's core speech services
-;;; $Id: emacspeak-speak.el,v 1.8 2002/03/07 13:11:52 inoue Exp $
+;;; $Id: emacspeak-speak.el,v 1.9 2002/03/09 09:40:28 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Contains the functions for speaking various chunks of text
 ;;; Keywords: Emacspeak,  Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/03/07 13:11:52 $ |
-;;;  $Revision: 1.8 $ |
+;;; $Date: 2002/03/09 09:40:28 $ |
+;;;  $Revision: 1.9 $ |
 ;;; Location undetermined
 ;;;
 
@@ -45,11 +45,13 @@
 (require 'backquote)
 (require 'custom)
 (require 'thingatpt)
-(require 'dtk-speak)
-(eval-when-compile
-  (require 'voice-lock)
-  (require 'emacspeak-sounds)
-  (require 'shell))
+ (eval-when-compile
+   (provide 'emacspeak-speak) ;avoid recursive include
+   (require 'dtk-speak )
+   (require 'emacspeak-sounds)
+   (require 'shell)
+   (require 'which-func nil)
+   )
 
 ;;}}}
 ;;{{{  Introduction:
@@ -559,7 +561,8 @@ results in the number of initial spaces being spoken."
   "Speak region.
 Argument START  and END specify region to speak."
   (interactive "r" )
-  (declare (special emacspeak-speak-voice-annotated-paragraphs))
+  (declare (special emacspeak-speak-voice-annotated-paragraphs
+                    voice-lock-mode))
   (when (and voice-lock-mode
              (not emacspeak-speak-voice-annotated-paragraphs))
     (save-restriction
@@ -798,7 +801,9 @@ created by command `emacspeak-hide-or-expose-block' are
 indicated with auditory icon ellipses."
   (interactive "P")
   (declare (special voice-lock-mode
+                    dtk-stop-immediately
                     emacspeak-speak-line-invert-filter
+                    dtk-punctuation-mode
                     emacspeak-speak-space-regexp
                     outline-minor-mode folding-mode
                     emacspeak-speak-maximum-line-length
@@ -1120,6 +1125,7 @@ special characters are spoken. Interactive prefix argument causes
 setting to be global."
   (interactive "P")
   (declare (special dtk-display-table
+                    dtk-iso-ascii-character-to-speech-table
                     emacspeak-speak-display-table-list))
   (let ((type (completing-read
                "Select speech display table: "
@@ -1243,7 +1249,8 @@ Negative prefix arg speaks from start of buffer to point.
  If voice lock mode is on, the paragraphs in the buffer are
 voice annotated first,  see command `emacspeak-speak-voice-annotate-paragraphs'."
   (interactive "P" )
-  (declare (special emacspeak-speak-voice-annotated-paragraphs))
+  (declare (special emacspeak-speak-voice-annotated-paragraphs
+                    voice-lock-mode))
   (when (and voice-lock-mode
              (not emacspeak-speak-voice-annotated-paragraphs))
     (emacspeak-speak-voice-annotate-paragraphs))
@@ -1791,6 +1798,7 @@ See the documentation for function
   "Announce version information for running emacspeak."
   (interactive)
   (declare (special emacspeak-version
+                    emacspeak-sounds-directory
                     emacspeak-play-emacspeak-startup-icon
                     emacspeak-codename))
   (let ((signature "You are using  ")
@@ -2594,6 +2602,7 @@ When calling from a program,arguments are
 START END personality
 Prompts for PERSONALITY  with completion when called interactively."
   (interactive "r")
+  (declare (special voice-lock-mode))
   (require 'rect)
   (require 'voice-lock )
   (or voice-lock-mode (setq voice-lock-mode t ))
@@ -2615,6 +2624,7 @@ When calling from a program,arguments are
 START END personality.
 Prompts for PERSONALITY  with completion when called interactively."
   (interactive "r")
+  (declare (special voice-lock-mode))
   (require 'voice-lock )
   (or voice-lock-mode (setq voice-lock-mode t ))
   (let ((personality-table (emacspeak-possible-voices )))
@@ -2933,7 +2943,7 @@ typed. If no such group exists, then we dont move. "
 
 ;;; local variables:
 ;;; folded-file: t
-;;; byte-compile-dynamic: t
+;;; byte-compile-dynamic: nil
 ;;; end:
 
 ;;}}}
