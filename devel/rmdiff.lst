@@ -17,3 +17,9 @@ lisp/emacspeak-speak.el
 lisp/emacspeak-w3m.el
 lisp/yahtml-voice.el
 lisp/emacspeak.el
+realaudio/ja/radio/champla.ram
+realaudio/ja/radio/fm-jaigo.ram
+realaudio/ja/radio/fm-miki.ram
+realaudio/ja/radio/fmyy.ram
+realaudio/ja/radio/katsushika-fm.ram
+realaudio/ja/radio/shona.ram
