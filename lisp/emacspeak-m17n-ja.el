@@ -1,6 +1,6 @@
 ;;; -*- coding: iso-2022-7bit-unix -*-
 ;;; emacspeak-m17n-ja.el --- Bilingual extension to emacspeak
-;;; $Id: emacspeak-m17n-ja.el,v 1.6 2002/02/14 16:06:55 inoue Exp $
+;;; $Id: emacspeak-m17n-ja.el,v 1.7 2002/02/17 18:35:39 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description: Contains functions that handle Japanese characters
 ;;; Keywords: Emacspeak, Japanese, multilingualization
@@ -48,10 +48,16 @@
 ;;}}
 ;;{{{ Variables
 (defvar emacspeak-m17n-ja-strategy-alist
-  '((emacspeak-m17n-put-language-ja-ne . "Native English mode")
-    (emacspeak-m17n-put-language-ja-ke-1 . "Adaptive English mode")
-    (emacspeak-m17n-put-language-ja-ke-all . "Katakana English mode"))
-"List of available put-language-strategy and its feedback message.")
+  '(("Native English mode"
+     emacspeak-m17n-put-language-ja-ne emacspeak-m17n-put-language-ja-ne)
+    ("Adaptive English mode"
+     emacspeak-m17n-put-language-ja-ke-1 emacspeak-m17n-put-language-ja-ne)
+    ("Katakana English mode"
+     emacspeak-m17n-put-language-ja-ke-all emacspeak-m17n-put-language-ja-ke-all))
+"List of available strategy set. A list of 3 element lists:
+name of the set, used for feedback messages,
+strategy1 for buffer contents,
+strategy2 for other things like messages.")
 ;;}}}
 ;;{{{ Access functions for auditory-display-table-ja
 
@@ -342,13 +348,18 @@ and `en' property to others."
   "Toggle around put-language-strategy"
   (interactive)
   (declare (special emacspeak-m17n-put-language-strategy
+		    emacspeak-m17n-put-language-internal-strategy
 		    emacspeak-m17n-ja-strategy-alist))
-  (let ((strategy (car emacspeak-m17n-ja-strategy-alist))
-	(strategy-cdr (cdr emacspeak-m17n-ja-strategy-alist)))
-    (setq emacspeak-m17n-put-language-strategy (car strategy))
+  (let* ((strategy (car emacspeak-m17n-ja-strategy-alist))
+	(strategy-cdr (cdr emacspeak-m17n-ja-strategy-alist))
+	(name (nth 0 strategy))
+	(new-def (nth 1 strategy))
+	(new-int (nth 2 strategy)))
+    (setq emacspeak-m17n-put-language-strategy new-def)
+    (setq emacspeak-m17n-put-language-internal-strategy new-int)
     (setq emacspeak-m17n-ja-strategy-alist (nconc strategy-cdr (cons strategy nil)))
     (recenter)
-    (message (format "%s" (cdr strategy)))))
+    (message (format "%s" name))))
 ;;}}}
 
 (provide 'emacspeak-m17n-ja)

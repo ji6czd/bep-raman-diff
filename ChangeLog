@@ -1,3 +1,10 @@
+2002-02-18  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-m17n-ja.el: New structure of
+	emacspeak-m17n-ja-strategy-alist . Each entry has three element
+	name, strategy for buffer content, strategy for other things like
+	messages.
+
 2002-02-16  KIRIAKE Masanori  <seiken@ARGV.org>
 
 	* lisp/emacspeak-mew.el:
