@@ -1,3 +1,10 @@
+2002-02-11  Koichi INOUE  <inoue@argv.org>
+
+	* bep-setup.el: Added keymap of
+	emacspeak-m17jn-auto-put-language-mode (C-e x m a) and
+	emacspeak-m17n-ja-toggle-strategy (C-e x m s)
+	to Emacspeak's personal keymap.
+
 2002-02-09  Koichi INOUE  <inoue@argv.org>
 
 	* lisp/emacspeak-w3m.el: Fixed voicification to work.

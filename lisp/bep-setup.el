@@ -1,6 +1,6 @@
 ;;; bep-setup.el --- ption: Setup of the BEP for convention
 
-;;; $Id: bep-setup.el,v 1.2 2002/02/05 17:31:39 inoue Exp $
+;;; $Id: bep-setup.el,v 1.3 2002/02/11 07:09:07 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Module to set up dtk voices and personalities
 ;;; Keywords: Voice, Personality, BEP
@@ -9,8 +9,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/02/05 17:31:39 $ |
-;;;  $Revision: 1.2 $ |
+;;; $Date: 2002/02/11 07:09:07 $ |
+;;;  $Revision: 1.3 $ |
 ;;; Location undetermined
 ;;;
 
@@ -77,6 +77,10 @@
 (emacspeak-do-package-setup "mew" 'emacspeak-mew)
 (emacspeak-do-package-setup "mime-setup" 'emacspeak-semi)
 (emacspeak-do-package-setup "w3m" 'emacspeak-w3m)
+
+;;; Define keys
+(define-key 'emacspeak-personal-keymap "ms" 'emacspeak-m17n-ja-toggle-strategy)
+(define-key 'emacspeak-personal-keymap "ma" 'emacspeak-m17n-auto-put-language-mode)
 
 (run-hooks bep-setup-hook)
 
