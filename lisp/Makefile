@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.4 2002/02/22 15:46:03 inoue Exp $
+# $Id: Makefile,v 1.5 2002/03/07 13:11:52 inoue Exp $
 # $Author: inoue $ 
 # Description:  Makefile for Emacspeak 
 # Keywords: Emacspeak, Dectalk, Makefile 
@@ -7,8 +7,8 @@
 # LCD Archive Entry:
 # emacspeak| T. V. Raman |raman@cs.cornell.edu 
 # A speech interface to Emacs |
-# $Date: 2002/02/22 15:46:03 $ |
-#  $Revision: 1.4 $ | 
+# $Date: 2002/03/07 13:11:52 $ |
+#  $Revision: 1.5 $ | 
 # Location undetermined
 #
 
@@ -109,6 +109,7 @@ emacspeak-cmuscheme.elc \
 emacspeak-compile.elc \
 emacspeak-cperl.elc \
 emacspeak-custom.elc \
+emacspeak-daisy.elc \
 emacspeak-dictation.elc \
 emacspeak-dictionary.elc \
 emacspeak-dired.elc \
@@ -200,7 +201,7 @@ emacspeak-xslt-process.elc \
 emacspeak-egg.elc emacspeak-kkc.elc emacspeak-liece.elc emacspeak-mew.elc \
 emacspeak-semi.elc emacspeak-w3m.elc yahtml-voice.elc
 
-ADDON_OBJECTS= tapestry.elc   regexp-opt.elc
+ADDON_OBJECTS= tapestry.elc   xml-parse.elc regexp-opt.elc
 
 OBJECTS = $(DTK_OBJECTS) $(SPEAK_OBJECTS) $(CORE_OBJECTS)  \
 	$(AUX_OBJECTS) $(ADDON_OBJECTS) $(M17N_OBJECTS) $(BEP_OBJECTS)
@@ -277,6 +278,7 @@ emacspeak-calendar.elc: emacspeak-calendar.el dtk-speak.el
 emacspeak-checkdoc.elc: emacspeak-checkdoc.el dtk-speak.elc
 emacspeak-cperl.elc: emacspeak-cperl.el dtk-speak.elc
 emacspeak-custom.elc: emacspeak-custom.el dtk-speak.elc
+emacspeak-daisy.elc: emacspeak-daisy.el dtk-speak.elc
 emacspeak-dictation.elc: emacspeak-dictation.el dtk-speak.elc
 emacspeak-dictionary.elc: emacspeak-dictionary.el dtk-speak.elc
 emacspeak-dired.elc: emacspeak-dired.el dtk-speak.elc

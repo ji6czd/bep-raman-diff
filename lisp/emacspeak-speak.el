@@ -1,5 +1,5 @@
 ;;; emacspeak-speak.el --- Implements Emacspeak's core speech services
-;;; $Id: emacspeak-speak.el,v 1.7 2002/02/02 13:57:26 inoue Exp $
+;;; $Id: emacspeak-speak.el,v 1.8 2002/03/07 13:11:52 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description:  Contains the functions for speaking various chunks of text
 ;;; Keywords: Emacspeak,  Spoken Output
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu
 ;;; A speech interface to Emacs |
-;;; $Date: 2002/02/02 13:57:26 $ |
-;;;  $Revision: 1.7 $ |
+;;; $Date: 2002/03/07 13:11:52 $ |
+;;;  $Revision: 1.8 $ |
 ;;; Location undetermined
 ;;;
 
@@ -2771,8 +2771,9 @@ Argument O specifies overlay."
   "Kill current buffer without asking for confirmation."
   (interactive)
   (kill-buffer nil )
-  (emacspeak-auditory-icon 'close-object)
-  (emacspeak-speak-mode-line ))
+  (when (interactive-p)
+    (emacspeak-auditory-icon 'close-object)
+    (emacspeak-speak-mode-line )))
 
 ;;}}}
 ;;{{{  translate faces to voices
