@@ -89,4 +89,5 @@
   )
 
 
+(provide 'emacspeak-liece)
 
