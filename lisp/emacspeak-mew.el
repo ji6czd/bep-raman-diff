@@ -1,6 +1,6 @@
 ;;; emacspeak-mew.el --- Speech enable Mew -- Fluent spoken access to internet message
-;;; $Id: emacspeak-mew.el,v 1.5 2001/07/15 21:41:56 inoue Exp $
-;;; $Author: inoue $ 
+;;; $Id: emacspeak-mew.el,v 1.6 2001/07/16 00:59:57 mitsugu Exp $
+;;; $Author: mitsugu $ 
 ;;; Description:  Emacspeak extension to speech enable mew
 ;;; Keywords: Emacspeak, Mew, IM, mail, Advice, Spoken Output
 ;;{{{  LCD Archive entry: 
@@ -8,8 +8,8 @@
 ;;; LCD Archive Entry:
 ;;; emacspeak| T. V. Raman |raman@cs.cornell.edu 
 ;;; A speech interface to Emacs |
-;;; $Date: 2001/07/15 21:41:56 $ |
-;;;  $Revision: 1.5 $ | 
+;;; $Date: 2001/07/16 00:59:57 $ |
+;;;  $Revision: 1.6 $ | 
 ;;; Location undetermined
 ;;;
 
@@ -421,19 +421,12 @@
   ad-return-value
 )
 
-(defadvice  mew-pop-sentinel (after emacspeak pre act )
-  "Provide auditory feedback"
-  (emacspeak-auditory-icon 'task-done)
-  (let ((dtk-stop-immediately nil))
-    (dtk-speak   emacspeak-last-message ))
-)
+(add-hook 'mew-pop-sentinel-non-biff-hook
+	  (function (lambda ()
+		      (emacspeak-auditory-icon 'task-done)
+		      (let ((dtk-stop-immediately nil))
+			(dtk-speak   emacspeak-last-message )))))
 
-(defadvice  mew-scan-sentinel (after emacspeak pre act )
-  "Provide auditory feedback"
-  (emacspeak-auditory-icon 'task-done)
-  (let ((dtk-stop-immediately nil))
-    (dtk-speak   emacspeak-last-message ))
-)
 
 ;;; helper functions
 (defun emacspeak-mew-speak-mark (&optional queue-only)
