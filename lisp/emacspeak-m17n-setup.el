@@ -44,7 +44,7 @@
   "Put-Language strategy used for string without language property.")
 
 (defvar emacspeak-m17n-rate-offset-alist 
-  '((en 0) (ja 0))
+  '((en . 0) (ja . 0))
   "alist of language and rate offset.")
 
 (defvar emacspeak-display-table-alist nil
@@ -261,10 +261,21 @@ If BUFFER is not specified, see if currentbuffer is visible."
   (mapcar
    (function (lambda (ent)
 	       (process-send-string dtk-speaker-process
-				    (format "tts_set_speed_offet %s %s\n"
+				    (format "tts_set_rate_offset %s %s\n"
 					    (symbol-name (car ent))
-					    (car (cdr ent))))))
+					    (cdr ent)))))
 	     emacspeak-m17n-rate-offset-alist))
+
+(defun emacspeak-m17n-set-rate-offset (lang offset)
+  (interactive "SWhat language: \nnOffset: ")
+  (let ((rate-offset (assq lang emacspeak-m17n-rate-offset-alist)))
+    (if rate-offset
+	(setcdr rate-offset offset)
+      (setq emacspeak-m17n-rate-offset-alist
+	    (append emacspeak-m17n-rate-offset-alist (list (cons lang offset)))))
+      (emacspeak-m17n-sync-rate-offset)
+))
+(emacspeak-fix-interactive 'emacspeak-m17n-set-rate-offset)
 
 ;;}}
 ;;{{ Redefinition of emacspeak-speak functions
