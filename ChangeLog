@@ -1,3 +1,7 @@
+2002-04-09  Koichi INOUE  <inoue@argv.org>
+
+	* emacspeak-m17n-ja.el: strategy-ja-ne is more stable.
+
 2002-04-03  Koichi INOUE  <inoue@argv.org>
 
 	* emacspeak-w3m: Synched up to Emacspeak. Use voice-setup for

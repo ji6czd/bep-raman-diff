@@ -1,6 +1,6 @@
 ;;; -*- coding: iso-2022-7bit-unix -*-
 ;;; emacspeak-m17n-ja.el --- Bilingual extension to emacspeak
-;;; $Id: emacspeak-m17n-ja.el,v 1.7 2002/02/17 18:35:39 inoue Exp $
+;;; $Id: emacspeak-m17n-ja.el,v 1.8 2002/04/08 19:23:49 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description: Contains functions that handle Japanese characters
 ;;; Keywords: Emacspeak, Japanese, multilingualization
@@ -287,19 +287,19 @@ Japanese specific."
 and `en' property to ASCII characters."
   (goto-char beg)
   (while (and (< (point) end)
-	      (re-search-forward "\\([\011\012\014 -~]+\\|\\(\\cj\\|\n\\)+\\)" end t))
+	      (re-search-forward "\\([\t -~]+\\|\\cj+\\)" end t))
     (let* ((mbeg (match-beginning 0))
 	   (mend (match-end 0))
-	   (beginning (= mbeg (point-min)))
-	   (ending (= mend (point-max)))
-	   (matched 
-	    (buffer-substring mbeg mend)))
-      (cond
-       ((string-match "^\\cj" matched)
-	(put-text-property mbeg mend 'emacspeak-language 'ja))
-       (t
-	(put-text-property mbeg mend 'emacspeak-language 'en))
-       ) ; end of cond
+	   (beginning (max mbeg (point-min)))
+	   (ending (min mend (point-max)))
+	   (lang
+	    (if (string-match "^\\cj" (buffer-substring mbeg (1+ mbeg)))
+		'ja
+	      'en)))
+      (put-text-property beginning ending 'emacspeak-language lang)
+      (if (looking-at "[\011\012\014\015]+")
+	  (put-text-property
+	   (match-beginning 0) (match-end 0) 'emacspeak-language lang))
       )))
 
 (defvar emacspeak-m17n-ja-ke-limit 40
@@ -323,8 +323,8 @@ and `en' property to others."
 	      (re-search-forward "\\([\011\012\014 -~]+\\|\\(\\cj\\|\n\\)+\\)" end t))
     (let* ((mbeg (match-beginning 0))
 	   (mend (match-end 0))
-	   (beginning (= mbeg (point-min)))
-	   (ending (= mend (point-max)))
+	   (beginning (max mbeg (point-min)))
+	   (ending (min mend (point-max)))
 	   (matched 
 	    (buffer-substring mbeg mend)))
       (cond
@@ -332,7 +332,7 @@ and `en' property to others."
 	    (< (length matched) emacspeak-m17n-ja-ke-limit))
 	(put-text-property mbeg mend 'emacspeak-language 'ja))
        (t
-	(put-text-property mbeg mend 'emacspeak-language 'en))
+	(put-text-property beginning ending 'emacspeak-language 'en))
        ) ; end of cond
       )))
 
