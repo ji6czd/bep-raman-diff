@@ -1,5 +1,12 @@
 2002-01-26  Koichi INOUE  <inoue@argv.org>
 
+	* emacspeak-m17n-setup, emacspeak-m17n-ja:
+	`emacspeak-m17n-put-language-strategy' points to the function
+	you like to put language automatically. Current choice is
+	emacspeak-m17n-put-language-ja-ne,
+	emacspeak-m17n-put-language-ja-ke-1(default),
+	emacspeak-m17n-put-language-ja-ke-all.
+
 	* Initialization: emacspeak-m17n-setup is now not loaded
 	automatically.
 	After loading emacspeak-setup, you should load

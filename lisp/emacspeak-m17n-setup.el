@@ -34,6 +34,10 @@
 (defvar emacspeak-m17n-auto-put-language-mode nil
   "If t, guess language of characters automatically.")
 
+(defvar emacspeak-m17n-put-language-strategy
+  'emacspeak-m17n-put-language-ja-ke-1
+  "How to determine language automatically.")
+
 (put 'auditory-display-table 'char-table-extra-slots 6)
 
 (defvar emacspeak-display-table-alist nil
@@ -84,13 +88,11 @@ even if it is a non-ascii character."
   (interactive "r")
   (let ((inhibit-read-only t) (buffer-undo-list t)
 	(modified (buffer-modified-p))
-	before-change-functions after-change-functions
-	put-language-func)
-    (setq put-language-func 'emacspeak-m17n-put-language-ja-ne)
+	before-change-functions after-change-functions)
     (unwind-protect
 	(save-match-data
 	  (save-excursion
-	    (funcall put-language-func beg end)))
+	    (funcall emacspeak-m17n-put-language-strategy beg end)))
       ;;; Clean up
       (and (not modified) (buffer-modified-p) (set-buffer-modified-p nil)))))
 
@@ -104,13 +106,11 @@ even if it is a non-ascii character."
 	(modified (buffer-modified-p))
 	befor-change-functions after-change-functions
 	(begm (max (window-start) beg))
-	(endm (min (window-end) end))
-	put-language-func)
-    (setq put-language-func 'emacspeak-m17n-put-language-ja-ne)
+	(endm (min (window-end) end)))
     (unwind-protect
 	(save-match-data
 	  (save-excursion
-	    (funcall put-language-func begm endm)))
+	    (funcall emacspeak-m17n-put-language-strategy begm endm)))
       ;;; Clean up
       (and (not modified) (buffer-modified-p) (set-buffer-modified-p nil))))))
 

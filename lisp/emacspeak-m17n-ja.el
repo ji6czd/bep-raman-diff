@@ -1,5 +1,5 @@
 ;;; emacspeak-m17n-ja.el --- Bilingual extension to emacspeak
-;;; $Id: emacspeak-m17n-ja.el,v 1.1 2002/01/20 18:57:43 inoue Exp $
+;;; $Id: emacspeak-m17n-ja.el,v 1.2 2002/01/25 21:08:17 inoue Exp $
 ;;; $Author: inoue $
 ;;; Description: Contains functions that handle Japanese characters
 ;;; Keywords: Emacspeak, Japanese, multilingualization
@@ -289,6 +289,36 @@ and `en' property to ASCII characters."
 	(put-text-property mbeg mend 'emacspeak-language 'en))
        ) ; end of cond
       )))
+
+(defvar emacspeak-m17n-ja-ke-limit 80
+  "Non-Japanese string shorter than this value is spoken as Katakana English.")
+
+(defun emacspeak-m17n-put-language-ja-ke-1 (beg end)
+  "Put `ja' Property to Japanese characters
+and ascii string shorter than `emacspeak-m17n-ja-ke-limit',
+and `en' property to others."
+  (goto-char beg)
+  (while (and (< (point) end)
+	      (re-search-forward "\\([\011\012\014 -~]+\\|\\(\\cj\\|\n\\)+\\)" end t))
+    (let* ((mbeg (match-beginning 0))
+	   (mend (match-end 0))
+	   (beginning (= mbeg (point-min)))
+	   (ending (= mend (point-max)))
+	   (matched 
+	    (buffer-substring mbeg mend)))
+      (cond
+       ((or (string-match "^\\cj" matched)
+	    (< (length matched) emacspeak-m17n-ja-ke-limit))
+	(put-text-property mbeg mend 'emacspeak-language 'ja))
+       (t
+	(put-text-property mbeg mend 'emacspeak-language 'en))
+       ) ; end of cond
+      )))
+
+(defun emacspeak-m17n-put-language-ja-ke-all (beg end)
+  "Speek all characters as Japanese."
+  (put-text-property beg end 'emacspeak-language 'ja))
+
 ;;}}
 
 (provide 'emacspeak-m17n-ja)
