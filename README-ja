@@ -11,28 +11,17 @@ EmacspeakのCVSサイトは以下のリポジトリにあります。
 
 2. 変更の適用
 
-まずこのディレクトリをcvs update -dPで最新の状態にアップデートします。
-アップデートしたら、devel/settingsファイルを適当に編集して環境に合わせて
-ください。
-そして、
-devel/apply
-を実行してください。
-settingsファイルのSOURCE_DIRで示される場所にEmacspeakがあると仮定して、
-変更のあったファイルをコピーします。
-コピー後のEmacspeakを新BEPと呼ぶことにしましょう。
-
+1)  このディレクトリの中にあるlisplangディレクトリをEmacspeakソースのlispディレクトリにいコピーしてください。Emacspeakソースツリーのlispディレクトリの中にlangディレクトリができるようにします。
+2)  Emacspeakのトップディレクトリで`make config'、続いて`make emacspeak'を実行します。
+3)  Emacspeakソースツリーの中野lisp/langディレクトリに移動して、`make'を実行します。
 
 3. アップデート
 
 新BEPをさらに最新の状態に保つ場合は以下の手順で行います。
 
-(1) devel/settingsファイルを編集します。
-(2) devel/removeを実行します。これで2.でコピーしたファイルがEmacspeakディ
-(レクトリから削除されます。
-(3) このディレクトリとEmacspeakのディレクトリでそれぞれ
-cvs update -dP
-を実行します。
-(4) 2.の手順で再度差分をコピーします。
+1)  Emacspeakのトップディレクトリで`cvs update'を実行します。EmacspeakのソースおよびBEPのソースが最新になります。
+2)  `make clean'を、Emacspeakのトップディレクトリおよびlisp/langディレクトリで実行します。
+3)  「変更の適用」セクションの2)以降を実行してください。
 
 
 4. .emacs用サンプル
@@ -43,12 +32,7 @@ dot.emacs.addには、このバージョンのBEPを動かすためのサンプル設定がありま
 
 5. 注意
 
-徐々に以前のBEPと同じ機能を持つようにしますが、現状ではパッケージ対応機
-能の多くがありません。
-新BEPは現在うまくbyte-compileできないでしょう。安定するまではソースのま
-ま使ってみてください。
-Emacspeakが更新されたとき、一時的にこの差分が遅れて動かなくなるかも知れ
-ません。
+Emacspeakが更新されたとき、一時的にこの差分が遅れて動かなくなるかも知れません。
 
 
 6. 連絡先
@@ -57,8 +41,3 @@ Emacspeakが更新されたとき、一時的にこの差分が遅れて動かなくなるかも知れ
 bep-dev@argv.org
 bep-contact@argv.org
 inoue@argv.org
-
-
-
-
-
