@@ -12,9 +12,10 @@ Please login with empty password and checkout the module `emacspeak'.
 2. Apply the modification
 
 First update this directory to the current state.
-After update, please copy files under
-lisp/
-onto your check-out copy of Emacspeak.
+Edit `devel/settings' file.
+Then execute `devel/apply' script.
+It will copy modified files onto your Emacspeak pointed by SOURCE_DIR
+variable in `devel/settings' file.
 It will make your Emacspeak BEP-enabled.
 Let's call it `new BEP' hereafter.
 
@@ -29,14 +30,20 @@ When you try to update this `new BEP', please follow these steps:
 (4) Follow the step 2. of this document.
 
 
-4. Caution
+4. Sample of .emacs
+
+dot.emacs.add file in this directory contains sample function to show
+how to start this version of BEP.
+
+
+5. Caution
 
 The updated copy of new BEP will not be byte-compiled correctly.
 Sometimes this distribution becomes outdated because of update of
 Emacspeak itself.
 
 
-5. Contact
+6. Contact
 
 Please report any bug or bug-like situation or any suggestion to
 bep-contact@argv.org
