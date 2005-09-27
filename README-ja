@@ -4,7 +4,7 @@
 1. 最新Emacspeakの入手法
 
 EmacspeakのCVSサイトは以下のリポジトリにあります。
-:pserver:anonymous@cvs.emacspeak.sourceforge.net:/cvsroot/emacspeak
+:pserver:anonymous@cvs.sourceforge.net:/cvsroot/emacspeak
 パスワードはエンターのみでログインし、emacspeakというモジュールをチェッ
 クアウトしてください。
 

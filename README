@@ -5,7 +5,7 @@ repository of Emacspeak.
 1. Getting the latest Emacspeak
 
 The master CVS repository of Emacspeak will be found at:
-:pserver:anonymous@cvs.emacspeak.sourceforge.net:/cvsroot/emacspeak
+:pserver:anonymous@cvs.sourceforge.net:/cvsroot/emacspeak
 Please login with empty password and checkout the module `emacspeak'.
 
 
