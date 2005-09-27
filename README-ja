@@ -11,9 +11,9 @@ EmacspeakのCVSサイトは以下のリポジトリにあります。
 
 2. 変更の適用
 
-1)  このディレクトリの中にあるlisplangディレクトリをEmacspeakソースのlispディレクトリにいコピーしてください。Emacspeakソースツリーのlispディレクトリの中にlangディレクトリができるようにします。
+1)  このディレクトリの中にあるlisp/langディレクトリをEmacspeakソースのlispディレクトリにいコピーしてください。Emacspeakソースツリーのlispディレクトリの中にlangディレクトリができるようにします。
 2)  Emacspeakのトップディレクトリで`make config'、続いて`make emacspeak'を実行します。
-3)  Emacspeakソースツリーの中野lisp/langディレクトリに移動して、`make'を実行します。
+3)  Emacspeakソースツリーの中のlisp/langディレクトリに移動して、`make'を実行します。
 
 3. アップデート
 
