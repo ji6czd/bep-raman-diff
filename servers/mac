@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# -*- coding: utf-8 -*-
 # E-Mac-Speak
 # Emacspeak on Mac.
 # author: David Tseng
@@ -14,6 +15,8 @@ import subprocess
 import sys
 import tempfile
 import threading
+import codecs
+sys.stdin  = codecs.getreader('utf-8')(sys.stdin)
 
 from Foundation import *
 from PyObjCTools import AppHelper
@@ -118,7 +121,10 @@ voiceMap= {'alex':'com.apple.speech.synthesis.voice.Alex',
            'sangeeta':'com.apple.speech.synthesis.voice.sangeeta.premium',
            'tessa':'com.apple.speech.synthesis.voice.tessa.premium',
            'tom':'com.apple.speech.synthesis.voice.tom.premium',
-           'bruce':'com.apple.speech.synthesis.voice.Bruce'}
+           'bruce':'com.apple.speech.synthesis.voice.Bruce',
+           'kyoko':'com.apple.speech.synthesis.voice.kyoko.premium',
+           'takshi':'jp.co.createsystem.speech.synthesis.voice.Takshi',
+           'keiko':'jp.co.createsystem.speech.synthesis.voice.Keiko'}
 
 # A queue of either text or audio filenames waiting to be dispatched to NSSpeechSynthesizer.
 speechQueue = []
@@ -220,6 +226,7 @@ class FileObserver(NSObject):
 # This is conceptually the main entry point of the server.
 def gotLine(observer, aLine):
   if aLine:
+    aLine = aLine.decode('utf-8')
     writeDebugLog(2, "gotline: " + aLine.rstrip() +  "\nend\n")
     observer.protocolHandler.dispatchRawTtsMessage(aLine.rstrip())
   else:
